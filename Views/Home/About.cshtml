@@ -85,47 +85,66 @@
 
     /* --------- main part ---------- */
     .about {
-        text-align: center;
-        padding: 50px 0px;
+        padding: 60px 0px;
         display: flex;
-        flex-direction: row;
-        justify-content: center;
+        flex-direction:row;
     }
 
-        .about img {
-            width: 50%;
-            margin-right: 40px;
-            z-index: 2
+    .about-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap; /* For responsiveness */
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .about-image {
+        flex: 1 1 45%;
+        text-align: center;
+    }
+
+        .about-image img {
+            width: 150%;
+            max-width: 700px;
+            height: auto;
+            border-radius: 10px;
         }
 
-        .about .container {
-            margin-top: 40px;
+    .about-text {
+        flex: 1 1 20%;
+    }
+
+        .about-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
-        .about .heading {
-            font-size: 2.5em;
-            color: #007bff;
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 15px;
+            text-align: justify;
         }
 
-            .about .heading span {
-                color: #333 !important;
-            }
-
-        .about p {
-            font-size: 1.2em;
-            color: #555;
-            max-width: 1000px;
-            margin: 20px auto;
-        }
-
-        .about .btn {
+        .about-text .btn {
             background-color: #007bff;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
+            border-radius: 8px;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            transition: background 0.3s ease-in-out;
         }
+
+            .about-text .btn:hover {
+                background-color: #0056b3;
+            }
 
     .our-team {
         text-align: center;
@@ -204,14 +223,19 @@
 
 <!-- About us Section -->
 <section class="about">
-    <img src="~/images/about-us-bg.png" alt="">
-    <div class="container">
-        <h1><span class="highlight">About</span> Us</h1>
-        <p>MediCare+ is more than just an online medical service. It’s a movement towards accessible, efficient, and compassionate healthcare for all. Founded by a team of visionary doctors, healthcare professionals, and technology experts, we are driven by the mission to deliver exceptional medical care directly to you, no matter where you are.</p>
-        <p>Our platform is built on the pillars of trust, innovation, and patient-centricity, ensuring that every interaction is personalized and every treatment plan is tailored to your unique needs.</p>
-        <a href="#" class="btn">Learn More</a>
+    <div class="about-content">
+        <div class="about-image">
+            <img src="~/images/about-us-bg.png" alt="About Us Image">
+        </div>
+        <div class="about-text">
+            <h1><span class="highlight">About</span> Us</h1>
+            <p>MediCare+ is more than just an online medical service. It’s a movement towards accessible, efficient, and compassionate healthcare for all. Founded by a team of visionary doctors, healthcare professionals, and technology experts, we are driven by the mission to deliver exceptional medical care directly to you, no matter where you are.</p>
+            <p>Our platform is built on the pillars of trust, innovation, and patient-centricity, ensuring that every interaction is personalized and every treatment plan is tailored to your unique needs.</p>
+            <a href="#" class="btn">Learn More</a>
+        </div>
     </div>
 </section>
+
 
 <!-- Out team Section -->
 <section class="our-team">

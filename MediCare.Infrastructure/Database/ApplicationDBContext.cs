@@ -9,6 +9,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Database
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Bed> Beds { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<LabTest> LabTests { get; set; }
@@ -141,6 +142,10 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Database
 
             modelBuilder.Entity<Appointment>()
                 .ToTable(tb => tb.HasCheckConstraint("CK_Appointment_Status", "Status IN ('Scheduled', 'CheckedIn', 'InProgress', 'Completed', 'Cancelled', 'NoShow', 'Rescheduled', 'PendingApproval', 'Rejected')"));
+
+            modelBuilder.Entity<ContactUs>()
+             .ToTable(tb => tb.HasCheckConstraint("CK_ContactUs_QueryType_ValidValues", "QueryType IN ('General Inquiry', 'Appointment', 'Billing', 'Feedback', 'Other')"));
+
 
             // ---------------------------- Data Seeding for role table  ---------------------------- 
             modelBuilder.Entity<Role>().HasData(

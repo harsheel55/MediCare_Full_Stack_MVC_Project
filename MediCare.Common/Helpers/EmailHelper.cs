@@ -1,6 +1,7 @@
 ﻿using System.Net.Mail;
 using System.Net;
 using MediCare_MVC_Project.MediCare.Application.Interfaces;
+using MediCare_MVC_Project.MediCare.Application.DTOs;
 
 namespace MediCare_MVC_Project.MediCare.Common.Helpers
 {
@@ -76,6 +77,42 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
                     <img src='https://drive.google.com/uc?export=view&id=1J-OM4zr7GXGMuI6Hzl6pT8HOsAL98z5n' alt='Bacancy Logo' style='width: 60%; margin-top: 10px;' />
                 </div>
             </div>";
+
+        public async Task SendUserQueryAcknowledgementEmailAsync(ContactUsDTO contactUs)
+        {
+            string emailSubject = "We’ve received your query – MediCare+ Support";
+
+            string emailBody = $@"
+        {ContainerStart}
+            <div style='text-align: center;'>
+                <h2 style='color: #2c3e50;'>Hi {contactUs.Name},</h2>
+                <p style='font-size: 16px; color: #333;'>
+                    Thank you for reaching out to <strong>MediCare+</strong>. We've received your query and our support team will get back to you as soon as possible.
+                </p>
+
+                <div style='background-color: #ffffff; padding: 20px; border-radius: 8px; 
+                            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); margin: 20px auto; max-width: 500px; text-align: left;'>
+                    <p style='font-size: 16px;'><strong>Query Type:</strong> {contactUs.QueryType}</p>
+                    <p style='font-size: 16px;'><strong>Your Message:</strong></p>
+                    <p style='font-size: 15px; color: #555;'>{contactUs.Message}</p>
+                </div>
+
+                <p style='font-size: 14px; color: #888;'>
+                    We aim to respond within 24 hours. If it's urgent, feel free to call our helpline.
+                </p>
+
+                <div style='text-align: center; margin-top: 20px;'>
+                    <a href='https://yourwebsite.com/contact' 
+                       style='background-color: #007bff; color: #ffffff; padding: 12px 25px; 
+                              text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: bold;'>
+                        Visit Support Page
+                    </a>
+                </div>
+            </div>
+        {ContainerEnd}";
+
+            await SendEmailAsync(contactUs.Email, emailSubject, emailBody);
+        }
 
 
         public async Task SendUserRegistrationEmailAsync(string toEmail, string? password)

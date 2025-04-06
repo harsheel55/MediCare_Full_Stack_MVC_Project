@@ -5,95 +5,309 @@
 }
 
 <style>
-    body {
-        background-color: #f4f6f9;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* ---------------------------------- */
+    /* Global Headings and Highlights */
+    /* ---------------------------------- */
+    .highlight {
+        background: linear-gradient(to right, #0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #007bff; /* fallback */
+        font-weight: bold;
+        font-size: 30px;
     }
 
-    .login-wrapper {
+    h1, h2 {
+        font-size: 30px;
+        margin-bottom: 25px;
+    }
+
+    h3{
+        font-size: 20px;
+    }
+
+    /* ---------------------------------- */
+    /* Login Section Styles */
+    /* ---------------------------------- */
+    .login-section {
+        position: relative;
+        width: 100%;
+        height: 90vh;
         display: flex;
         align-items: center;
-        justify-content: center;
-        height: 100vh;
     }
 
-    .login-form {
-        background-color: white;
+    /* Background Image */
+    .login-bg-image {
+        width: 80% !important;
+        height: 90vh !important;
+        margin-left: 70px;
+        object-fit: cover;
+        position: absolute;
+        top: -10px;
+        left: -80px;
+        z-index: -1;
+    }
+
+    /* Login Card */
+    .login-container {
+        background: rgba(255, 255, 255, 0.95);
         padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        width: 400px;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 75%;
+        transform: translate(-50%, -50%);
     }
 
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
+    /* Form Title */
+    .login-form h2 {
+        align-items: center;
+        margin-top: 0;
+    }
+
+    /* Input Group */
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+        .input-group input {
+            width: 100% !important;
+            padding: 12px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
         }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .btn-primary {
-        width: 100%;
-    }
-
-    .checkbox {
-        margin-top: 10px;
-    }
-
-    .validation-summary-errors {
-        color: red;
-        margin-bottom: 10px;
-    }
-
-    .forgot-password {
-        text-align: right;
-        display: block;
-        margin-top: -10px;
-        margin-bottom: 20px;
-    }
-
-        .forgot-password a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-            .forgot-password a:hover {
-                text-decoration: underline;
+            .input-group input:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
             }
+
+    /* Login Button */
+    .login-btn {
+        background: linear-gradient(to right, #007bff, #0056b3);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background 0.3s ease-in-out;
+    }
+
+        .login-btn:hover {
+            background: linear-gradient(to right, #0056b3, #003f8a);
+        }
+
+    /* Forgot Password */
+    .forgot-password {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+    /* ---------------------------------- */
+    /* Floating Sections & Reviews */
+    /* ---------------------------------- */
+    .floating-sreviews {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        padding: 16px;
+        width: fit-content;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        z-index: 2;
+        gap: 10px;
+    }
+
+    /* Top and Bottom Sections */
+    .review-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+        .review-section.top {
+            flex-direction: column;
+        }
+
+        .review-section.bottom {
+            text-align: center;
+        }
+
+
+
+    .floating-section {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 12px 18px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        position: absolute;
+        top: 60%;
+        left: -5%;
+    }
+
+    .review-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        text-align: center;
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .avatars {
+        display: flex;
+        align-items: center;
+    }
+
+        .avatars img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            margin-left: -15px;
+        }
+
+            .avatars img:first-child {
+                margin-left: 0;
+            }
+
+        .avatars strong {
+            font-size: 1.3rem;
+            margin-left: 4px;
+        }
+
+    .trusted-service {
+        color: #007bff;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* ---------------------------------- */
+    /* Additional Sections */
+    /* ---------------------------------- */
+    .why-choose-us, .how-it-works, .testimonials {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .features-grid, .steps, .testimonial-grid {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .feature, .step, .testimonial {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        width: 250px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .feature img, .step img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .testimonial img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+
+    /* Hover Effects */
+    .why-choose-us .feature:hover,
+    .how-it-works .step:hover,
+    .testimonials .testimonial:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 </style>
+<!-- Login section -->
+<div class="login-section">
+    <img src="~/images/doctors/bg-checkin.png" alt="Background Image" class="login-bg-image">
 
-<div class="login-wrapper">
-    <div class="login-form">
-        <h2>Login</h2>
+    <div class="floating-sreviews">
+        <!-- Top Section -->
+        <div class="review-section top">
+            <div class="avatars">
+                <img src="~/images/human/user1.png" alt="User 1">
+                <img src="~/images/human/user2.png" alt="User 2">
+                <img src="~/images/human/user3.png" alt="User 3">
+                <strong>5000+ Patients</strong>
+            </div>
+        </div>
 
-        @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        <!-- Bottom Section -->
+        <div class="review-section bottom">
+            <div class="rating-info">
+                <span class="trusted-service">Trust Our Service</span><br />
+                ⭐⭐⭐⭐⭐ (4.9 Stars)
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-section support">
+        📞 <strong>24/7 Medical Assistance</strong>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "login-form" }))
         {
             @Html.AntiForgeryToken()
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h2>Inject Yourself In</h2>
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Enter Email" })
                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            <div class="input-group">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Enter Password" })
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group forgot-password">
-                @Html.ActionLink("Forgot Password?", "ForgotPassword", "Auth")
+                @Html.ActionLink("Forgot Password?", "ForgotPassword", "Auth", null, new { @class = "forgot-password" })
             </div>
 
             <div class="form-group">
-                <div class="checkbox">
+                <div class="checkbox" style="text-align: left; margin-left: 20px;">
                     <label>
                         @Html.CheckBoxFor(m => m.RememberMe) Remember Me
                     </label>
@@ -101,8 +315,91 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+                <input type="submit" value="Login" class="login-btn" />
             </div>
         }
+
     </div>
 </div>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose-us">
+    <div class="container">
+        <h2>Why <span class="highlight">Choose Us?</span></h2>
+        <div class="features-grid">
+            <div class="feature">
+                <img src="~/images/icon/secure.png" alt="Secure Login">
+                <h3>Secure Login</h3>
+                <p>We ensure top-notch security with encrypted authentication.</p>
+            </div>
+            <div class="feature">
+                <img src="~/images/icon/access.png" alt="Easy Access">
+                <h3>Easy Access</h3>
+                <p>Login anywhere, anytime, with a seamless user experience.</p>
+            </div>
+            <div class="feature">
+                <img src="~/images/icon/records.png" alt="Medical Records">
+                <h3>Access Medical Records</h3>
+                <p>Manage your prescriptions, appointments, and history.</p>
+            </div>
+            <div class="feature">
+                <img src="~/images/icon/support.png" alt="24/7 Support">
+                <h3>24/7 Support</h3>
+                <p>Our support team is always available for your needs.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <div class="container">
+        <h2>How <span class="highlight">It Works?</span></h2>
+        <div class="steps">
+            <div class="step">
+                <img src="~/images/icon/login.png" alt="Step 1">
+                <h3>Step 1: Login</h3>
+                <p>Sign in securely to access your dashboard.</p>
+            </div>
+            <div class="step">
+                <img src="~/images/icon/schedule.png" alt="Step 2">
+                <h3>Step 2: Schedule</h3>
+                <p>Book an appointment with top doctors.</p>
+            </div>
+            <div class="step">
+                <img src="~/images/icon/consult.png" alt="Step 3">
+                <h3>Step 3: Consultation</h3>
+                <p>Get expert medical advice and treatment plans.</p>
+            </div>
+            <div class="step">
+                <img src="~/images/icon/prescription.png" alt="Step 4">
+                <h3>Step 4: Get Prescription</h3>
+                <p>Receive your e-prescription and start your treatment.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container">
+        <h2>What Our <span class="highlight">Users Say</span></h2>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <img src="~/images/human/user5.jpg" alt="User 1">
+                <p>"Amazing service! Booking an appointment has never been easier."</p>
+                <strong>- Ethan Collins</strong>
+            </div>
+            <div class="testimonial">
+                <img src="~/images/human/user6.jpg" alt="User 2">
+                <p>"The consultation was smooth, and I got my prescription online."</p>
+                <strong>- Sophia Reynolds</strong>
+            </div>
+            <div class="testimonial">
+                <img src="~/images/human/user7.jpg" alt="User 3">
+                <p>"A lifesaver! I can track my medical records in one place."</p>
+                <strong>- Liam Becker</strong>
+            </div>
+        </div>
+    </div>
+</section>
