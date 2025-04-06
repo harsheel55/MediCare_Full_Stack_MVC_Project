@@ -1,0 +1,283 @@
+﻿@{
+	    ViewData["Title"] = "About Us";
+}
+
+<style>
+
+    .highlight {
+        background: linear-gradient(to right,#0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        font-weight: bold;
+        font-size: 35px;
+    }
+
+    h1, h2 {
+        font-size: 35px;
+        text-align: center;
+    }
+
+    /* --------------------- Navbar CSS ----------------------- */
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        background-color: transparent;
+        z-index: 1000;
+        padding: 15px 30px;
+        color: black;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+
+    .logo img {
+        height: 50px;
+        border-radius: 0px 5px 5px 0px;
+        margin-right: 50px;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin-right: 100px;
+    }
+
+        .nav-links li {
+            display: inline;
+        }
+
+            .nav-links li a {
+                color: rgb(0, 0, 0);
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: 600;
+                padding: 10px 15px;
+                transition: background 0.3s;
+            }
+
+        .nav-links a:hover {
+            pointer-events: auto; /* Ensure links are clickable */
+            cursor: pointer;
+        }
+
+    .check-in {
+        background-color: #34ACB4;
+        padding: 10px 20px 10px 20px;
+        background-image: linear-gradient(#75d4ff, #2cbeff, #00a4f4);
+        border-radius: 10px;
+        color: whitesmoke;
+        font-weight: 600;
+        box-shadow: -0.1em 0.1em 0.4em #34ACB4;
+        border: 0px;
+        font-size: 15px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .check-in:hover {
+            background-image: linear-gradient(to left, #75d4ff, #2cbeff, #00a4f4);
+            transform: scale(1.05);
+            box-shadow: -0.2em 0.2em 0.5em rgba(0, 174, 255, 0.4);
+        }
+
+
+    /* --------- main part ---------- */
+    .about {
+        text-align: center;
+        padding: 50px 0px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+        .about img {
+            width: 50%;
+            margin-right: 40px;
+            z-index: 2
+        }
+
+        .about .container {
+            margin-top: 40px;
+        }
+
+        .about .heading {
+            font-size: 2.5em;
+            color: #007bff;
+        }
+
+            .about .heading span {
+                color: #333 !important;
+            }
+
+        .about p {
+            font-size: 1.2em;
+            color: #555;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+
+        .about .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+    .our-team {
+        text-align: center;
+        padding: 50px 20px;
+    }
+
+        .our-team .heading {
+            font-size: 2.5em;
+            color: #007bff;
+        }
+
+            .our-team .heading span {
+                color: #333;
+            }
+
+    .team-grid {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    .team-member {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 250px; /* Set a fixed width */
+        height: 270px; /* Set a fixed height */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between; /* Ensures even spacing */
+    }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .team-member h3 {
+            margin: 10px 0;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        .team-member p {
+            color: #555;
+            margin: 5px 0;
+        }
+
+    /* Hover effect for team member cards */
+    .team-member {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+        .team-member:hover {
+            transform: translateY(-5px); /* Moves the card up slightly */
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hover effect for team member images */
+        .team-member img {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .team-member:hover img {
+            transform: scale(1.15); /* Slight zoom effect */
+        }
+
+</style>
+
+<!-- About us Section -->
+<section class="about">
+    <img src="~/images/about-us-bg.png" alt="">
+    <div class="container">
+        <h1><span class="highlight">About</span> Us</h1>
+        <p>MediCare+ is more than just an online medical service. It’s a movement towards accessible, efficient, and compassionate healthcare for all. Founded by a team of visionary doctors, healthcare professionals, and technology experts, we are driven by the mission to deliver exceptional medical care directly to you, no matter where you are.</p>
+        <p>Our platform is built on the pillars of trust, innovation, and patient-centricity, ensuring that every interaction is personalized and every treatment plan is tailored to your unique needs.</p>
+        <a href="#" class="btn">Learn More</a>
+    </div>
+</section>
+
+<!-- Out team Section -->
+<section class="our-team">
+    <div class="container">
+        <h2>Meet <span class="highlight">Our Team</span></h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="~/images/doctors/dr_sarah.jpeg" alt="Dr. Sarah Johnson">
+                <h3>Dr. Sarah Johnson</h3>
+                <p>Cardiologist</p>
+                <p>Experience: 12+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_johns.jpeg" alt="Dr. John Matthews">
+                <h3>Dr. John Matthews</h3>
+                <p>Neurologist</p>
+                <p>Experience: 15+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_adam.jpeg" alt="Dr. Adam Smith">
+                <h3>Dr. Adam Smith</h3>
+                <p>Orthopedic Surgeon</p>
+                <p>Experience: 10+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_surbhi.jpeg" alt="Dr. Surbhi Patel">
+                <h3>Dr. Surbhi Patel</h3>
+                <p>Gynecologist</p>
+                <p>Experience: 8+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_vicky.jpeg" alt="Dr. Vicky Mehta">
+                <h3>Dr. Vicky Mehta</h3>
+                <p>Pediatrician</p>
+                <p>Experience: 9+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_ahmed.jpeg" alt="Dr. Ahmed Khan">
+                <h3>Dr. Ahmed Khan</h3>
+                <p>Oncologist</p>
+                <p>Experience: 14+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_davis.jpeg" alt="Dr. Olivia Davis">
+                <h3>Dr. Olivia Davis</h3>
+                <p>Dermatologist</p>
+                <p>Experience: 7+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_jay.jpeg" alt="Dr. Jay Verma">
+                <h3>Dr. Jay Verma</h3>
+                <p>Psychiatrist</p>
+                <p>Experience: 11+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_emma.jpeg" alt="Dr. Emma Thompson">
+                <h3>Dr. Emma Thompson</h3>
+                <p>Endocrinologist</p>
+                <p>Experience: 13+ years</p>
+            </div>
+            <div class="team-member">
+                <img src="~/images/doctors/dr_diva.jpeg" alt="Dr. Diva Kapoor">
+                <h3>Dr. Diva Kapoor</h3>
+                <p>Radiologist</p>
+                <p>Experience: 10+ years</p>
+            </div>
+        </div>
+    </div>
+</section>

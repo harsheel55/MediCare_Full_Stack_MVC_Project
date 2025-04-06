@@ -1,0 +1,156 @@
+﻿@{
+    var hideLayout = ViewBag.HideLayoutElements != null && (bool)ViewBag.HideLayoutElements;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Favicon (.png or .jpg) -->
+    <link rel="icon" type="image/png" href="~/images/favicon.png" />
+    <!-- OR -->
+    <!-- <link rel="icon" type="image/jpeg" href="~/images/favicon.jpg" /> -->
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MediCare_MVC_Project.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @if (!hideLayout)
+    {
+        <header>
+            <nav class="navbar">
+                <!-- Logo -->
+                <div class="logo">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="~/images/logo.jpg" alt="Logo">
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div>
+                    <ul class="nav-links">
+                        <li><a asp-controller="Home" asp-action="Index" style="color:#0069ab">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Services</a></li>
+                        <!-- <li><a asp-controller="Doctor" asp-action="Find">Find Doctors</a></li> -->
+                        <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Blog">Blog</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Check-In (Login) Button -->
+                <button class="check-in" onclick="location.href='@Url.Action("Login", "Home")'">Check-In</button>
+            </nav>
+        </header>
+    }
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @if(!hideLayout){
+        <!-- Our Partners Section -->
+        <section class="our-partners">
+            <div class="partner-container">
+                <h2>Our <span class="highlight">Partners</span></h2>
+                <div class="partners-grid">
+                    <div class="partner">
+                        <img src="~/images/partners/partner-1.png" alt="Partner 1">
+                    </div>
+                    <div class="partner">
+                        <img src="~/images/partners/partner-2.png" alt="Partner 2">
+                    </div>
+                    <div class="partner">
+                        <img src="~/images/partners/partner-3.png" alt="Partner 3">
+                    </div>
+                    <div class="partner">
+                        <img src="~/images/partners/partner-4.png" alt="Partner 4">
+                    </div>
+                    <div class="partner">
+                        <img src="~/images/partners/partner-5.png" alt="Partner 5">
+                    </div>
+                    <div class="partner">
+                        <img src="~/images/partners/partner-6.png" alt="Partner 6">
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    @if (!hideLayout)
+    {
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- Left Section (Logo & Description) -->
+                <div class="footer-left">
+                    <img src="~/images/logo.jpg" alt="MediCare+ Logo" class="footer-logo">
+                    <p class="footer-description">
+                        Experience personalized medical care from the comfort of your home.
+                    </p>
+                    <div class="social-icons">
+                        <img src="~/images/social-icon/facebook.png" alt="">
+                        <img src="~/images/social-icon/instagram.png" alt="">
+                        <img src="~/images/social-icon/youtube.png" alt="">
+                        <img src="~/images/social-icon/linkedin.png" alt="">
+                        <img src="~/images/social-icon/twitter.png" alt="">
+                        <img src="~/images/social-icon/whatsapp.png" alt="">
+                    </div>
+                </div>
+
+                <!-- Center Section (Links) -->
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#">Getting Started</a></li>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Help Articles</a></li>
+                            <li><a href="#">Report an issue</a></li>
+                            <li><a href="#">Contact Help Desk</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Services</h4>
+                        <ul>
+                            <li><a href="#">Booking appointments</a></li>
+                            <li><a href="#">Prescriptions</a></li>
+                            <li><a href="#">Medicine Records</a></li>
+                            <li><a href="#">Payment & History</a></li>
+                            <li><a href="#">Medical Notes</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Cookie Notice</a></li>
+                            <li><a href="#">Cookie Preferences</a></li>
+                            <li><a href="#">Trust Center</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="footer-bottom">
+                MediCare+ 2025 © All Rights Reserved
+            </div>
+        </footer>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,200 @@
+﻿@{
+    ViewData["Title"] = "Our Services";
+}
+
+<style>
+    .highlight {
+        background: linear-gradient(to right, #0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        font-size: 30px;
+    }
+
+    h1, h2 {
+        font-size: 30px;
+    }
+
+    .services {
+        padding: 50px 0;
+        /* background-color: #f8f8f8; */
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .section-description {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 40px;
+    }
+
+    .service-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        padding: 20px;
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        /* Alternate row reversal for styling */
+        .service-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        /* Hover Effect */
+        .service-row:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Image Styling */
+        .service-row img {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Image Hover Effect */
+        .service-row:hover img {
+            transform: scale(1.05);
+        }
+
+    /* Content Styling */
+    .service-content {
+        flex: 1;
+        padding: 0 20px;
+        text-align: left;
+        margin-bottom: 30px;
+    }
+
+        .service-content h3 {
+            font-size: 25px;
+            color: #0069ab;
+            margin: 20px 0px;
+            transition: color 0.3s ease;
+        }
+
+    /* Title Hover Effect */
+    .service-row:hover .service-content h3 {
+        color: #004a7c;
+    }
+
+    /* Description Text */
+    .service-content p {
+        font-size: 16px;
+        color: #555;
+        transition: color 0.3s ease;
+    }
+
+    /* Description Hover Effect */
+    .service-row:hover .service-content p {
+        color: #333;
+    }
+
+</style>
+
+<!-- Services Section -->
+<section class="services">
+    <div class="container">
+        <h1 class="section-title">Our <span class="highlight">Services</span></h1>
+        <p class="section-description">
+            At <strong>MediCare+</strong>, we provide comprehensive healthcare services to ensure a smooth and efficient experience for our patients and medical professionals.
+        </p>
+
+        <!-- Service 1 -->
+        <div class="service-row">
+            <img src="~/images/services-images/appointment.jpg" alt="Appointment">
+            <div class="service-content">
+                <h3>Online Appointments</h3>
+                <p>Book doctor consultations effortlessly with our online scheduling system. Choose a suitable time slot, receive instant confirmation, and get reminders for upcoming appointments.</p>
+                <p>Our seamless interface ensures a hassle-free booking experience, reducing wait times and optimizing patient care.</p>
+            </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-row">
+            <img src="~/images/services-images/prescription.jpg" alt="Digital Prescription">
+            <div class="service-content">
+                <h3>Digital Prescriptions</h3>
+                <p>Receive electronic prescriptions from verified doctors for easy access. Our system securely stores all your prescriptions, ensuring you never lose them.</p>
+                <p>Download, print, or share prescriptions with pharmacies and caregivers instantly. No more paperwork—just efficient, secure digital records.</p>
+            </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-row">
+            <img src="~/images/services-images/medicineRecords.jpg" alt="Medicine Records">
+            <div class="service-content">
+                <h3>Medicine Records</h3>
+                <p>Keep track of your past prescriptions and medication history in one place. Our system provides alerts for refills, dosage reminders, and doctor-prescribed updates.</p>
+                <p>Access your medication details anytime, anywhere, ensuring you follow your treatment plans effectively.</p>
+            </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-row">
+            <img src="~/images/services-images/payments.jpg" alt="Secure Payment">
+            <div class="service-content">
+                <h3>Secure Payments</h3>
+                <p>Seamless and secure transactions for consultations, tests, and treatments. Pay online using debit/credit cards, UPI, or net banking without any worries.</p>
+                <p>Our encrypted payment gateway ensures data security and quick processing, making bill payments simple and hassle-free.</p>
+            </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-row">
+            <img src="~/images/services-images/emr.jpg" alt="Electronic Medical Records">
+            <div class="service-content">
+                <h3>Electronic Medical Records (EMR)</h3>
+                <p>Access your complete medical history and reports anytime, anywhere. Our EMR system securely stores patient data, including doctor notes, test results, and treatment history.</p>
+                <p>This helps doctors make informed decisions quickly and improves patient care by providing a holistic view of their medical history.</p>
+            </div>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="service-row">
+            <img src="~/images/services-images/ambulance.jpg" alt="Emergency Care">
+            <div class="service-content">
+                <h3>Emergency & Ambulance Services</h3>
+                <p>Get 24/7 emergency assistance and ambulance services when needed. We ensure fast response times with trained paramedics and advanced life-support equipment.</p>
+                <p>Our emergency team is always ready to provide first aid, stabilize patients, and transport them safely to the nearest medical facility.</p>
+            </div>
+        </div>
+
+        <!-- Service 7 -->
+        <div class="service-row">
+            <img src="~/images/services-images/lab-test.jpg" alt="Lab Tests">
+            <div class="service-content">
+                <h3>Lab Test & Diagnostics</h3>
+                <p>Book lab tests and receive diagnostic reports digitally. Our accredited labs provide accurate and fast results for blood tests, imaging, and pathology reports.</p>
+                <p>Access your reports from your patient dashboard and share them with doctors instantly, reducing the need for multiple visits.</p>
+            </div>
+        </div>
+
+        <!-- Service 8 -->
+        <div class="service-row">
+            <img src="~/images/services-images/telemedicine.jpg" alt="Doctor Consultation">
+            <div class="service-content">
+                <h3>Telemedicine & Virtual Consultations</h3>
+                <p>Connect with top doctors through video calls for remote healthcare services. Get expert medical advice from the comfort of your home, saving time and travel.</p>
+                <p>Our platform ensures private and secure consultations, making healthcare more accessible and convenient.</p>
+            </div>
+        </div>
+    </div>
+</section>

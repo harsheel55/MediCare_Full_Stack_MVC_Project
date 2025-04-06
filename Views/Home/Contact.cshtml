@@ -1,0 +1,300 @@
+﻿@{
+	ViewData["Title"] = "Contact Us";
+}
+<style>
+    .highlight {
+        background: linear-gradient(to right, #0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        font-size: 30px;
+    }
+
+    h1, h2 {
+        font-size: 30px;
+    }
+
+    .contact {
+        text-align: center;
+        padding: 30px 0px;
+    }
+
+    .contact-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .contact-form {
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        z-index: 2;
+        background: white;
+        padding: 20px;
+        margin: 50px 0px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .contact-form h1 {
+            margin: 5px 0px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .contact-form button {
+            width: 100%;
+            background-color: #0069ab;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+    .submit-btn {
+        background-color: #34ACB4;
+        padding: 10px 20px;
+        background-image: linear-gradient(#75d4ff, #2cbeff, #00a4f4);
+        border-radius: 10px;
+        color: whitesmoke;
+        font-weight: 600;
+        box-shadow: -0.1em 0.1em 0.4em #34ACB4;
+        border: 0px;
+        font-size: 15px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .submit-btn:hover {
+            background-image: linear-gradient(to left, #75d4ff, #2cbeff, #00a4f4);
+            transform: scale(1.05);
+            box-shadow: -0.2em 0.2em 0.5em rgba(0, 174, 255, 0.4);
+        }
+
+    .contact-image {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        top: -50px;
+        /* height: 100%; */
+        z-index: 1;
+    }
+
+        .contact-image img {
+            width: 1000px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+    .map {
+        text-align: center;
+        margin: 30px 20px;
+    }
+
+        .map iframe {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+    /* ---------- Contact grid ---------- */
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content:center;
+        align-items: center;
+        gap: 30px;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .contact-box {
+        background-color: #ffffff;
+        padding: 30px 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+        .contact-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+
+        .contact-box p {
+            margin: 0;
+            color: #333;
+        }
+
+
+    .floating-section {
+        position: fixed;
+        height: fit-content;
+        top: 80px;
+        right: 280px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        max-width: 250px;
+        z-index: 1000;
+        position: relative; /* Needed for quote positioning */
+    }
+
+    .contact-content {
+        display: flex;
+        flex-direction: row;
+        /* justify-content: left; */
+    }
+
+        .contact-content strong {
+            font-size: 20px;
+        }
+
+        .contact-content p {
+            margin: 3px 0px;
+        }
+
+    .contact-card {
+        position: relative; /* Enables absolute positioning for quotes */
+    }
+
+    .contact-icon {
+        font-size: 30px;
+    }
+
+    /* Styling for quote icons */
+    .quote-icon {
+        position: absolute;
+        font-size: 30px;
+        color: #056b94;
+        opacity: 1;
+        font-size: 100px;
+    }
+
+    .top-quote {
+        top: -50px;
+        left: -25px;
+    }
+
+    .bottom-quote {
+        bottom: -80px;
+        right: -25px;
+    }
+</style>
+
+<!-- Contact Us Section -->
+<section class="contact">
+    <div class="container">
+        <div class="contact-container">
+            <div class="contact-form">
+                <h1><span class="highlight">Contact</span> Us</h1>
+                <form>
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="phone" placeholder="Your Phone No" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="contact-image">
+                <img src="~/images/contact-us-bg.png" alt="Contact Us">
+            </div>
+            <div class="floating-section contact-card">
+                <div class="quote-icon top-quote">❝</div>
+                <div class="contact-content">
+                    <div class="contact-icon">⏰</div>
+                    <div>
+                        <strong>24/7 Support</strong><br>
+                        <p>Our support team is available 24/7 to assist you with your needs.</p>
+                    </div>
+                </div>
+                <div class="quote-icon bottom-quote">❞</div>
+            </div>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-box">
+                <h3>📍 Our Location</h3>
+                <p>123 Healthcare Street, Ahmedabad, Gujarat, India</p>
+            </div>
+            <div class="contact-box">
+                <h3>📞 Call Us</h3>
+                <p>+91 98765 43210</p>
+            </div>
+            <div class="contact-box">
+                <h3>✉️ Email Us</h3>
+                <p>support@medicare.com</p>
+            </div>
+            <div class="contact-box">
+                <h3>⏰ Working Hours</h3>
+                <p>Monday - Saturday: 9 AM - 6 PM</p>
+                <p>Sunday: Closed</p>
+            </div>
+            <div class="contact-box">
+                <h3>🧾 Billing Support</h3>
+                <p>billing@medicare.com</p>
+            </div>
+            <div class="contact-box">
+                <h3>💬 Live Chat</h3>
+                <p>Available 24/7</p>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map">
+    <div class="container">
+        <h2>Find Us on the Map</h2>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d209615.12717930836!2d72.41492852676632!3d23.02047410167324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C%20Gujarat!5e1!3m2!1sen!2sin!4v1741023485319!5m2!1sen!2sin"
+                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>

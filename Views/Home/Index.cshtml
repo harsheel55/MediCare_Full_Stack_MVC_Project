@@ -1,0 +1,1291 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+
+    /* Custom Cursor */
+    .custom-cursor {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: rgba(0, 174, 255, 0.6);
+        position: absolute;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease-out, background-color 0.2s ease;
+        mix-blend-mode: difference;
+        z-index: 9999;
+    }
+
+    /* ----------- doctor and landing page css */
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 10px 0px 10px;
+        max-width: 1200px;
+        width: 100%;
+        margin: auto;
+    }
+
+    strong {
+        color: #3498db;
+    }
+
+    .content {
+        max-width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 3em;
+        color: #333;
+        font-weight: 500;
+        text-align: justify;
+        width: 470px;
+    }
+
+    .highlight {
+        background: linear-gradient(to right,#0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        font-weight: bold;
+    }
+
+    .description {
+        margin: 40px 0px 40px 0px;
+        color: #555;
+        font-size: 1.1em;
+    }
+
+    .btn {
+        color: white;
+        padding: 12px 20px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 50%;
+        background: linear-gradient(to right, #75d4ff, #2cbeff, #00a4f4);
+        background-size: 200% auto; /* Makes the gradient wider than the button */
+        transition: background-position 0.4s ease-in-out, transform 0.2s ease;
+        margin-bottom: 2.5rem;
+    }
+
+        .btn:hover {
+            background-position: right center; /* Moves the gradient smoothly */
+            transform: scale(1.05);
+        }
+
+    .brands {
+        color: #b0b0b0;
+        margin-bottom: 5px;
+    }
+
+    .trusted-brands img {
+        width: 30px;
+        margin: 6px;
+    }
+
+    .doctor-section {
+        position: relative;
+        text-align: center;
+    }
+
+    /* .circle-bg {
+        position: absolute;
+        width: 400px;
+        height: 450px;
+        background: linear-gradient(to bottom, #2cbeff, #75d4ff, #b6e6ff, #def1ff);
+        border-radius: 50% 50% 0% 0%;
+        top: 60%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        /* z-index: 0;  */
+
+    .doctor-img {
+        width: 100%;
+        border-radius: 10px;
+        margin-right: 100%;
+    }
+
+    .info-box {
+        position: absolute;
+        top: 61%;
+        left: -60px;
+        background: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+        .info-box img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+    .customer-box {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        width: 230px;
+        position: absolute;
+        top: 38%;
+        right: -13%;
+        font-family: Arial, sans-serif;
+    }
+
+        .customer-box div {
+            display: flex;
+            align-items: left;
+        }
+
+        .customer-box img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-right: -10px; /* Overlapping effect */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .customer-box span {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-left: 15px;
+        }
+
+        .customer-box p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .customer-box .stars {
+            color: #FFC107; /* Gold color for stars */
+            font-size: 1em;
+        }
+
+    /* ---------------- top services ------------------- */
+    .services-section {
+        text-align: center;
+        max-width: 1000px;
+        padding: 30px;
+        border-radius: 10px;
+        margin: 0 auto; /* Center the section */
+        align-items: stretch; /* Ensure equal height */
+    }
+
+        /* Heading */
+        .services-section h2 {
+            font-size: 35px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Description */
+        .services-section p {
+            font-size: 14px;
+            color: #666;
+            margin: 20px 0px;
+        }
+
+    /* Service Box Container */
+    .services-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns */
+        grid-template-rows: repeat(2, auto); /* 2 rows */
+        gap: 20px;
+        justify-content: center;
+        align-items: stretch; /* Ensure equal height */
+        max-width: 900px; /* Adjusted width for better centering */
+        margin: 0 auto;
+    }
+
+    /* Service Box */
+    .service-box {
+        background: white;
+        border: 2px solid #D0E9FF;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        /* Service Box Image */
+        .service-box img {
+            width: 40px;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Service Box Heading */
+        .service-box h3 {
+            color: #3498DB;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Service Box Paragraph */
+        .service-box p {
+            font-size: 14px;
+            color: #666;
+            flex-grow: 1; /* Ensure text stretches evenly */
+        }
+
+        /* Hover Effects */
+        .service-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(42, 130, 201, 0.3);
+            background: #e3f2fd; /* Light Blue Background */
+        }
+
+            .service-box:hover h3 {
+                color: #2a82c9;
+            }
+
+            .service-box:hover p {
+                color: #444;
+            }
+
+    /* Decorative Waves */
+    .wave-decoration {
+        width: 60px;
+        height: 10px;
+        background-size: cover;
+        position: absolute;
+    }
+
+    .left {
+        top: 10px;
+        left: 20px;
+    }
+
+    .right {
+        bottom: 10px;
+        right: 20px;
+    }
+
+    /* ----------------- About story --------------- */
+    /* About Section */
+    /* About Section */
+    .about-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 60px;
+    }
+
+    /* About Container */
+    .about-container {
+        flex-direction: row;
+        align-items: center;
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        max-width: 1100px; /* Increased width */
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid #D0E9FF;
+        gap: 40px;
+    }
+
+    .about-header {
+        font-size: 30px;
+        justify-content: center;
+        margin: 0px 0px 40px 0px;
+        text-align: center;
+    }
+
+    /* Flexbox Layout for Content and Image */
+    .about-story {
+        display: flex;
+        flex-direction: row!important;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    /* Image Section */
+    .about-image img {
+        width: 400px; /* Increased width */
+        height: auto;
+        border-radius: 12px;
+        display: block;
+    }
+
+    /* Content Section */
+    .about-content {
+        flex: 1;
+        max-width: 600px; /* Keeps content readable */
+        margin: 0px 0px 0px 35px;
+        text-align: justify;
+    }
+
+        .about-content h2 span {
+            color: #3498DB;
+        }
+
+        .about-content p {
+            font-size: 16px; /* Increased readability */
+            color: #555;
+            line-height: 1.6;
+        }
+
+    /* Button */
+    .btn-primary {
+        display: inline-block;
+        /* background: #3498DB; */
+        background-image: linear-gradient(to right, #75d4ff, #2cbeff, #00a4f4);
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+        transition: background-position 0.4s ease-in-out, transform 0.2s ease;
+    }
+
+        .btn-primary:hover {
+            background-position: right center; /* Moves the gradient smoothly */
+            transform: scale(1.05);
+        }
+
+    .about-story {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-image img {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .about-content {
+        text-align: center;
+        max-width: 100%;
+    }
+
+
+    .about-content h2 {
+        font-size: 24px;
+    }
+
+    .about-content p {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    /* ------------- Platform Section --------------- */
+    /* Section Styling */
+    .platform-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 20px 0px 20px;
+    }
+
+    /* Container */
+    .platform-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 15px;
+        padding: 40px;
+        max-width: 1200px;
+        gap: 30px;
+    }
+
+    .platform-header {
+        justify-content: center;
+        text-align: center;
+        width: 80%;
+    }
+
+        .platform-header h2 {
+            font-size: 30px;
+        }
+
+    .platform-content {
+        display: flex;
+        flex-direction: row;
+        padding: 0px 10px;
+        text-align: left;
+        justify-content: space-evenly;
+        margin: 0px 10px;
+    }
+
+    .platform-header h2 {
+        font-size: 35px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .platform-content p {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    /* Steps Section */
+    .steps {
+        position: relative;
+        padding-left: 20px;
+        margin-top: 60px;
+        width: 50%;
+    }
+
+        .steps::before {
+            content: "";
+            position: absolute;
+            left: 43px;
+            top: 20px;
+            width: 2px;
+            height: 70%;
+            background: linear-gradient(to bottom, #3498DB 50%, transparent 50%);
+            background-size: 2px 8px;
+        }
+
+    .step {
+        display: flex;
+        flex-direction: row!important;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .step-number {
+        background-image: linear-gradient(to right, #75d4ff, #2cbeff, #00a4f4);
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+        border-radius: 50%;
+    }
+
+    .step-content h3 {
+        font-size: 22px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .step-content p {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    /* Right Image */
+    .platform-image {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Square Outline */
+    .square-outline {
+        position: absolute;
+        top: 125px;
+        left: 40px;
+        width: 90%;
+        height: 65%;
+        border: 2px solid #3498DB;
+        background-color: linear-gradient(to right, #75d4ff, #2cbeff, #00a4f4);
+        border-radius: 20px;
+        z-index: -1;
+    }
+
+    /* Doctor Image */
+    .doctor-image-pl {
+        width: 400px; /* Adjust as needed */
+        height: auto;
+        border-radius: 10px;
+    }
+
+    /* Plus Icon */
+    .plus {
+        position: absolute;
+        top: 100px;
+        right: -50px;
+        width: 100px; /* Adjust size */
+        z-index: 100;
+    }
+
+    /* Certification Badge */
+    .badge {
+        position: relative;
+        bottom: 80px;
+        left: 200px;
+        width: fit-content;
+        background: white;
+        color: #3498DB;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 100;
+    }
+
+    /* Star Icon */
+    .star-icon {
+        width: 30px!important;
+    }
+
+    .platform-content {
+        text-align: center;
+    }
+
+    .steps {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .platform-image img {
+        /* width: 100%; */
+        max-width: 400px;
+    }
+
+    .platform-content h2 {
+        font-size: 24px;
+    }
+
+    .platform-content p {
+        font-size: 14px;
+    }
+
+    .step-content h3 {
+        font-size: 16px;
+    }
+
+    .step-content p {
+        font-size: 13px;
+    }
+
+    .badge {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+
+    /* ------------- Testimonial Section ---------------- */
+    /* Testimonials Section */
+    .testimonials-section {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 0px 20px 20px 20px;
+        position: relative;
+    }
+
+    .round {
+        position: absolute;
+        z-index: 1;
+        width: 150px; /* Adjust size as needed */
+        height: auto;
+        z-index: 1;
+    }
+
+        .round img {
+            width: 100%;
+            opacity: 0.4; /* Adjust transparency if needed */
+        }
+
+        .round:first-of-type {
+            top: 150px;
+            left: 0%;
+        }
+
+        .round:last-of-type {
+            bottom: 20px;
+            right: 5%;
+        }
+
+    .testimonial-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Heading Styles */
+    .testimonials-section h2 {
+        font-size: 35px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .highlight {
+        color: #3498DB;
+    }
+
+    .subtext {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+        margin-top: 20px;
+    }
+
+    /* Testimonials Container */
+    .testimonials-container {
+        display: flex;
+        /* justify-content: center; */
+        gap: 20px;
+        justify-content: space-between;
+        z-index: 2;
+    }
+
+    /* Individual Testimonial */
+    .testimonial {
+        background: linear-gradient(to right,#f6f6f6,#eff9ff, #def1ff);
+        border-radius: 15px;
+        margin: 15px;
+        padding: 20px;
+        max-width: 400px;
+        box-shadow: 0px 4px 15px rgba(0, 174, 255, 0.2);
+        display: flex;
+        flex-direction: row!important;
+        align-items: center;
+        gap: 15px;
+        border: 1px solid #2cbeff;
+        z-index: 3;
+    }
+
+    /* Testimonial Image */
+    .testimonial-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        object-fit: cover;
+    }
+
+    /* Testimonial Text */
+    .testimonial-text {
+        font-size: 14px;
+        color: #333;
+        text-align: left;
+    }
+
+    .testimonial {
+        max-width: 100%;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .testimonial-image {
+        width: 70px;
+        height: 70px;
+    }
+
+    /* ------------ Stat section -----------------  */
+    .stats-section {
+        display: flex;
+        flex-direction: row!important;
+        justify-content: center;
+        gap: 50px;
+        text-align: center;
+        padding: 20px;
+        margin: 15px 0px;
+    }
+
+    .stat-color {
+        background: linear-gradient(to right,#0069ab,#0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        font-weight: bold;
+    }
+
+    .stat-box h2 {
+        font-size: 32px;
+        font-weight: bold;
+        color: #007bff;
+        margin: 0;
+    }
+
+    .stat-box p {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+    }
+
+
+    /* Hover Effect on Testimonials */
+    .testimonial {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.4s ease-in-out;
+        cursor: pointer;
+    }
+
+        .testimonial:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 20px rgba(0, 174, 255, 0.3);
+            background: linear-gradient(to left, #f6f6f6, #eff9ff, #def1ff);
+        }
+
+            /* Hover Effect on Testimonial Image */
+            .testimonial:hover .testimonial-image {
+                transform: scale(1.1);
+                transition: transform 0.3s ease-in-out;
+            }
+
+    /* Hover Effect on Stats Section */
+    .stat-box {
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .stat-box:hover {
+            transform: translateY(-20px);
+        }
+
+    /* Hover Effect on Round Design */
+    .round img {
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+        .round img:hover {
+            opacity: 0.7;
+            transform: rotate(10deg) scale(1.05);
+        }
+
+
+    /* --------------- Specialist section -----------------*/
+
+    /* Section Wrapper */
+    .specialists-section {
+        margin: 30px auto;
+    }
+
+    /* Section Title */
+    .section-title {
+        font-size: 35px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
+
+        .section-title .highlight {
+            color: #2a82c9;
+        }
+
+    /* Description under title */
+    .section-description {
+        font-size: 16px;
+        color: #8f8f8f;
+        text-align: center;
+        max-width: 700px;
+        margin: 20px auto 30px;
+    }
+
+    /* Specialist Card */
+    .specialist-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-image: linear-gradient(to right, #75d4ff, #2cbeff, #00a4f4);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        max-width: 800px;
+        height: 300px;
+        margin: 90px auto 30px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        cursor: pointer;
+    }
+
+    /* Doctor Image */
+    .doctor-image {
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .doctor-image-container {
+       margin-right: 20px;
+    }
+
+    .doctor-image-lg-sarah {
+        position: absolute;
+        width: 630px;
+        top: -120px;
+        left: -100px;
+    }
+
+    .doctor-image-lg-mark {
+        position: absolute;
+        width: 550px;
+        top: -75px;
+        left: -90px;
+    }
+
+    /* Card Content */
+    .card-content {
+        flex: 1;
+    }
+
+    .card-content-lg {
+        text-align: left;
+        padding-left: 250px;
+    }
+
+    .card-content h3 {
+        font-size: 23px;
+        margin: 8px 0 18px 0;
+    }
+
+    .card-content p {
+        line-height: 1.5;
+    }
+
+    /* Appointment Button */
+    .appointment-btn {
+        background-color: white;
+        color: #2a82c9;
+        border: none;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+        transition: background 0.3s ease-in-out, transform 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .appointment-btn:hover {
+            background-color: #1d6eb2;
+            color: white;
+            transform: scale(1.05);
+        }
+
+    /* Hover effect on card */
+    .specialist-card:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 8px 16px rgba(42, 130, 201, 0.3);
+        background: #e3f2fd;
+        color: #2a82c9;
+    }
+
+        .specialist-card:hover h3,
+        .specialist-card:hover p {
+            color: #2a82c9;
+        }
+
+
+    /* -------------- Help Desk Section --------------- */
+    /* Help Desk Section */
+    .help-desk-section {
+        margin: 30px auto 70px;
+        max-width: 800px;
+    }
+
+    .help-desk-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .help-title {
+        font-size: 35px;
+    }
+
+    /* Description */
+    .help-description {
+        font-size: 14px;
+        color: #8f8f8f;
+        margin: 20px auto 40px;
+        width: 50%;
+        text-align: center;
+    }
+
+    /* Contact Form */
+    .contact-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    /* Input Box */
+    .input-box {
+        display: flex;
+        align-items: center;
+        border: 2px solid #2a82c9;
+        padding: 10px;
+        border-radius: 10px;
+        width: 250px;
+        background: white;
+    }
+
+        .input-box img {
+            color: #2a82c9;
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .input-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: #999999;
+        }
+
+    /* Contact Button */
+    .contact-btn {
+        /* background-color: #2a82c9; */
+        background-image: linear-gradient(to left, #75d4ff, #2cbeff, #00a4f4);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+        .contact-btn i {
+            font-size: 14px;
+        }
+
+        .contact-btn:hover {
+            background-image: linear-gradient(to right, #75d4ff, #2cbeff, #00a4f4);
+            transform: scale(1.05);
+            box-shadow: -0.2em 0.2em 0.5em rgba(0, 174, 255, 0.4);
+        }
+
+    .input-box, .contact-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+
+<div class="container">
+    <div class="content">
+        <h1>Your <span class="highlight">trusted partner</span>  in digital healthcare.</h1>
+        <p class="description">
+            MediCare+ is a secure, web-based system designed exclusively for hospital staff. Doctors can efficiently manage patient records, receptionists can schedule and <strong>oversee appointments</strong>, and patients receive automated appointment confirmations and prescriptions via email. Streamline hospital operations and enhance healthcare efficiency with <strong>MediCare+</strong>.
+        </p>
+        <button class="btn">Book an appointment</button>
+        <div class="trusted-brands">
+            <p class="brands">Trusted by millions across the globe:</p>
+            <img src="~/images/brands-icon/amazon.png" alt="Amazon">
+            <img src="~/images/brands-icon/apple.png" alt="Apple">
+            <img src="~/images/brands-icon/google.png" alt="Google">
+            <img src="~/images/brands-icon/notion.png" alt="Notion">
+            <img src="~/images/brands-icon/spotify.png" alt="Spotify">
+            <img src="~/images/brands-icon/slack.png" alt="Slack">
+        </div>
+    </div>
+    <div class="doctor-section">
+        <div class="circle-bg"></div>
+        <img src="~/images/human/male-doctor-removebg.png" alt="Doctor" class="doctor-img">
+        <div class="info-box">
+            <img src="~/images/icon/star-icon.png" alt="Star Icon">
+            Easy Appointment Booking
+        </div>
+        <div class="customer-box">
+            <div style="display: flex; align-items: center;">
+                <img src="~/images/human/user1.png" alt="User">
+                <img src="~/images/human/user2.png" alt="User">
+                <img src="~/images/human/user3.png" alt="User">
+                <img src="~/images/human/user4.png" alt="User">
+                <span>2400<strong>+</strong></span>
+            </div>
+            <p><strong>Happy Customers</strong></p>
+            <p>⭐⭐⭐⭐⭐ (4.7 Stars)</p>
+        </div>
+    </div>
+</div>
+
+<section class="services-section">
+    <h2>Top <span class="highlight">services</span> we offer</h2>
+    <p>In today’s fast-paced world, your health deserves the utmost attention and convenience. That’s why MediCare+ offers a suite of integrated services designed to cater to your healthcare needs digitally:</p>
+
+    <div class="services-container">
+        <div class="service-box">
+            <img src="~/images/services-icon/appointment-icon.png" alt="Booking Appointment Icon">
+            <h3>Booking Appointment</h3>
+            <p>Schedule an appointment with ease through our seamless booking system, ensuring minimal wait times and a hassle-free experience.</p>
+        </div>
+
+        <div class="service-box">
+            <img src="~/images/services-icon/e-prescription-icon.png" style="width: 30px;" alt="E-Prescription Icon">
+            <h3>E-Prescription</h3>
+            <p>Get your prescriptions digitally sent to pharmacies, reducing paperwork and making the process faster and more efficient.</p>
+        </div>
+
+        <div class="service-box">
+            <img src="~/images/services-icon/medicine-notes-icon.png" alt="Medicine Notes Icon">
+            <h3>Medicine Notes</h3>
+            <p>Access detailed medication notes, ensuring you follow prescribed treatments accurately and safely.</p>
+        </div>
+
+        <div class="service-box">
+            <img src="~/images/services-icon/emr-icon.png" alt="EMR Icon" style="width: 40px;">
+            <h3>Electronic Medical Records (EMR)</h3>
+            <p>Securely store and manage your medical history digitally, allowing easy access for future consultations and treatment tracking.</p>
+        </div>
+
+        <div class="service-box">
+            <img src="~/images/services-icon/payment-icon.png" alt="Payment Tracking Icon" style="width: 40px;">
+            <h3>Payment Tracking and History</h3>
+            <p>Keep track of all medical payments, invoices, and billing history in one place for better financial management.</p>
+        </div>
+
+        <div class="service-box">
+            <img src="~/images/services-icon/rbac-icon.png" alt="RBAC Icon" style="width: 50px;">
+            <h3>Role-Based Access Control (RBAC)</h3>
+            <p>Ensure secure access to medical records and services based on user roles, improving data security and compliance.</p>
+        </div>
+    </div>
+
+    <div class="wave-decoration right"></div>
+</section>
+
+<section class="about-section">
+    <div class="about-container">
+        <h2 class="about-header"><span class="highlight">Medicare’s Story:</span> Get to know us</h2>
+        <div class="about-story">
+            <div class="about-image">
+                <img src="~/images/medicare-story.png" alt="Doctors team">
+            </div>
+            <div class="about-content">
+                <p>
+                    Medicare+ is more than just an online medical service; it's a movement towards accessible, efficient, and compassionate healthcare for all.
+                    Founded by a team of visionary doctors, healthcare professionals, and technology experts, we are driven by the mission to deliver
+                    exceptional medical care directly to you, no matter where you are. Our platform is built on the pillars of trust, innovation, and
+                    patient-centricity, ensuring that every interaction is personalized and every treatment plan is tailored to your unique needs.
+                    With a network of licensed practitioners from diverse medical fields, we guarantee comprehensive care that’s just a click away.
+                </p>
+                <a routerLink="/about" class="btn-primary">Learn more about us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="platform-section">
+    <div class="platform-container">
+        <div class="platform-header">
+            <h2>How <span class="highlight">our platform</span> works</h2>
+            <p>
+                Navigating your healthcare journey with Medicare+ is seamless. Just follow these steps
+                mentioned below to proceed with your selected services. You can also see our FAQ section for more guidance:
+            </p>
+        </div>
+
+        <div class="platform-content">
+            <!-- Steps -->
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number" style="width: 73px; height: 43px;">1</div>
+                    <div class="step-content">
+                        <h3>Easy Appointment Scheduling</h3>
+                        <p>
+                            Patients can book appointments through the receptionist, who manages all scheduling and patient details efficiently.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number" style="width: 90px; height: 47px;">2</div>
+                    <div class="step-content">
+                        <h3>Seamless Patient Management</h3>
+                        <p>Doctors access and update patient Electronic Medical Records (EMR) securely through their dashboard, ensuring accurate treatment and history tracking.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number" style="width: 80px; height: 45px;">3</div>
+                    <div class="step-content">
+                        <h3>Automated Patient Communication</h3>
+                        <p>Patients receive appointment confirmations and prescriptions via email, keeping them informed without needing dashboard access.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="platform-image">
+                <!-- Square Outline -->
+                <div class="square-outline"></div>
+
+                <!-- Doctor Image -->
+                <img src="~/images/human/female-doctor.png" alt="Doctor" class="doctor-image-pl">
+
+                <!-- Blue Plus Icon -->
+                <img class="plus" src="~/images/icon/plus.png" alt="plus-icon">
+
+                <!-- Certification Badge -->
+                <div class="badge">
+                    <img src="~/images/icon/star-icon.png" class="star-icon">
+                    Best Certified Team of Specialists
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section">
+    <div class="round"><img src="/src/assets/round-design.png" alt=""></div>
+    <div class="testimonial-header">
+        <h2><span class="highlight">Patient Testimonials:</span><br> Hear from Those We’ve Cared For</h2>
+        <p class="subtext">Discover the difference we make through the voices of those we've served:</p>
+    </div>
+
+    <div class="testimonials-container">
+        <!-- Left Testimonial -->
+        <div class="testimonial">
+            <img src="~/images/human/linda.png" alt="Linda A." class="testimonial-image">
+            <p class="testimonial-text">"After my knee surgery, the convenience of online consultations made my recovery smoother than I could have imagined." <br> <strong style="color:black">- Linda A.</strong></p>
+        </div>
+
+        <!-- Right Testimonial -->
+        <div class="testimonial">
+            <img src="~/images/human/henry.png" alt="Henry B." class="testimonial-image">
+            <p class="testimonial-text">"Managing chronic conditions like diabetes requires a lot of vigilance, but the medicine refill system has simplified my life." <br> <strong style="color:black">- Henry B.</strong></p>
+        </div>
+    </div>
+    <section class="stats-section">
+        <div class="stat-box">
+            <h2 class="stat-color">10,000+</h2>
+            <p>Successful Consultations</p>
+        </div>
+        <div class="stat-box">
+            <h2 class="stat-color">2,500+</h2>
+            <p>Healthcare Professionals</p>
+        </div>
+        <div class="stat-box">
+            <h2 class="stat-color">98%</h2>
+            <p>Patient Satisfaction Rate</p>
+        </div>
+        <div class="stat-box">
+            <h2 class="stat-color">200+</h2>
+            <p>Top Specialists</p>
+        </div>
+    </section>
+    <div class="testimonials-container">
+        <!-- Left Testimonial -->
+        <div class="testimonial">
+            <img src="~/images/human/joshua.png" alt="Linda A." class="testimonial-image">
+            <p class="testimonial-text">“The prescription refill system is a game-changer for managing my diabetes. It’s really efficient and completely hassle-free.” <br> <strong style="color:black">- Joshua T.</strong></p>
+        </div>
+
+        <!-- Right Testimonial -->
+        <div class="testimonial">
+            <img src="~/images/human/samantha.png" alt="Henry B." class="testimonial-image">
+            <p class="testimonial-text">“Finding a doctor who really understands all of my health needs has never been easier. This platform has changed my life.” <br> <strong style="color:black">- Samantha K.</strong></p>
+        </div>
+    </div>
+    <div class="round"><img src="/src/assets/round-design.png" alt=""></div>
+</section>
+
+<section class="specialists-section">
+    <h2 class="section-title">
+        <span class="highlight">Masters of Medicine:</span><br>
+        Meet our team of specialists
+    </h2>
+    <p class="section-description">
+        Our team of specialists is at the forefront of medical innovation. Each specialist brings a unique blend of expertise, empathy, and experience to ensure that your health is in the best hands.
+    </p>
+
+    <!-- Specialist Card 1 -->
+    <div class="specialist-card">
+        <div class="doctor-image-container">
+            <img src="~/images/human/dr-sarah.png" alt="Dr. Sarah Johnson" class="doctor-image doctor-image-lg-sarah">
+        </div>
+        <div class="card-content card-content-lg">
+            <h3>Dr. Sarah Johnson (Cardiologist)</h3>
+            <p>
+                Heart health is Dr. Johnson's passion, and her approach to cardiology integrates cutting-edge technology with compassionate care.
+                She’s a respected voice in the prevention of heart disease and a trusted partner for her patients on their journey to wellness.
+            </p>
+            <button class="appointment-btn">Book appointment</button>
+        </div>
+    </div>
+
+    <!-- Specialist Card 2 -->
+    <div class="specialist-card">
+        <div class="doctor-image-container">
+            <img src="~/images/human/dr-mark.png" alt="Dr. Mark Lee" class="doctor-image doctor-image-lg-mark">
+        </div>
+        <div class="card-content card-content-lg">
+            <h3>Dr. Mark Lee (Dermatologist)</h3>
+            <p>
+                Dr. Lee is a visionary in dermatology, advancing treatments for skin health with a gentle, holistic approach.
+                His dedication to clinical excellence and patient education has made him a leader in dermatological care.
+            </p>
+            <button class="appointment-btn">Book appointment</button>
+        </div>
+    </div>
+</section>
+
+<section class="help-desk-section">
+    <div class="help-desk-header">
+        <h2 class="help-title">
+            Reach our <span class="highlight">Help Desk</span> for support
+        </h2>
+        <p class="help-description">
+            Questions? Need assistance? Our dedicated support team is here to help you every step of the way.
+        </p>
+    </div>
+
+    <div class="contact-form">
+        <div class="input-box">
+            <img src="~/images/icon/person.png" alt="person-icon">
+            <input type="text" placeholder="Enter Your First Name">
+        </div>
+
+        <div class="input-box">
+            <img src="~/images/icon/email.png" alt="email-icon">
+            <input type="email" placeholder="Enter Your Email Address">
+        </div>
+
+        <button class="contact-btn">
+            Contact us <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</section>

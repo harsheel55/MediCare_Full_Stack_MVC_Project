@@ -1,0 +1,61 @@
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserRegisterDTO
+
+<form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" asp-controller="User">
+    @if (Model.Id != 0)
+    {
+        <input type="hidden" asp-for="Id" />
+    }
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="FirstName" class="form-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="LastName" class="form-label"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="MobileNo" class="form-label"></label>
+            <input asp-for="MobileNo" class="form-control" />
+            <span asp-validation-for="MobileNo" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="EmergencyNo" class="form-label"></label>
+            <input asp-for="EmergencyNo" class="form-control" />
+            <span asp-validation-for="EmergencyNo" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="DateOfBirth" class="form-label"></label>
+            <input asp-for="DateOfBirth" type="date" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="RoleId" class="form-label"></label>
+            <select asp-for="RoleId" class="form-select">
+                <option value="">Select Role</option>
+                <option value="1">Administrator</option>
+                <option value="2">Doctor</option>
+                <option value="3">Receptionist</option>
+            </select>
+            <span asp-validation-for="RoleId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Active" class="form-label"></label>
+            <input asp-for="Active" type="checkbox" class="form-check-input" />
+            <span asp-validation-for="Active" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="text-end">
+        <a asp-action="Index" asp-controller="User" class="btn btn-secondary me-2">Back</a>
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+</form>

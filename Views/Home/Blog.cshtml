@@ -1,0 +1,270 @@
+﻿@{
+	ViewData["Title"] = "Blogs";
+}
+<style>
+    .highlight {
+        background: linear-gradient(to right,#0084d4, #00a4f4, #2cbeff, #75d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 30px;
+        margin: 30px 0px;
+    }
+
+    /* Blog Section */
+    .blog-section {
+        max-width: 1200px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    /* Featured Blog */
+    .featured-blog {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: #f8f8f8;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 40px;
+    }
+
+    .featured-image img {
+        width: 30%;
+        height: 50%;
+        border-radius: 10px;
+    }
+
+    .featured-content {
+        width: 50%;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .featured-content h2 {
+            font-size: 26px;
+            color: #333;
+        }
+
+        .featured-content p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .featured-content a {
+            text-decoration: none;
+            color: #00a4f4;
+            font-weight: bold;
+        }
+
+    /* Trending Blog Grid */
+    .trending-blogs h2,
+    .recent-articles h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .blog-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+    .blog-content {
+        padding: 15px;
+    }
+
+        .blog-content h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .blog-content p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .blog-content a {
+            text-decoration: none;
+            color: #00a4f4;
+            font-weight: bold;
+        }
+
+    /* Recent Articles List */
+    .article-list {
+        max-width: 800px;
+        margin: auto;
+        list-style: none;
+        padding: 0;
+    }
+
+        .article-list li {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .article-list li h4 {
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+
+            .article-list li a {
+                text-decoration: none;
+                color: #00a4f4;
+            }
+
+            .article-list li p {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            .article-list li span {
+                font-size: 12px;
+                color: #999;
+            }
+
+</style>
+
+<section class="blog-section">
+    <!-- Featured Blog -->
+    <div class="featured-blog">
+        <div class="featured-image">
+            <img src="~/images/blog/ai_healthcare.jpg" alt="Featured Blog" style="width: 300px;height: 180px;">
+        </div>
+        <div class="featured-content">
+            <h2>Revolutionizing Patient Care with AI</h2>
+            <p>Artificial Intelligence is transforming healthcare, making diagnoses faster and improving patient outcomes.</p>
+            <a href="#">Read More →</a>
+        </div>
+    </div>
+
+    <!-- Trending Blogs -->
+    <div class="trending-blogs">
+        <h2>
+            Trending<span class="highlight"> Healthcare Insights</span>
+        </h2>
+        <div class="blog-grid">
+            <div class="blog-card">
+                <img src="~/images/blog/blog-1.jpg" alt="Trending Blog">
+                <div class="blog-content">
+                    <h3>Wearable Health Tech: A Game Changer</h3>
+                    <p>Discover how smart devices like fitness trackers and smartwatches are improving personal health monitoring.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <img src="~/images/blog/blog-2.jpg" alt="Trending Blog">
+                <div class="blog-content">
+                    <h3>Blockchain in Healthcare</h3>
+                    <p>Learn how blockchain is improving security, data sharing, and transparency in the medical industry.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <img src="~/images/blog/blog-3.jpg" alt="Trending Blog">
+                <div class="blog-content">
+                    <h3>Virtual Reality in Surgery</h3>
+                    <p>Explore how VR technology is enhancing surgical training and precision in medical procedures.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Trending Blogs -->
+    <div class="trending-blogs">
+        <h2>More<span class="highlight"> Healthcare Innovations</span></h2>
+        <div class="blog-grid">
+            <div class="blog-card">
+                <img src="~/images/blog/blog-4.jpg" alt="Trending Blog">
+                <div class="blog-content">
+                    <h3>5G & Telemedicine: The Future</h3>
+                    <p>Find out how 5G technology is improving remote consultations and virtual healthcare services.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <img src="~/images/blog/blog-5.jpg" alt="Trending Blog">
+                <div class="blog-content">
+                    <h3>Smart Hospitals: The Next Step</h3>
+                    <p>Discover how IoT and automation are making hospitals more efficient and patient-friendly.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <img src="~/images/blog/blog-6.jpg" alt="Trending Blog">
+                <div class="blog-content">
+                    <h3>Personalized Medicine with Big Data</h3>
+                    <p>How data-driven treatment plans are enhancing patient care and precision medicine.</p>
+                    <a href="#">Read More →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Articles -->
+    <div class="recent-articles">
+        <h2>Recent<span class="highlight"> Articles</span></h2>
+        <ul class="article-list">
+            <li>
+                <h4><a href="#">How Robotics is Changing Surgery</a></h4>
+                <p>Find out how robotic surgery is increasing precision and improving patient recovery times.</p>
+                <span>Published on March 5, 2025</span>
+            </li>
+
+            <li>
+                <h4><a href="#">The Future of Mental Health Tech</a></h4>
+                <p>How mobile apps and AI-driven chatbots are improving mental health support.</p>
+                <span>Published on March 2, 2025</span>
+            </li>
+
+            <li>
+                <h4><a href="#">Advancements in Cancer Treatment</a></h4>
+                <p>Learn about the latest breakthroughs in cancer research and treatment techniques.</p>
+                <span>Published on February 28, 2025</span>
+            </li>
+
+            <li>
+                <h4><a href="#">How AI is Predicting Disease Outbreaks</a></h4>
+                <p>Explore how artificial intelligence is helping governments and medical professionals predict and prevent disease outbreaks.</p>
+                <span>Published on February 24, 2025</span>
+            </li>
+
+            <li>
+                <h4><a href="#">Medical Drones: A Life-Saving Technology</a></h4>
+                <p>Discover how drones are delivering emergency medical supplies faster than ever.</p>
+                <span>Published on February 20, 2025</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
