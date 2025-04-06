@@ -116,9 +116,6 @@ namespace MediCare_MVC_Project.Controllers
 
             try
             {
-                if (model.Email == "admin@gmail.com")
-                    return RedirectToAction("ResetPassword", new { token = "", email = model.Email });
-
                 var token = await _authService.ForgotPassword(model);
 
                 _logger.LogInformation("Reset token generated and email sent for: {Email}", model.Email);

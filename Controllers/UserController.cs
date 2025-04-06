@@ -31,6 +31,7 @@ namespace MediCare_MVC_Project.Controllers
         // ✅ List all users
         public async Task<IActionResult> Index()
         {
+            ViewBag.HideLayoutElements = true;
             var users = await _userService.GetAllUsersAsync();
             var viewModelList = _mapper.Map<List<UserViewModel>>(users);
             return View(viewModelList);
