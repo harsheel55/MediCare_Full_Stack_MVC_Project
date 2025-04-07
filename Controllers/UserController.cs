@@ -21,20 +21,11 @@ namespace MediCare_MVC_Project.Controllers
             _mapper = mapper;
         }
 
-        // ✅ Get logged-in user ID from Claims
+        // Get logged-in user ID from Claims
         private int GetLoggedInUserId()
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var userIdClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             return userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
-        }
-
-        // ✅ List all users
-        public async Task<IActionResult> Index()
-        {
-            ViewBag.HideLayoutElements = true;
-            var users = await _userService.GetAllUsersAsync();
-            var viewModelList = _mapper.Map<List<UserViewModel>>(users);
-            return View(viewModelList);
         }
 
         // ✅ View user details
@@ -45,13 +36,6 @@ namespace MediCare_MVC_Project.Controllers
             return View(user);
         }
 
-        // ✅ CREATE - ADMIN
-        public IActionResult CreateAdmin()
-        {
-            ViewBag.Action = "CreateAdmin";
-            ViewBag.Controller = "User";
-            return View("_UserForm", new UserRegisterDTO { RoleId = 1 });
-        }
 
         // ✅ CREATE - DOCTOR
         public IActionResult CreateDoctor()

@@ -64,7 +64,7 @@
     width: 200px;
     background: #34495e;
     color: white;
-    height: calc(100vh - 58px);
+    height: calc(100vh - 70px);
     position: fixed;
     top: 70px;
     left: 0;
@@ -72,79 +72,53 @@
     transition: width 0.3s ease;
 }
 
-    .sidebar.collapsed {
-        width: 50px;
-    }
+.sidebar.collapsed {
+    width: 50px;
+}
 
-    .sidebar ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
-        .sidebar ul li {
-            padding: 10px 0 10px 10px;
-        }
+.sidebar ul li {
+    padding: 10px 0 10px 10px;
+}
 
-            .sidebar ul li a {
-                color: white;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                padding-left: 10px;
-                font-size: 16px;
-            }
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 16px;
+}
 
-                .sidebar ul li a i {
-                    width: 30px; /* Optional: fixes alignment if some icons are thinner */
-                    text-align: center;
-                    margin-right: 20px; /* Add margin to create space between icon and text */
-                }
+.sidebar ul li a i {
+    width: 30px;
+    text-align: center;
+    margin-right: 20px;
+}
 
-                .sidebar ul li a span {
-                    flex-grow: 1; /* Allow the text to take up remaining space */
-                    text-align: left; /* Ensure text is left-aligned */
-                }
+.sidebar ul li a span {
+    flex-grow: 1;
+    text-align: left;
+}
 
-                .sidebar ul li a:hover {
-                    background: #2c3e50;
-                }
+.sidebar ul li a:hover {
+    background: #2c3e50;
+}
 
 .main-content {
     margin-left: 200px;
+    margin-right: 20px;
     padding: 10px;
-    width: 100%;
     transition: margin-left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 200px);
 }
 
-    .main-content.expanded {
-        margin-left: 40px;
-        width: 100%;
-    }
-
-.topbar {
-    background: white;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+.main-content.expanded {
+    margin-left: 50px!important;
+    width: calc(100% - 50px);
 }
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-}
-
-    .card h3 {
-        margin-bottom: 10px;
-        color: #34495e;
-    }

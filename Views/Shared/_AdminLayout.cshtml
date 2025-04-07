@@ -24,11 +24,14 @@
     <div class="dashboard-container">
         <div class="sidebar" id="sidebar">
             <ul>
-                <li><a href="/Admin"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
-                <li><a href="/User"><i class="fas fa-user"></i> <span>Users</span></a></li>
+                <li><a href="@Url.Action("AdminDashboard", "Admin")"><i class="fas fa-home"></i> <span>Dashboard</span></a></li> 
+                <li><a href="@Url.Action("UserList", "Admin")"><i class="fas fa-user"></i> <span>Users</span></a></li>
+                <li><a href="@Url.Action("DoctorList", "Admin")"><i class="fas fa-user-md"></i> <span>Doctors</span></a></li>
+                <li><a href="@Url.Action("ReceptionistList", "Admin")"><i class="fas fa-user-plus"></i> <span>Receptionist</span></a></li>
                 <li><a href="/Patient"><i class="fas fa-procedures"></i> <span>Patients</span></a></li>
                 <li><a href="/Appointment"><i class="fas fa-calendar-check"></i> <span>Appointments</span></a></li>
                 <li><a href="/Billing"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li>
+                <li><a href="@Url.Action("SpecializationList", "Admin")"><i class="fas fa-briefcase-medical"></i> <span>Specializations</span></a></li>
                 <li><a href="/Settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
                 <li><a href="/Auth/Logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
@@ -49,5 +52,6 @@
             mainContent.classList.toggle("expanded");
         });
     </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

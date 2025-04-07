@@ -61,8 +61,6 @@ namespace MediCare_MVC_Project.Controllers
                     var userRole = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
                     HttpContext.Session.SetString("UserRole", userRole ?? "Unknown");
 
-                    TempData["Success"] = "Login successful!";
-
                     return userRole switch
                     {
                         "Administrator" => RedirectToAction("AdminDashboard", "Dashboard"),
@@ -93,7 +91,6 @@ namespace MediCare_MVC_Project.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            TempData["Success"] = "You have been logged out.";
             return RedirectToAction("Login");
         }
 
