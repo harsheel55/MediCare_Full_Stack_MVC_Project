@@ -11,6 +11,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.UserManagement
         Task AddDoctorQuery(int id, UserDoctorDTO userDoctor);
         Task AddReceptionistQuery(int id, UserReceptionistDTO userReceptionist);
         Task UpdateUserQuery(int updatedById, int id, UserRegisterDTO user);
-        Task DeleteUserQuery(int id);
+        Task DeleteUserQuery(string email);
     }
 }

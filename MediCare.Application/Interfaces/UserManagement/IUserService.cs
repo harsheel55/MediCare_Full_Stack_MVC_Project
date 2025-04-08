@@ -11,6 +11,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.UserManagement
         Task AddDoctorAsync(int id, UserDoctorDTO userDoctor);
         Task AddReceptionistAsync(int id, UserReceptionistDTO userReceptionist);
         Task UpdateUserAsync(int updatedById, int id, UserRegisterDTO user);
-        Task DeleteUserAsync(int id);
+        Task DeleteUserAsync(string email);
     }
 }

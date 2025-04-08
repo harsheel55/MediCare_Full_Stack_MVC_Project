@@ -33,6 +33,28 @@ namespace MediCare_MVC_Project.Controllers
             return View();
         }
 
+        public IActionResult CreateAdminUser()
+        {
+            ViewBag.HideLayoutElements = true;
+            return PartialView("_UserForm", new UserRegisterDTO());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdminUser(UserRegisterDTO userDto)
+        {
+            ViewBag.HideLayoutElements = true;
+
+            if (!ModelState.IsValid)
+            {
+                return View("_UserForm", userDto);
+            }
+
+            int loggedInUser = GetLoggedInUserId();
+            await _userService.AddUserAsync(loggedInUser, userDto);
+
+            return RedirectToAction("UserList", "Admin");
+        }
+
         // Get logged-in user ID from Claims
         private int GetLoggedInUserId()
         {
@@ -49,28 +71,28 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
-        [HttpGet]
-        public IActionResult CreateAdminUser()
-        {
-            ViewBag.HideLayoutElements = true;
-            var userDto = new UserRegisterDTO();
-            return View(); // This will look for Views/Admin/CreateAdminUser.cshtml
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAdminUser(UserRegisterDTO userDto)
+        [HttpPut]
+        public async Task<IActionResult> EditAdminUser([FromQuery] int id, [FromBody] UserRegisterDTO user)
         {
-            ViewBag.HideLayoutElements = true;
-
-            if (!ModelState.IsValid)
+            try
             {
-                return View("_UserForm", userDto); // Match your actual view name
+                if (user == null)
+                    return BadRequest(new { Message = "User data is required." });
+
+                var updatedById = GetLoggedInUserId();
+
+                await _userService.UpdateUserAsync(updatedById, id, user);
+                return Ok(new { Message = "User updated successfully." });
             }
-
-            int loggedInUser = GetLoggedInUserId();
-            await _userService.AddUserAsync(loggedInUser, userDto);
-
-            return RedirectToAction("UserList");
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IActionResult> SpecializationList()

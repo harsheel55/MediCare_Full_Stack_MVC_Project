@@ -28,9 +28,9 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             return _userRepository.AddUserQuery(id, userDto);
         }
 
-        public Task DeleteUserAsync(int userId)
+        public Task DeleteUserAsync(string email)
         {
-            return _userRepository.DeleteUserQuery(userId);
+            return _userRepository.DeleteUserQuery(email);
         }
 
         public async Task<ICollection<UserDTO>> GetAllUsersAsync()

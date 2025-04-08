@@ -39,14 +39,6 @@ namespace MediCare_MVC_Project.MediCare.Application.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "Role ID must be a positive integer.")]
         public int RoleId { get; set; }
 
-        public int SpecializationId { get; set; }
-
-        [StringLength(200, MinimumLength = 3, ErrorMessage = "Qualification must be between 3 and 200 characters.")]
-        public string Qualification { get; set; }
-
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "License Number must be between 5 and 50 characters.")]
-        public string LicenseNumber { get; set; }
-
         public bool Active { get; set; }
     }
 }

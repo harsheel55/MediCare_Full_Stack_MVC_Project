@@ -154,18 +154,18 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             }
         }
 
-        public async Task DeleteUserQuery(int id)
+        public async Task DeleteUserQuery(string email)
         {
             try
             {
-                var entity = await _context.Users.FindAsync(id);
+                var entity = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
                 if (entity == null)
                     throw new Exception("User Not found.");
 
                 if (entity.RoleId == 2)
                 {
-                    var doctorId = await _context.Doctors.FirstOrDefaultAsync(d => d.UserId == id);
+                    var doctorId = await _context.Doctors.Where(d => d.User.Email == email).FirstOrDefaultAsync();
 
                     if (doctorId != null)
                         _context.Doctors.Remove(doctorId);
@@ -173,7 +173,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
                 if (entity.RoleId == 3)
                 {
-                    var receptionistId = await _context.Receptionists.FirstOrDefaultAsync(d => d.UserId == id);
+                    var receptionistId = await _context.Receptionists.Where(d => d.User.Email == email).FirstOrDefaultAsync();
 
                     if (receptionistId != null)
                         _context.Receptionists.Remove(receptionistId);

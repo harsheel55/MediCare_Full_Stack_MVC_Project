@@ -107,7 +107,8 @@
     }
 
 </style>
-<form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" asp-controller="User">
+
+<form asp-action="@(Model.Id == 0 ? "CreateAdminUser" : "Edit")" method="post" asp-controller="Admin">
     @if (Model.Id != 0)
     {
         <input type="hidden" asp-for="Id" />
@@ -169,15 +170,12 @@
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="RoleId" class="form-label">Role</label>
-            <select asp-for="RoleId" class="form-select">
-                <option value="">Select Role</option>
-                <option value="1">Administrator</option>
-                <option value="2">Doctor</option>
-                <option value="3">Receptionist</option>
-            </select>
+            <label class="form-label">Role</label>
+            <input type="text" value="Administrator" class="form-control" readonly />
+            <input type="hidden" name="RoleId" value="1" />
             <span asp-validation-for="RoleId" class="text-danger"></span>
         </div>
+
 
         <div class="col-md-6 mb-3 form-check mt-4">
             <input asp-for="Active" type="checkbox" class="form-check-input" />
@@ -187,7 +185,8 @@
     </div>
 
     <div class="text-end">
-        <a asp-action="UserList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>        
+        <a asp-action="UserList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
         <button type="submit" class="btn btn-success">Save</button>
     </div>
 </form>
+@await Html.PartialAsync("_UserForm", Model)
