@@ -14,6 +14,6 @@ namespace MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs
 
         [Required(ErrorMessage = "License Number is required.")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "License Number must be between 5 and 50 characters.")]
-        public string LicenceNumber { get; set; }
+        public string LicenseNumber { get; set; }
     }
 }

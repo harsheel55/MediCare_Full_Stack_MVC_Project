@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MediCare_MVC_Project.Models.UserViewModel>
+﻿@model IEnumerable<MediCare_MVC_Project.Models.DoctorViewModel>
 
 @{
-    ViewData["Title"] = "All Users";
+    ViewData["Title"] = "All Doctors";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -130,9 +130,9 @@
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>All Users</h2>
+    <h2>All Doctors</h2>
     <div class="user-button">
-        <a class="btn btn-primary" href="@Url.Action("CreateAdminUser", "Admin")" id="addUserButton" data-url="">Add User</a>
+        <a class="btn btn-primary" href="@Url.Action("CreateDoctor", "Admin")" id="addUserButton" data-url="">Add Doctor</a>
     </div>
 </div>
 
@@ -145,9 +145,10 @@
             <th>Full Name</th>
             <th>Email</th>
             <th>Mobile No</th>
-            <th>Emergency No</th>
             <th>Date of Birth</th>
-            <th>Role</th>
+            <th>Specification</th>
+            <th>Qualification</th>
+            <th>LicenseNumber</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -163,9 +164,10 @@
                 <td>@user.FirstName @user.LastName</td>
                 <td>@user.Email</td>
                 <td>@user.MobileNo</td>
-                <td>@user.EmergencyNo</td>
                 <td>@user.DateOfBirth.ToShortDateString()</td>
-                <td>@user.Role</td>
+                <td>@user.Specialization</td>
+                <td>@user.Qualification</td>
+                <td>@user.LicenseNumber</td>
                 <td>
                     @if (user.Status)
                     {
@@ -177,7 +179,7 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "User", new { id = user.Id })">Edit</a>
+                    <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "User", new { id = user.id })">Edit</a>
                     <form asp-action="Delete" asp-controller="User" method="post" style="display:inline;">
                         <input type="hidden" name="email" value="@user.Email" />
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this user?');">Delete</button>
@@ -191,6 +193,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+
             // ✅ Delete Modal Logic
             const deleteModal = document.getElementById('deleteModal');
             if (deleteModal) {

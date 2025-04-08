@@ -101,7 +101,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 doctor.User = user;
                 doctor.SpecializationId = userDoctor.SpecializationId;
                 doctor.Qualification = userDoctor.Qualification;
-                doctor.LicenseNumber = userDoctor.LicenceNumber;
+                doctor.LicenseNumber = userDoctor.LicenseNumber;
 
                 // Add docter related data into doctor table
                 await _context.Doctors.AddAsync(doctor);

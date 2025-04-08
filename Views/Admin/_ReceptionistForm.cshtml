@@ -1,6 +1,6 @@
-﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserRegisterDTO
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs.UserReceptionistDTO
 @{
-    ViewData["Title"] = "User Form";
+    ViewData["Title"] = "Receptionist Form";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -108,7 +108,7 @@
 
 </style>
 
-<form asp-action="@(Model.Id == 0 ? "CreateAdminUser" : "Edit")" method="post" asp-controller="Admin">
+<form asp-action="@(Model.Id == 0 ? "CreateReceptionist" : "Edit")" method="post" asp-controller="Admin">
     @if (Model.Id != 0)
     {
         <input type="hidden" asp-for="Id" />
@@ -176,6 +176,11 @@
             <span asp-validation-for="RoleId" class="text-danger"></span>
         </div>
 
+        <div class="col-md-6 mb-3">
+            <label asp-for="Qualification" class="form-label"></label>
+            <input asp-for="Qualification" class="form-control" />
+            <span asp-validation-for="Qualification" class="text-danger"></span>
+        </div>
 
         <div class="col-md-6 mb-3 form-check mt-4">
             <input asp-for="Active" type="checkbox" class="form-check-input" />
@@ -185,7 +190,7 @@
     </div>
 
     <div class="text-end">
-        <a asp-action="UserList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
+        <a asp-action="ReceptionistList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
         <button type="submit" class="btn btn-success">Save</button>
     </div>
 </form>

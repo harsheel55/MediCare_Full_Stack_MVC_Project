@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MediCare_MVC_Project.Models.UserViewModel>
+﻿@model IEnumerable<MediCare_MVC_Project.Models.ReceptionistViewModel>
 
 @{
-    ViewData["Title"] = "All Users";
+    ViewData["Title"] = "All Receptionists";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -130,9 +130,9 @@
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>All Users</h2>
+    <h2>All Receptionists</h2>
     <div class="user-button">
-        <a class="btn btn-primary" href="@Url.Action("CreateAdminUser", "Admin")" id="addUserButton" data-url="">Add User</a>
+        <a class="btn btn-primary" href="@Url.Action("CreateReceptionist", "Admin")" id="addUserButton" data-url="">Add Receptionist</a>
     </div>
 </div>
 
@@ -145,9 +145,8 @@
             <th>Full Name</th>
             <th>Email</th>
             <th>Mobile No</th>
-            <th>Emergency No</th>
             <th>Date of Birth</th>
-            <th>Role</th>
+            <th>Qualification</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -163,9 +162,8 @@
                 <td>@user.FirstName @user.LastName</td>
                 <td>@user.Email</td>
                 <td>@user.MobileNo</td>
-                <td>@user.EmergencyNo</td>
                 <td>@user.DateOfBirth.ToShortDateString()</td>
-                <td>@user.Role</td>
+                <td>@user.Qualification</td>
                 <td>
                     @if (user.Status)
                     {
@@ -191,6 +189,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+
             // ✅ Delete Modal Logic
             const deleteModal = document.getElementById('deleteModal');
             if (deleteModal) {

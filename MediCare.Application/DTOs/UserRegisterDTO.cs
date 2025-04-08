@@ -38,7 +38,6 @@ namespace MediCare_MVC_Project.MediCare.Application.DTOs
         [Required(ErrorMessage = "Role ID is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Role ID must be a positive integer.")]
         public int RoleId { get; set; }
-
         public bool Active { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.Models;
@@ -9,6 +10,8 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
     {
         public UserMappingProfile()
         {
+            CreateMap<GetDoctorDTO, DoctorViewModel>();
+
             CreateMap<DateOnly, DateTime>()
                .ConvertUsing(dateOnly => dateOnly.ToDateTime(new TimeOnly(0, 0))); // Convert DateOnly to DateTime at midnight
 
@@ -21,17 +24,19 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
 
             // Doctor mappings
             CreateMap<UserDoctorDTO, User>()
-                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => System.DateTime.UtcNow))
-                .ForMember(dest => dest.Password, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.Password, opt => opt.Ignore()) // Avoid mapping raw password
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))
-                .ForMember(dest => dest.RoleId, opt => opt.Ignore());
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => 2)); // Doctor role
 
             CreateMap<UserDoctorDTO, Doctor>()
-                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => System.DateTime.UtcNow))
-                .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id)) // Link to existing user
+                .ForMember(dest => dest.User, opt => opt.Ignore()) // Don't map navigation
                 .ForMember(dest => dest.Specialization, opt => opt.Ignore())
                 .ForMember(dest => dest.Appointments, opt => opt.Ignore());
+
 
             // Receptionist Mapping
             CreateMap<UserReceptionistDTO, User>()
@@ -43,7 +48,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
             CreateMap<UserReceptionistDTO, Receptionist>()
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => System.DateTime.UtcNow))
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                .ForMember(dest => dest.User, opt => opt.Ignore());
+                .ForMember(dest => dest.User, opt => opt.Ignore());                
         }
     }
 }
