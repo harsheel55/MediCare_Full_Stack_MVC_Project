@@ -13,5 +13,6 @@ namespace MediCare_MVC_Project.Models
         public DateOnly DateOfBirth { get; set; }
         public string Qualification { get; set; }
         public bool Status { get; set; }
+        public string StatusText => Status ? "Active" : "Inactive";
     }
 }

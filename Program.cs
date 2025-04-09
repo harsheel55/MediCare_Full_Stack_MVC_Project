@@ -6,6 +6,7 @@ using MediCare_MVC_Project.MediCare.Infrastructure.Database;
 using MediCare_MVC_Project.MediCare.Infrastructure.Extensions;
 using AutoMapper;
 using MediCare_MVC_Project.MediCare.Infrastructure.Mapping;
+using MediCare_MVC_Project.MediCare.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +74,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSession();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
+app.UseMiddleware<LogMiddleware>();
+
+app.UseMiddleware<RateLimitMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -3,9 +3,11 @@ using System.Runtime.InteropServices;
 using AutoMapper;
 using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs;
+using MediCare_MVC_Project.MediCare.Application.Interfaces;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.MediCare.Infrastructure.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
@@ -13,36 +15,61 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
     public class DoctorRepository : GenericRepository<Doctor>, IDoctorRepository
     {
         private readonly IMapper _mapper;
-        public DoctorRepository(ApplicationDBContext context, IMapper mapper) : base(context)
+        private readonly IEmailHelper _emailHelper;
+
+        public DoctorRepository(ApplicationDBContext context, IMapper mapper, IEmailHelper emailHelper) : base(context)
         {
-            _mapper = mapper;   
+            _mapper = mapper;
+            _emailHelper = emailHelper;
         }
 
         public async Task AddDoctorQuery(int id, UserDoctorDTO doctor)
         {
             try
             {
+                if (doctor == null)
+                    throw new ArgumentNullException(nameof(doctor), "Doctor object is null.");
+
+                if (string.IsNullOrWhiteSpace(doctor.Email))
+                    throw new ArgumentException("Email is required.");
+
+                if (doctor.RoleId <= 0)
+                    throw new ArgumentException("Invalid RoleId.");
+
                 // Check if user exists
                 var existingUser = await _context.Users
-                    .FirstOrDefaultAsync(u => u.UserId == doctor.Id && u.RoleId == 2);
+                    .FirstOrDefaultAsync(u => u.Email == doctor.Email && u.RoleId == doctor.RoleId);
 
-                if (existingUser == null)
+                if (existingUser != null)
                 {
-                    throw new ArgumentException("Doctor not registered as a user.");
+                    throw new ArgumentException("Doctor already Exists.");
                 }
 
-                // Check if doctor record already exists
-                var doctorExists = await _context.Doctors.AnyAsync(d => d.UserId == doctor.Id);
-                if (doctorExists)
-                {
-                    throw new ArgumentException("Doctor profile already exists.");
-                }
+                var newUser = _mapper.Map<User>(doctor);
 
-                var user = _mapper.Map<User>(doctor);
-                var newDoctor = _mapper.Map<Doctor>(doctor); // This will auto-set UserId from dto.Id
+                // Hash the password
+                var passwordHasher = new PasswordHasher<UserDoctorDTO>();
+                var hashedPassword = passwordHasher.HashPassword(doctor, doctor.Password);
+
+                newUser.Password = hashedPassword;
+                newUser.RoleId = doctor.RoleId;
+                newUser.CreatedBy = id;
+
+                await _context.Users.AddAsync(newUser);
+                await _context.SaveChangesAsync();
+
+                doctor.Id = newUser.UserId;
+
+                var newDoctor = _mapper.Map<Doctor>(doctor);
+                newDoctor.CreatedAt = DateTime.UtcNow;
+                newDoctor.UserId = newUser.UserId;
+
+                newDoctor.CreatedAt = DateTime.UtcNow;
 
                 _context.Doctors.Add(newDoctor);
                 await _context.SaveChangesAsync();
+
+                await _emailHelper.SendUserRegistrationEmailAsync(doctor.Email, doctor.Password);
             }
             catch (Exception ex)
             {

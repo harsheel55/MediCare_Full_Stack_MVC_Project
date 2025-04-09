@@ -15,7 +15,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
 
         public Task AddDoctorAsync(int id, UserDoctorDTO doctor)
         {
-            throw new NotImplementedException();
+            return _doctorRepository.AddDoctorQuery(id, doctor);
         }
 
         public async Task<ICollection<GetDoctorDTO>> GetAllDoctorAsync()

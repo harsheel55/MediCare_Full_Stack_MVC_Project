@@ -12,6 +12,7 @@ using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.MediCare.Application.DTOs.SpecializationDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -21,28 +22,41 @@ namespace MediCare_MVC_Project.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IDoctorService _doctorService;
-        public readonly ISpecializationService _specializationService;
+        private readonly IReceptionistService _receptionistService;
+        private readonly ISpecializationService _specializationService;
 
-        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService)
+        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService)
         {
             _mapper = mapper;
             _userService = userService;
             _doctorService = doctorService;
+            _receptionistService = receptionistService;
             _specializationService = specializationService;
         }
 
+        // ------------------ Get logged-in user ID from Claims ------------------
+        private int GetLoggedInUserId()
+        {
+            var userIdClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            return userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
+        }
+
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load Admin Dashboard After Login Successfully --------------
         public IActionResult AdminDashboard()
         {
             ViewBag.HideLayoutElements = true;
             return View();
         }
 
+        // -------------- Load _UserForm form creating Admin User --------------
         public IActionResult CreateAdminUser()
         {
             ViewBag.HideLayoutElements = true;
             return PartialView("_UserForm", new UserRegisterDTO());
         }
 
+        // -------------- Take Data from form to add new Admin User --------------
         [HttpPost]
         public async Task<IActionResult> CreateAdminUser(UserRegisterDTO userDto)
         {
@@ -59,14 +73,7 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("UserList", "Admin");
         }
 
-        // Get logged-in user ID from Claims
-        private int GetLoggedInUserId()
-        {
-            var userIdClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            return userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
-        }
-
-        // List all userss
+        // -------------- Show all the Admin User list in User Module --------------
         public async Task<IActionResult> UserList()
         {
             ViewBag.HideLayoutElements = true;
@@ -75,7 +82,7 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
-
+        // -------------- Update Admin User using same _UserForm --------------
         [HttpPut]
         public async Task<IActionResult> EditAdminUser([FromQuery] int id, [FromBody] UserRegisterDTO user)
         {
@@ -99,14 +106,18 @@ namespace MediCare_MVC_Project.Controllers
             }
         }
 
+
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load _DoctorForm form creating Doctor User --------------
         public IActionResult CreateDoctor()
         {
             ViewBag.HideLayoutElements = true;
             return PartialView("_DoctorForm", new UserDoctorDTO());
         }
 
+        // -------------- Take Data from form to add new doctor User --------------
         [HttpPost]
-        public IActionResult CreateDoctor(UserDoctorDTO userDoctorDTO)
+        public async Task<IActionResult> CreateDoctor(UserDoctorDTO userDoctorDTO)
         {
             ViewBag.HideLayoutElements = true;
             if (!ModelState.IsValid)
@@ -115,17 +126,18 @@ namespace MediCare_MVC_Project.Controllers
             }
 
             int loggedInUser = GetLoggedInUserId();
-            _doctorService.AddDoctorAsync(loggedInUser, userDoctorDTO);
+            await _doctorService.AddDoctorAsync(loggedInUser, userDoctorDTO);
             return RedirectToAction("DoctorList", "Admin");
         }
 
+        // -------------- Load All the Specialization in _DoctorForm --------------
         public async Task<IActionResult> SpecializationDropDown()
         {
             try
             {
                 var specializations = await _specializationService.GetAllSpecializationAsync();
                 var viewModelList = _mapper.Map<List<GetSpecializationDTO>>(specializations);
-                return Json(viewModelList); // Make sure you have a corresponding View
+                return Json(viewModelList); 
             }
             catch (Exception ex)
             {
@@ -133,6 +145,7 @@ namespace MediCare_MVC_Project.Controllers
             }
         }
 
+        // -------------- Show all the Doctor User list in Doctor Module --------------
         public async Task<IActionResult> DoctorList()
         {
             ViewBag.HideLayoutElements = true;
@@ -141,29 +154,51 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load _ReceptionistForm form creating Receptionist User --------------
         public IActionResult CreateReceptionist()
         {
             ViewBag.HideLayoutElements = true;
             return PartialView("_ReceptionistForm", new UserReceptionistDTO());
         }
 
+        // -------------- Take Data from form to add new Receptionist User --------------
+        [HttpPost]
+        public async Task<IActionResult> CreateReceptionist(UserReceptionistDTO userDto)
+        {
+            ViewBag.HideLayoutElements = true;
 
+            if (!ModelState.IsValid)
+            {
+                return View("_ReceptionistForm", userDto);
+            }
+
+            int loggedInUser = GetLoggedInUserId();
+            await _receptionistService.AddReceptionistAsync(loggedInUser, userDto);
+
+            return RedirectToAction("ReceptionistList", "Admin");
+        }
+
+        // -------------- Show all the Receptionist list in Receptionist Module --------------
         public async Task<IActionResult> ReceptionistList()
         {
             ViewBag.HideLayoutElements = true;
-            var doctors = await .GetAllReceptionistAsync();
-            var viewModelList = _mapper.Map<List<DoctorViewModel>>(doctors);
+            var receptionist = await _receptionistService.GetAllReceptionistAsync();
+            var viewModelList = _mapper.Map<List<ReceptionistViewModel>>(receptionist);
             return View(viewModelList);
         }
 
 
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Show all the Specialization list in Specialization Module --------------
         public async Task<IActionResult> SpecializationList()
         {
             try
             {
                 var specializations = await _specializationService.GetAllSpecializationAsync();
                 var viewModelList = _mapper.Map<List<GetSpecializationDTO>>(specializations);
-                return View(viewModelList); // Make sure you have a corresponding View
+                return View(viewModelList); 
             }
             catch (Exception ex)
             {
@@ -171,7 +206,7 @@ namespace MediCare_MVC_Project.Controllers
             }
         }
 
-
+        // -------------- Take Data Input Field from Specialization module to add new Specialization --------------
         [HttpPost]
         public async Task<IActionResult> AddSpecialization(string specializationName)
         {

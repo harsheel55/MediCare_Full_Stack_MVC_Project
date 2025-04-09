@@ -15,7 +15,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
 
         public Task AddReceptionistAsync(int id, UserReceptionistDTO receptionist)
         {
-            _receptionistRepository.AddReceptionistQuery(id, receptionist);
+            return _receptionistRepository.AddReceptionistQuery(id, receptionist);
         }
 
         public async Task<ICollection<GetReceptionistDTO>> GetAllReceptionistAsync()

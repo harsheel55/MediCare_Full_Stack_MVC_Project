@@ -165,7 +165,7 @@
                 <td>@user.DateOfBirth.ToShortDateString()</td>
                 <td>@user.Qualification</td>
                 <td>
-                    @if (user.Status)
+                    @if (@user.Status)
                     {
                         <span class="badge badge-success">Active</span>
                     }
@@ -176,7 +176,7 @@
                 </td>
                 <td>
                     <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "User", new { id = user.Id })">Edit</a>
-                    <form asp-action="Delete" asp-controller="User" method="post" style="display:inline;">
+                    <form asp-action="Delete" asp-controller="Admin" method="post" style="display:inline;">
                         <input type="hidden" name="email" value="@user.Email" />
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this user?');">Delete</button>
                     </form>
@@ -190,7 +190,7 @@
     <script>
         $(document).ready(function () {
 
-            // ✅ Delete Modal Logic
+            // Delete Modal Logic
             const deleteModal = document.getElementById('deleteModal');
             if (deleteModal) {
                 deleteModal.addEventListener('show.bs.modal', function (event) {
