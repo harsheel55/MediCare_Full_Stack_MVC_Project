@@ -90,7 +90,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                      Email = s.Email,
                                                      MobileNo = s.MobileNo,
                                                      DateOfBirth = s.DateOfBirth,
-                                                     Qualification = s.Doctor.Qualification,
+                                                     Qualification = s.Receptionist.Qualification,
                                                  }).ToArrayAsync();
 
             if (receptionistList == null)

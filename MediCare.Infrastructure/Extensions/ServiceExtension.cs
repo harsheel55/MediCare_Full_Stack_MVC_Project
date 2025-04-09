@@ -1,6 +1,7 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.Interfaces;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.Authentication;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.SpecializationManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.UserManagement;
@@ -18,7 +19,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
             services.AddScoped<ISpecializationRepository, SpecializationRepository>();
-            //services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
         }
 
@@ -31,7 +32,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IReceptionistService, ReceptionistService>();
             services.AddScoped<ISpecializationService, SpecializationService>();
-            //services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IPatientService, PatientService>();
             //services.AddScoped<IPatientNotesService, PatientNotesService>();
             //services.AddScoped<IContactUsService, ContactUsService>();
             services.AddScoped<IDoctorService, DoctorService>();

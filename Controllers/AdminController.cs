@@ -13,6 +13,8 @@ using MediCare_MVC_Project.MediCare.Application.DTOs.SpecializationDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
+using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -22,14 +24,16 @@ namespace MediCare_MVC_Project.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IDoctorService _doctorService;
+        private readonly IPatientService _patientService;
         private readonly IReceptionistService _receptionistService;
         private readonly ISpecializationService _specializationService;
 
-        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService)
+        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService)
         {
             _mapper = mapper;
             _userService = userService;
             _doctorService = doctorService;
+            _patientService = patientService;
             _receptionistService = receptionistService;
             _specializationService = specializationService;
         }
@@ -189,6 +193,39 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load _PatientForm form creating Patient --------------
+
+        public IActionResult CreatePatient()
+        {
+            ViewBag.HideLayoutElements = true;
+            return PartialView("_PatientForm", new GetPatientDTO());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePatient(GetPatientDTO userDto)
+        {
+            ViewBag.HideLayoutElements = true;
+
+            if (!ModelState.IsValid)
+            {
+                return View("_PatientForm", userDto);
+            }
+
+            int loggedInUser = GetLoggedInUserId();
+            await _patientService.AddPatientAsync(loggedInUser, userDto);
+
+            return RedirectToAction("PatientList", "Admin");
+        }
+
+        // -------------- Show all the Patient User list in Patient Module --------------
+        public async Task<IActionResult> PatientList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var patientList = await _patientService.GetAllPatientAsync();
+            var viewModelList = _mapper.Map<List<PatientViewModel>>(patientList);
+            return View(viewModelList);
+        }
 
         // ---------------------------------------------------------------------------------------------
         // -------------- Show all the Specialization list in Specialization Module --------------

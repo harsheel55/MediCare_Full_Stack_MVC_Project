@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.ReceptionistDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
@@ -12,6 +13,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
         public UserMappingProfile()
         {
             CreateMap<GetDoctorDTO, DoctorViewModel>();
+            CreateMap<GetPatientDTO, PatientViewModel>();
 
             CreateMap<DateOnly, DateTime>()
                .ConvertUsing(dateOnly => dateOnly.ToDateTime(new TimeOnly(0, 0))); 

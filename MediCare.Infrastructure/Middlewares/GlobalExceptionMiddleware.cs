@@ -34,6 +34,13 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Middlewares
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var response = context.Response;
+
+            if (response.HasStarted)
+            {
+                // Cannot modify response, just log and return
+                return Task.CompletedTask;
+            }
+
             response.ContentType = "application/json";
 
             var errorResponse = new
@@ -54,7 +61,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Middlewares
             return response.WriteAsync(JsonSerializer.Serialize(errorResponse));
         }
     }
-        // Extension method used to add the middleware to the HTTP request pipeline.
+    // Extension method used to add the middleware to the HTTP request pipeline.
     public static class GlobalExceptionMiddlewareExtensions
     {
         public static IApplicationBuilder UseGlobalExceptionMiddleware(this IApplicationBuilder builder)

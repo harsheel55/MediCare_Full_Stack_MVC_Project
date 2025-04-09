@@ -2,6 +2,7 @@
 using System.Net;
 using MediCare_MVC_Project.MediCare.Application.Interfaces;
 using MediCare_MVC_Project.MediCare.Application.DTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 
 namespace MediCare_MVC_Project.MediCare.Common.Helpers
 {
@@ -142,37 +143,37 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
             await SendEmailAsync(toEmail, emailSubject, emailBody);
         }
 
-        //public async Task SendPatientRegistrationEmailAsync(PatientDTO patient)
-        //{
-        //    string emailSubject = "Your Account Registration is Successful!";
-        //    string emailBody = $@"
-        //                    {ContainerStart}
-        //                        <h2 style='color: #2c3e50; text-align: center;'>Welcome to MediCare+</h2>
-        //                        <p style='font-size: 16px; color: #333; text-align: center;'>
-        //                            Your registration has been successfully completed.
-        //                        </p>
-        //                        <div style='background-color: #ffffff; padding: 15px; border-radius: 8px; 
-        //                                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); text-align: center;'>
-        //                            <p style='font-size: 16px;'><strong>Your Unique Patient ID:</strong></p>
-        //                            <p style='background-color: #0073e6; color: #ffffff; padding: 10px 15px; 
-        //                                      display: inline-block; font-size: 18px; font-weight: bold; border-radius: 5px;'>
-        //                                ID: {patient.AadharNo}
-        //                            </p>
-        //                            <p style='color: #333;'><em>Please keep this ID safe for future appointments and records.</em></p>
-        //                        </div>
-        //                        <p style='font-size: 16px; color: #e74c3c; text-align: center; margin-top: 20px;'>
-        //                            This email is for your reference only.
-        //                        </p>
-        //                        <div style='text-align: center; margin-top: 20px;'>
-        //                            <a href='mailto:support@medicare.com' 
-        //                               style='background-color: #248f24; color: #ffffff; padding: 12px 20px; 
-        //                                      text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;'>
-        //                                Contact Support
-        //                            </a>
-        //                        </div>
-        //                    {ContainerEnd}";
-        //    await SendEmailAsync(patient.Email, emailSubject, emailBody);
-        //}
+        public async Task SendPatientRegistrationEmailAsync(GetPatientDTO patient)
+        {
+            string emailSubject = "Your Account Registration is Successful!";
+            string emailBody = $@"
+                            {ContainerStart}
+                                <h2 style='color: #2c3e50; text-align: center;'>Welcome to MediCare+</h2>
+                                <p style='font-size: 16px; color: #333; text-align: center;'>
+                                    Your registration has been successfully completed.
+                                </p>
+                                <div style='background-color: #ffffff; padding: 15px; border-radius: 8px; 
+                                            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); text-align: center;'>
+                                    <p style='font-size: 16px;'><strong>Your Unique Patient ID:</strong></p>
+                                    <p style='background-color: #0073e6; color: #ffffff; padding: 10px 15px; 
+                                              display: inline-block; font-size: 18px; font-weight: bold; border-radius: 5px;'>
+                                        ID: {patient.AadharNo}
+                                    </p>
+                                    <p style='color: #333;'><em>Please keep this ID safe for future appointments and records.</em></p>
+                                </div>
+                                <p style='font-size: 16px; color: #e74c3c; text-align: center; margin-top: 20px;'>
+                                    This email is for your reference only.
+                                </p>
+                                <div style='text-align: center; margin-top: 20px;'>
+                                    <a href='mailto:support@medicare.com' 
+                                       style='background-color: #248f24; color: #ffffff; padding: 12px 20px; 
+                                              text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;'>
+                                        Contact Support
+                                    </a>
+                                </div>
+                            {ContainerEnd}";
+            await SendEmailAsync(patient.Email, emailSubject, emailBody);
+        }
 
         //public async Task SendAppointmentStatusEmailAsync(string patientEmail, string doctorName, Appointment appointment)
         //{

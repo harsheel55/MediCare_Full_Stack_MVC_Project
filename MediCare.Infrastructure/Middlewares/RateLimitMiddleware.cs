@@ -12,7 +12,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Middlewares
         private readonly ILogger<RateLimitMiddleware> _logger;
         private static readonly ConcurrentDictionary<string, (int Count, DateTime Expiry)> _requestCounts = new();
 
-        private const int MAX_REQUESTS = 10; // Max requests allowed per minute
+        private const int MAX_REQUESTS = 20; // Max requests allowed per minute
         private static readonly TimeSpan TIME_WINDOW = TimeSpan.FromMinutes(1);
         public RateLimitMiddleware(RequestDelegate next)
         {
