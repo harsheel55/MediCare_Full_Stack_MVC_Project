@@ -84,6 +84,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                  .Select(s => new GetDoctorDTO
                                                  {
                                                      Id = s.UserId,
+                                                     DoctorId = s.Doctor.DoctorId,
                                                      FirstName = s.FirstName,
                                                      LastName = s.LastName,
                                                      Email = s.Email,

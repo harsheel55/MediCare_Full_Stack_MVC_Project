@@ -291,6 +291,19 @@
             @Html.AntiForgeryToken()
 
             <h2>Inject Yourself In</h2>
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success text-center" role="alert">
+                    @TempData["Success"]
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger text-center" role="alert">
+                    @TempData["Error"]
+                </div>
+            }
 
             <div class="input-group">
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Enter Email" })

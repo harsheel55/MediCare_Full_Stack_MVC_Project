@@ -45,6 +45,17 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             await _emailHelper.SendPatientRegistrationEmailAsync(patient);
         }
 
+        public async Task DeletePatientAsync(int id)
+        {
+            var existingPatient = await _context.Patients.FindAsync(id);
+
+            if (existingPatient == null)
+                throw new KeyNotFoundException("No Patient found.");
+
+            _context.Patients.Remove(existingPatient);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<ICollection<GetPatientDTO>> GetAllPatientQuery()
         {
             var patientList = await _context.Patients.Select(s => new GetPatientDTO

@@ -3,6 +3,7 @@
     public class GetDoctorDTO
     {
         public int Id { get; set; }
+        public int DoctorId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

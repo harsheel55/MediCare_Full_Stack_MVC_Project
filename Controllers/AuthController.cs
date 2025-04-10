@@ -41,9 +41,6 @@ namespace MediCare_MVC_Project.Controllers
 
             try
             {
-                if (model.Email == "admin@gmail.com" && model.Password == "admin")
-                    return RedirectToAction("AdminDashboard", "Dashboard");
-
                 string token = await _authService.LoginAsync(model);
 
                 if (!string.IsNullOrEmpty(token))
@@ -136,7 +133,7 @@ namespace MediCare_MVC_Project.Controllers
             return View();
         }
 
-        // ✅ FIXED: GET: /Auth/ResetPassword (Now using ResetPwdDTO instead of ViewModel)
+        // FIXED: GET: /Auth/ResetPassword (Now using ResetPwdDTO instead of ViewModel)
         [HttpGet]
         public IActionResult ResetPassword(string otp, string email)
         {

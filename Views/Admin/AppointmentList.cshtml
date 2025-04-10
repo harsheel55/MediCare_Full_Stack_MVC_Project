@@ -1,0 +1,197 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.AppointmentViewModel>
+
+@{
+    ViewData["Title"] = "All Appointments";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            font-size: 12px;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+    .btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 0.875rem;
+    }
+
+    .badge {
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        color: black;
+    }
+
+    .badge-success {
+        background-color: #28a745 !important;
+    }
+
+    .badge-danger {
+        background-color: #dc3545 !important;
+    }
+
+    .badge-info {
+        background-color: #17a2b8 !important;
+    }
+
+    .d-flex.justify-content-between.align-items-center {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .user-button {
+        margin-right: 50px;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>All Appointments</h2>
+    <div class="user-button">
+        <a class="btn btn-primary" href="@Url.Action("BookAppointment", "Appointment")">
+            <i class="fas fa-calendar-plus"></i> Book Appointment
+        </a>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                @TempData["Success"]
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                @TempData["Error"]
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+}
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Patient Name</th>
+            <th>Email</th>
+            <th>Aadhar No</th>
+            <th>Doctor</th>
+            <th>Appointment Date</th>
+            <th>Time Slot</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.AppointmentId</td>
+                <td>@item.FirstName @item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.AadharNo</td>
+                <td>@item.DoctorName</td>
+                <td>@item.AppointmentDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    @DateTime.Today.Add(TimeSpan.Parse(item.AppointmentStarts)).ToString("hh:mm tt") -
+                    @DateTime.Today.Add(TimeSpan.Parse(item.AppointmentEnds)).ToString("hh:mm tt")
+                </td>
+                <td>
+                    <span class="badge badge-info">@item.Status</span>
+                </td>
+                <td>@item.AppointmentDescription</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Appointment", new { id = item.AppointmentId })" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("SendReminder", "Appointment", new { id = item.AppointmentId })" title="Send Reminder Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+
+                    <form asp-action="Delete" asp-controller="Admin" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.AppointmentId" />
+                        <button type="submit" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this appointment?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastElements = document.querySelectorAll('.toast');
+            toastElements.forEach(toastEl => {
+                new bootstrap.Toast(toastEl, { delay: 3000, autohide: true }).show();
+            });
+        });
+    </script>
+}

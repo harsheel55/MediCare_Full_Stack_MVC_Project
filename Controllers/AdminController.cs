@@ -15,6 +15,8 @@ using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
+using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -23,17 +25,20 @@ namespace MediCare_MVC_Project.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        //private readonly ICheckUpService _checkUpService;
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
+        private readonly IAppointmentService _appointmentService;
         private readonly IReceptionistService _receptionistService;
         private readonly ISpecializationService _specializationService;
 
-        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService)
+        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService, IAppointmentService appointmentService)
         {
             _mapper = mapper;
             _userService = userService;
             _doctorService = doctorService;
             _patientService = patientService;
+            _appointmentService = appointmentService;
             _receptionistService = receptionistService;
             _specializationService = specializationService;
         }
@@ -227,6 +232,21 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+        public async Task<IActionResult> DeletePatient(int id)
+        {
+            try
+            {
+                await _patientService.DeletePatientAsync(id);
+                return RedirectToAction("PatientList", "Admin");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error while deleting Patient record.", Error = ex.Message });
+            }
+        }
+
+
+
         // ---------------------------------------------------------------------------------------------
         // -------------- Show all the Specialization list in Specialization Module --------------
         public async Task<IActionResult> SpecializationList()
@@ -253,6 +273,73 @@ namespace MediCare_MVC_Project.Controllers
                 await _specializationService.AddSpecializationAsync(loggedInUser, specializationName);
             }
             return RedirectToAction("SpecializationList");
+        }
+
+
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load Appointment Form  --------------
+        public IActionResult BookAppointment(int patientId)
+        {
+            var model = new AppointmentDTO
+            {
+                PatientId = patientId,
+            };
+
+            return PartialView("_AppointmentForm", model); // but only works if used inside an already loaded view
+        }
+
+        public async Task<IActionResult> GetDoctorsDropdown()
+        {
+            var doctors = await _doctorService.GetAllDoctorAsync(); // or however you're fetching
+            var result = doctors.Select(d => new
+            {
+                doctorId = d.DoctorId,
+                doctorName = d.FirstName + " " + d.LastName,
+                specialization = d.Specialization
+            });
+
+            return Json(result);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BookAppointment(AppointmentDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("_AppointmentForm", model);
+            }
+
+            int loggedUser = GetLoggedInUserId();
+            await _appointmentService.BookAppointmentAsync(loggedUser, model);
+
+            return RedirectToAction("AppointmentList", "Admin");
+        }
+
+        public async Task<IActionResult> AppointmentList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var appointmentList = await _appointmentService.GetAllAppointmentAsync();
+            var viewModelList = _mapper.Map<List<AppointmentViewModel>>(appointmentList);
+            return View(viewModelList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _appointmentService.DeleteAppointmentByIdAsync(id);
+
+                TempData["Success"] = "Appointment Record Deleted Successfully.";
+
+                return RedirectToAction("AppointmentList", "Admin");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error while deleting Appointment record.", Error = ex.Message });
+            }
         }
     }
 }

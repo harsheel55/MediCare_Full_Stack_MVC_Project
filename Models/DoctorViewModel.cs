@@ -6,6 +6,7 @@ namespace MediCare_MVC_Project.Models
     public class DoctorViewModel
     {
         public int id { get; set; }
+        public int DoctorId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
