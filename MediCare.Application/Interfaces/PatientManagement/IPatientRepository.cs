@@ -8,6 +8,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement
     {
         Task<ICollection<GetPatientDTO>> GetAllPatientQuery();
         Task AddPatientQuery(int id, GetPatientDTO receptionist);
-        Task DeletePatientAsync(int id);
+        Task DeletePatientQuery(int id);
     }
 }

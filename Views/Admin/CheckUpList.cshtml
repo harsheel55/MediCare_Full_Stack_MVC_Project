@@ -1,0 +1,169 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.CheckUpViewModel>
+
+@{
+    ViewData["Title"] = "All CheckUps";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        font-size: 12px;
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .badge {
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        color: black;
+    }
+
+    .modal-content {
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+        padding: 15px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .d-flex.justify-content-between.align-items-center {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .action-icons a {
+        margin-right: 10px;
+        font-size: 16px;
+    }
+
+    .fa-edit { color: #ffc107; }
+    .fa-trash-alt { color: #dc3545; }
+    .fa-download { color: #28a745; }
+    .fa-envelope { color: #007bff; }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>All Check Up</h2>
+</div>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Patient Name</th>
+            <th>Doctor Name</th>
+            <th>Email</th>
+            <th>Mobile No</th>
+            <th>Appointment Date</th>
+            <th>Time</th>
+            <th>Description</th>
+            <th>Note</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@item.PatientName</td>
+                    <td>@item.DoctorName</td>
+                    <td>@item.Email</td>
+                    <td>@item.MobileNo</td>
+                    <td>@item.AppointmentDate.ToString("dd-MM-yyyy")</td>
+                    <td>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</td>
+                    <td>@item.AppointmentDescription</td>
+                    <td>@item.NoteText</td>
+                    <td class="action-icons">
+                        <a asp-action="EditCheckUp" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="DeleteCheckUp" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Delete" onclick="return confirm('Are you sure to delete this checkup note?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <a asp-action="DownloadNotes" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Download Notes">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <a asp-action="SendEmailWithNotes" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Send Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr><td colspan="10">No checkups found.</td></tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

@@ -45,7 +45,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             await _emailHelper.SendPatientRegistrationEmailAsync(patient);
         }
 
-        public async Task DeletePatientAsync(int id)
+        public async Task DeletePatientQuery(int id)
         {
             var existingPatient = await _context.Patients.FindAsync(id);
 

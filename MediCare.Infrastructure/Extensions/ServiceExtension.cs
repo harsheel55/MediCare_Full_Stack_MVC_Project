@@ -1,6 +1,7 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.Interfaces;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.Authentication;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
@@ -22,6 +23,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<ICheckUpRepository, CheckUpRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
         }
 
@@ -32,6 +34,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<JWTTokenHelper>();
             //services.AddScoped<IDownloadHelper, NoteDownloadHelper>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICheckUpService, CheckUpService>();
             services.AddScoped<IReceptionistService, ReceptionistService>();
             services.AddScoped<ISpecializationService, SpecializationService>();
             services.AddScoped<IPatientService, PatientService>();

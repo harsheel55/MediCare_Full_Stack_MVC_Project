@@ -1,0 +1,138 @@
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs.CheckUpDTO
+
+@{
+    ViewData["Title"] = "Patient Checkup";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    form {
+        width: 100%;
+        max-width: 800px;
+        background: white;
+        padding: 30px;
+        margin: 30px auto;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .mb-3 {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control, .form-select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus, textarea:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .form-control[disabled] {
+        background-color: #f4f6f8;
+        color: #7f8c8d;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        min-width: 120px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .alert {
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+</style>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form asp-action="Checkup" asp-controller="Appointment" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="AppointmentId" />
+
+    <div class="mb-3">
+        <label asp-for="PatientName" class="form-label">Patient Name</label>
+        <input asp-for="PatientName" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DoctorName" class="form-label">Doctor</label>
+        <input asp-for="DoctorName" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AppointmentDate" class="form-label">Appointment Date</label>
+        <input asp-for="AppointmentDate" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NoteText" class="form-label">Checkup Notes</label>
+        <textarea asp-for="NoteText" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="NoteText" class="text-danger"></span>
+    </div>
+
+    <div class="text-end">
+        <a asp-action="CheckUpList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

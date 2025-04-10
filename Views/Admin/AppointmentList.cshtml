@@ -140,8 +140,9 @@
             <th>Doctor</th>
             <th>Appointment Date</th>
             <th>Time Slot</th>
-            <th>Status</th>
             <th>Description</th>
+            <th>Status</th>
+            <th>Checkup</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -159,10 +160,16 @@
                     @DateTime.Today.Add(TimeSpan.Parse(item.AppointmentStarts)).ToString("hh:mm tt") -
                     @DateTime.Today.Add(TimeSpan.Parse(item.AppointmentEnds)).ToString("hh:mm tt")
                 </td>
+                <td>@item.AppointmentDescription</td>
                 <td>
                     <span class="badge badge-info">@item.Status</span>
                 </td>
-                <td>@item.AppointmentDescription</td>
+                <td>
+                    <a class="btn btn-sm btn-success" href="@Url.Action("Checkup", "Appointment", new { id = item.AppointmentId })" title="Checkup">
+                        <i class="fas fa-notes-medical"></i>
+                    </a>
+                </td>
+
                 <td>
                     <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Appointment", new { id = item.AppointmentId })" title="Edit">
                         <i class="fas fa-edit"></i>

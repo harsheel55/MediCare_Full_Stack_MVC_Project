@@ -17,6 +17,8 @@ using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
+using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -25,18 +27,19 @@ namespace MediCare_MVC_Project.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        //private readonly ICheckUpService _checkUpService;
+        private readonly ICheckUpService _checkUpService;
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
         private readonly IAppointmentService _appointmentService;
         private readonly IReceptionistService _receptionistService;
         private readonly ISpecializationService _specializationService;
 
-        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService, IAppointmentService appointmentService)
+        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService, IAppointmentService appointmentService, ICheckUpService checkUpService)
         {
             _mapper = mapper;
             _userService = userService;
             _doctorService = doctorService;
+            _checkUpService = checkUpService;
             _patientService = patientService;
             _appointmentService = appointmentService;
             _receptionistService = receptionistService;
@@ -341,5 +344,28 @@ namespace MediCare_MVC_Project.Controllers
                 return StatusCode(500, new { Message = "Error while deleting Appointment record.", Error = ex.Message });
             }
         }
+
+        // ---------------------------------------------------------------------------------------------
+        public async Task<IActionResult> CheckUpList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var checkupList = await _checkUpService.GetAllCheckUpAsync();
+            var viewModelList = _mapper.Map<List<CheckUpViewModel>>(checkupList);
+            return View(viewModelList);
+        }
+
+        public async Task<IActionResult> DeleteCheckUp(int id)
+        {
+            try
+            {
+                await _checkUpService.DeletePatientNotesAsync(id);
+                return RedirectToAction("CheckUpList", "Admin");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error while deleting Patient's note record.", Error = ex.Message });
+            }
+        }
+
     }
 }

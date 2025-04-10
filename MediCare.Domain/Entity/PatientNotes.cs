@@ -14,7 +14,6 @@ namespace MediCare_MVC_Project.MediCare.Domain.Entity
         public int AppointmentId { get; set; }
 
         [Url]
-        [StringLength(300, ErrorMessage = "Note URL can't exceed 300 characters.")]
         public string NoteUrl { get; set; } // Azure Blob Storage URL
 
         public int? CreatedBy { get; set; }

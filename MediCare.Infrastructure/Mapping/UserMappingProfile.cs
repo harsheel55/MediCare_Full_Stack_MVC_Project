@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.ReceptionistDTOs;
@@ -16,6 +17,8 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
             CreateMap<GetDoctorDTO, DoctorViewModel>();
             CreateMap<GetPatientDTO, PatientViewModel>();
             CreateMap<GetAppointmentDTO, AppointmentViewModel>();
+            CreateMap<GetCheckUpDTO, CheckUpViewModel>();
+            CreateMap<CheckUpDTO, PatientNoteViewModel>();
 
             CreateMap<DateOnly, DateTime>()
                .ConvertUsing(dateOnly => dateOnly.ToDateTime(new TimeOnly(0, 0))); 

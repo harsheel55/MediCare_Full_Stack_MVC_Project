@@ -21,7 +21,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
 
         public async Task DeletePatientAsync(int id)
         {
-            await _patientRepository.DeletePatientAsync(id);
+            await _patientRepository.DeletePatientQuery(id);
         }
 
         public Task<ICollection<GetPatientDTO>> GetAllPatientAsync()
