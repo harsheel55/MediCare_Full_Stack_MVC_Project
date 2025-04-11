@@ -8,7 +8,8 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManage
         Task<ICollection<GetCheckUpDTO>> GetAllCheckUpAsync();
         Task<CheckUpDTO> GetCheckupFormDataAsync(int id);
         Task<bool> AddPatientNoteAsync(CheckUpDTO patientNoteView, int id);
-
+        Task<bool> SendPatientNotePdfAsync(int id);
+        Task<byte[]> DownloadNotesPdfAsync(int id);
         Task DeletePatientNotesAsync(int id);
     }
 }

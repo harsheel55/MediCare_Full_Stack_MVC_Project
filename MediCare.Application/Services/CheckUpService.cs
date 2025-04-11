@@ -23,6 +23,11 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
            await _checkUpRepository.DeletePatientNotesQuery(id);
         }
 
+        public async Task<byte[]> DownloadNotesPdfAsync(int id)
+        {
+            return await _checkUpRepository.DownloadNotesPdfQuery(id);
+        }
+
         public async Task<ICollection<GetCheckUpDTO>> GetAllCheckUpAsync()
         {
             var checkUpList = await _checkUpRepository.GetAllCheckUpQuery();
@@ -32,6 +37,12 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
         public Task<CheckUpDTO> GetCheckupFormDataAsync(int id)
         {
            return _checkUpRepository.GetCheckupFormDataQuery(id);
+        }
+
+        public async Task<bool> SendPatientNotePdfAsync(int id)
+        {
+            await _checkUpRepository.SendPatientNotePdfQuery(id);
+            return true;
         }
     }
 }

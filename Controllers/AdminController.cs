@@ -19,6 +19,7 @@ using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -367,5 +368,37 @@ namespace MediCare_MVC_Project.Controllers
             }
         }
 
+
+        public async Task<IActionResult> DownloadNotes(int id)
+        {
+            if (id == 0)
+                return NotFound();
+
+            var pdfBytes = await _checkUpService.DownloadNotesPdfAsync(id);
+
+            if (pdfBytes == null || pdfBytes.Length == 0)
+                return NotFound("PDF generation failed or empty file.");
+
+            return File(pdfBytes, "application/pdf", $"Patient_Notes_{id}.pdf");
+        }
+
+        public async Task<IActionResult> SendEmailWithNotes(int id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var emailStatus = await _checkUpService.SendPatientNotePdfAsync(id);
+
+            if (emailStatus)
+            {
+                TempData["Success"] = "Patient note sent successfully!";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to send email.";
+            }
+
+            return RedirectToAction("CheckUpList");
+        }
     }
 }

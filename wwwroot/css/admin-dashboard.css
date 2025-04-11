@@ -20,6 +20,15 @@
     box-sizing: border-box;
 }
 
+.username {
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
 .logo h2 {
     margin: 0;
     font-size: 24px;

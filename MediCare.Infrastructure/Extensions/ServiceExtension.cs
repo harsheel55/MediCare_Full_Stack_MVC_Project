@@ -32,7 +32,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IAuthService, AuthHelper>(); 
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<JWTTokenHelper>();
-            //services.AddScoped<IDownloadHelper, NoteDownloadHelper>();
+            services.AddScoped<IDownloadHelper, NoteDownloadHelper>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICheckUpService, CheckUpService>();
             services.AddScoped<IReceptionistService, ReceptionistService>();

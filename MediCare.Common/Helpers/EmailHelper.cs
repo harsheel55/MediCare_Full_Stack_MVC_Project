@@ -5,6 +5,7 @@ using MediCare_MVC_Project.MediCare.Application.DTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 
 namespace MediCare_MVC_Project.MediCare.Common.Helpers
 {
@@ -254,39 +255,39 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
         }
 
 
-        //public async Task SendPatientNotesEmailAsync(string patientEmail, PdfNotesDTO pdfNotesDTO, byte[] PdfBytes)
-        //{
-        //    string emailSubject = "Your Medical Notes from MediCare+";
+        public async Task SendPatientNotesEmailAsync(string patientEmail, PdfNoteDTO pdfNotesDTO, byte[] PdfBytes)
+        {
+            string emailSubject = "Your Medical Notes from MediCare+";
 
-        //    string emailBody = $@"
-        //                {ContainerStart}
-        //                    <h2 style='color: #2c3e50; text-align: center;'>Your Medical Notes</h2>
-        //                    <p style='font-size: 16px; color: #333; text-align: center;'>
-        //                        Below are your medical notes provided by Dr. {pdfNotesDTO.DoctorName}.
-        //                    </p>
-        //                    <div style='background-color: #ffffff; padding: 15px; border-radius: 8px; 
-        //                                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); text-align: center;'>
-        //                        <p style='font-size: 16px;'><strong>Patient Name:</strong> {pdfNotesDTO.PatientName}</p>
-        //                        <p style='font-size: 16px;'><strong>Doctor Name:</strong> {pdfNotesDTO.DoctorName}</p>
-        //                        <hr style='border: 1px solid #ddd;'>
-        //                        <p style='font-size: 16px;'><strong>Description:</strong></p>
-        //                        <p style='background-color: #f4f4f4; padding: 10px; border-radius: 5px;'>{pdfNotesDTO.AppointmentDescription}</p>
-        //                        <p style='font-size: 16px;'><strong>Notes:</strong></p>
-        //                        <p style='background-color: #f4f4f4; padding: 10px; border-radius: 5px;'>{pdfNotesDTO.NoteText}</p>
-        //                    </div>
-        //                    <p style='font-size: 16px; color: #333; text-align: center; margin-top: 20px;'>
-        //                        If you have any questions or need further assistance, please contact our support team.
-        //                    </p>
-        //                    <div style='text-align: center; margin-top: 20px;'>
-        //                        <a href='mailto:support@medicare.com' 
-        //                           style='background-color:  #248f24; color: #ffffff; padding: 12px 20px; 
-        //                                  text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;'>
-        //                            Contact Support
-        //                        </a>
-        //                    </div>
-        //                {ContainerEnd}";
+            string emailBody = $@"
+                        {ContainerStart}
+                            <h2 style='color: #2c3e50; text-align: center;'>Your Medical Notes</h2>
+                            <p style='font-size: 16px; color: #333; text-align: center;'>
+                                Below are your medical notes provided by Dr. {pdfNotesDTO.DoctorName}.
+                            </p>
+                            <div style='background-color: #ffffff; padding: 15px; border-radius: 8px; 
+                                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); text-align: center;'>
+                                <p style='font-size: 16px;'><strong>Patient Name:</strong> {pdfNotesDTO.PatientName}</p>
+                                <p style='font-size: 16px;'><strong>Doctor Name:</strong> {pdfNotesDTO.DoctorName}</p>
+                                <hr style='border: 1px solid #ddd;'>
+                                <p style='font-size: 16px;'><strong>Description:</strong></p>
+                                <p style='background-color: #f4f4f4; padding: 10px; border-radius: 5px;'>{pdfNotesDTO.Description}</p>
+                                <p style='font-size: 16px;'><strong>Notes:</strong></p>
+                                <p style='background-color: #f4f4f4; padding: 10px; border-radius: 5px;'>{pdfNotesDTO.NoteText}</p>
+                            </div>
+                            <p style='font-size: 16px; color: #333; text-align: center; margin-top: 20px;'>
+                                If you have any questions or need further assistance, please contact our support team.
+                            </p>
+                            <div style='text-align: center; margin-top: 20px;'>
+                                <a href='mailto:support@medicare.com' 
+                                   style='background-color:  #248f24; color: #ffffff; padding: 12px 20px; 
+                                          text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;'>
+                                    Contact Support
+                                </a>
+                            </div>
+                        {ContainerEnd}";
 
-        //    await SendEmailAsync(patientEmail, emailSubject, emailBody, PdfBytes, "Medical_Notes.pdf");
-        //}
+            await SendEmailAsync(patientEmail, emailSubject, emailBody, PdfBytes, "Medical_Notes.pdf");
+        }
     }
 }

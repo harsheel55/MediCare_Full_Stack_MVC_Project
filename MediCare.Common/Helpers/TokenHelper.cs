@@ -27,6 +27,7 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Name, userId.ToString()),
                 new Claim(ClaimTypes.Email, login.Email),
                 new Claim(ClaimTypes.Role, newRole)
             };

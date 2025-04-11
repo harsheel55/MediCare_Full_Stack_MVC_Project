@@ -1,6 +1,7 @@
 ﻿
 using MediCare_MVC_Project.MediCare.Application.DTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
 
@@ -15,6 +16,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces
         public Task SendAppointmentStatusEmailAsync(string patientEmail, string doctorName, Appointment appointment);
         public Task SendAppointmentReminderEmailAsync(string patientEmail, string doctorName, GetAppointmentDTO appointment);
 
-        //public Task SendPatientNotesEmailAsync(string patientEmail, PdfNotesDTO pdfNotesDTO, byte[] PdfBytes);
+        public Task SendPatientNotesEmailAsync(string patientEmail, PdfNoteDTO pdfNotesDTO, byte[] PdfBytes);
     }
 }

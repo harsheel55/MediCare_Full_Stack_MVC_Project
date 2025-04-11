@@ -149,10 +149,39 @@
             </div>
         </footer>
     }
+    <!-- Add this inside <body>, near the bottom -->
+    <div id="loadingSpinner" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:rgba(255,255,255,0.7); text-align:center;">
+        <div style="position: absolute; top: 50%; left: 50%;">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Show loader on any form submit
+        $(document).on("submit", "form", function () {
+            $("#loadingSpinner").show();
+        });
+
+        // Show loader on all AJAX requests
+        $(document).ajaxStart(function () {
+            $("#loadingSpinner").show();
+        }).ajaxStop(function () {
+            $("#loadingSpinner").hide();
+        });
+
+        // Optional: hide on window load
+        $(window).on("load", function () {
+            $("#loadingSpinner").hide();
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

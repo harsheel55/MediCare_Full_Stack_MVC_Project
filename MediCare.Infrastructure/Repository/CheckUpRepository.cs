@@ -11,10 +11,12 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
     public class CheckUpRepository : GenericRepository<PatientNote>, ICheckUpRepository
     {
         private readonly IEmailHelper _emailHelper;
+        private readonly IDownloadHelper _downloadService;
 
-        public CheckUpRepository(ApplicationDBContext context, IEmailHelper emailHelper) : base(context)
+        public CheckUpRepository(ApplicationDBContext context, IEmailHelper emailHelper, IDownloadHelper downloadHelper) : base(context)
         {
             _emailHelper = emailHelper;
+            _downloadService = downloadHelper;
         }
 
         public async Task<bool> AddPatientNoteQuery(CheckUpDTO patientNoteView, int id)
@@ -44,6 +46,25 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
             _context.PatientNotes.Remove(existingNotes);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<byte[]> DownloadNotesPdfQuery(int id)
+        {
+            try
+            {
+                var notesData = await this.GetNotesData(id);
+
+                if (notesData == null)
+                    throw new Exception("Note's data not found.");
+
+                byte[] pdf = await _downloadService.ConvertNoteTextToPdfAsync(notesData);
+
+                return pdf;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<ICollection<GetCheckUpDTO>> GetAllCheckUpQuery()
@@ -91,6 +112,59 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception("No data found.");
 
             return existingRecord;
+        }
+
+        public async Task<PdfNoteDTO> GetNotesData(int id)
+        {
+            var notesData = await _context.Appointments.Include(p => p.Patient)
+                                                            .Include(p => p.PatientNote)
+                                                            .Include(p => p.Doctor)
+                                                            .ThenInclude(p => p.User)
+                                                            .Where(c => c.PatientNote.PatientNoteId == id)
+                                                            .Select(s => new PdfNoteDTO
+                                                            {
+                                                                PatientName = s.Patient.FirstName + " " + s.Patient.LastName,
+                                                                DateOfBirth = s.Patient.DateOfBirth,
+                                                                Email = s.Patient.Email,
+                                                                Gender = s.Patient.Gender,
+                                                                Address = s.Patient.Address,
+                                                                AadharNo = s.Patient.AadharNo,
+                                                                MobileNo = s.Patient.MobileNo,
+                                                                AppointmentId = s.AppointmentId,
+                                                                DoctorName = s.Doctor.User.FirstName + " " + s.Doctor.User.LastName,
+                                                                AppointmentDate = s.AppointmentDate,
+                                                                StartTime = s.AppointmentStarts,
+                                                                EndTime = s.AppointmentEnds,
+                                                                Description = s.AppointmentDescription,
+                                                                NoteText = s.PatientNote.NoteUrl
+                                                            }).FirstOrDefaultAsync();
+
+            if (notesData == null)
+                throw new Exception("No Data found.");
+
+            return notesData;
+        }
+
+        public async Task<bool> SendPatientNotePdfQuery(int id)
+        {
+            try
+            {
+                var notes = await this.GetNotesData(id);
+                byte[] pdf = await this.DownloadNotesPdfQuery(id);
+
+                if (pdf == null || pdf.Length == 0)
+                {
+                    Console.WriteLine("PDF attachment is empty. Email sent without attachment.");
+                }
+
+                await _emailHelper.SendPatientNotesEmailAsync(notes.Email, notes, pdf);
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

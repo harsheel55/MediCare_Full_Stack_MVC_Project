@@ -9,5 +9,8 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManage
         Task<CheckUpDTO> GetCheckupFormDataQuery(int id);
         Task<bool> AddPatientNoteQuery(CheckUpDTO patientNoteView, int id);
         Task DeletePatientNotesQuery(int id);
+        Task<bool> SendPatientNotePdfQuery(int id);
+        Task<byte[]> DownloadNotesPdfQuery(int id);
+        Task<PdfNoteDTO> GetNotesData(int id);
     }
 }
