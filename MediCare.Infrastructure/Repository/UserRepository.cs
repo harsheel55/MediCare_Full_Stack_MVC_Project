@@ -196,6 +196,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 var userList = await _context.Users
                              .Select(s => new UserDTO
                              {
+                                 UserId = s.UserId,
                                  FirstName = s.FirstName,
                                  LastName = s.LastName,
                                  Email = s.Email,

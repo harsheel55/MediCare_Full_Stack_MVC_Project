@@ -153,15 +153,12 @@
         </tr>
     </thead>
     <tbody>
-        @{
-            int index = 1;
-        }
         @if (Model != null && Model.Any())
         {
             @foreach (var user in Model)
             {
                 <tr>
-                    <td>@index</td>
+                    <td>@user.UserId</td>
                     <td>@user.FirstName @user.LastName</td>
                     <td>@user.Email</td>
                     <td>@user.MobileNo</td>
@@ -179,14 +176,16 @@
                         }
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "User", new { id = user.Id })">Edit</a>
+                        @if(user.Role == "Administrator")
+                        {
+                            <a class="btn btn-sm btn-warning" href="@Url.Action("EditAdmin", "User", new { id = user.UserId })">Edit</a>
+                        }
                         <form asp-action="Delete" asp-controller="User" method="post" style="display:inline;">
                             <input type="hidden" name="email" value="@user.Email" />
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this user?');">Delete</button>
                         </form>
                     </td>
                 </tr>
-                index++;
             }
         }
         else

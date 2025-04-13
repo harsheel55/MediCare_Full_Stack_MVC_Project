@@ -33,18 +33,25 @@ namespace MediCare_MVC_Project.Controllers
             return View(user);
         }
 
+        //public async Task<IActionResult> EditAdmin(int id)
+        //{
+        //    await _userService.UpdateUserAsync(GetLoggedInUserId(), id, );
+        //    TempData["SuccessMessage"] = "User updated successfully!";
+        //    return RedirectToAction("UserList", "Admin");
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UserRegisterDTO dto)
+        public async Task<IActionResult> EditAdmin(int id, UserRegisterDTO dto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _userService.UpdateUserAsync(GetLoggedInUserId(), id, dto);
-                TempData["SuccessMessage"] = "User updated successfully!";
-                return RedirectToAction("Index");
-            }
 
-            return View("_UserForm", dto);
+                return View("_UserForm", dto);
+            }
+            await _userService.UpdateUserAsync(GetLoggedInUserId(), id, dto);
+            TempData["SuccessMessage"] = "User updated successfully!";
+            return RedirectToAction("UserList", "Admin");
         }
 
         [HttpPost]

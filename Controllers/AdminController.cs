@@ -95,31 +95,6 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
-        // -------------- Update Admin User using same _UserForm --------------
-        [HttpPut]
-        public async Task<IActionResult> EditAdminUser([FromQuery] int id, [FromBody] UserRegisterDTO user)
-        {
-            try
-            {
-                if (user == null)
-                    return BadRequest(new { Message = "User data is required." });
-
-                var updatedById = GetLoggedInUserId();
-
-                await _userService.UpdateUserAsync(updatedById, id, user);
-                return Ok(new { Message = "User updated successfully." });
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { Message = ex.Message });
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-
         // ---------------------------------------------------------------------------------------------
         // -------------- Load _DoctorForm form creating Doctor User --------------
         public IActionResult CreateDoctor()

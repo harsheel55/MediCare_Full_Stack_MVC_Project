@@ -14,8 +14,7 @@ namespace MediCare_MVC_Project.MediCare.Domain.Entity
         public int RoomId { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Bed number must not exceed 50 characters.")]
-        public string BedNumber { get; set; }
+        public int BedNumber { get; set; }
 
         public bool IsOccupied { get; set; } = false;
 

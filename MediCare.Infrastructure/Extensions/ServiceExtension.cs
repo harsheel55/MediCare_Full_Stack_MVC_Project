@@ -1,9 +1,12 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.Interfaces;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.Authentication;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.PaymentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.SpecializationManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.UserManagement;
@@ -17,14 +20,19 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
+            services.AddScoped<IAdmissionRepository, AdmissionRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
-            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IBedRepository, BedRepository>();
             services.AddScoped<ICheckUpRepository, CheckUpRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<ILabTestRepository, LabTestRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
@@ -33,15 +41,18 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<JWTTokenHelper>();
             services.AddScoped<IDownloadHelper, NoteDownloadHelper>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICheckUpService, CheckUpService>();
-            services.AddScoped<IReceptionistService, ReceptionistService>();
-            services.AddScoped<ISpecializationService, SpecializationService>();
-            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IAdmissionService, AdmissionService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
-            //services.AddScoped<IPatientNotesService, PatientNotesService>();
-            //services.AddScoped<IContactUsService, ContactUsService>();
+            services.AddScoped<IBedService, BedService>();
+            services.AddScoped<ICheckUpService, CheckUpService>();
             services.AddScoped<IDoctorService, DoctorService>();
+            services.AddScoped<ILabTestService, LabTestService>();
+            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IReceptionistService, ReceptionistService>();
+            services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<ISpecializationService, SpecializationService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }
