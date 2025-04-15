@@ -39,8 +39,11 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         {
             var existingBed = await _context.Beds.FindAsync(BedId);
 
+
             if (existingBed == null)
                 throw new Exception("No Bed found.");
+
+            //existingBed.IsOccupied = false;
 
             _context.Beds.Remove(existingBed);
             await _context.SaveChangesAsync();

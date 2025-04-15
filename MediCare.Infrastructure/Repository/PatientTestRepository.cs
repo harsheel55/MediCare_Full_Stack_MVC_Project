@@ -14,14 +14,19 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         }
         public async Task AddPatientTestQuery(PatientTestDTO patientTest)
         {
-            var existingRecords = await _context.PatientTests.FirstOrDefaultAsync(s => s.TestId == patientTest.TestId && s.TestDate == s.TestDate && s.PatientId == patientTest.PatientId);
+            var existingRecords = await _context.PatientTests.FirstOrDefaultAsync(s => s.TestId == patientTest.TestId && s.TestDate == s.TestDate && s.Patient.AadharNo == patientTest.AadharNo);
 
             if (existingRecords != null)
                 throw new Exception("Test data already exists.");
 
+            var patientRecord = await _context.Patients.FirstOrDefaultAsync(s => s.AadharNo == patientTest.AadharNo);
+
+            if (patientRecord == null)
+                throw new Exception("No patient record found.");
+
             var newTestRecord = new PatientTest
             {
-                PatientId = patientTest.PatientId,
+                PatientId = patientRecord.PatientId,
                 TestId = patientTest.TestId,
                 TestDate = patientTest.TestDate,
                 Result = patientTest.Result

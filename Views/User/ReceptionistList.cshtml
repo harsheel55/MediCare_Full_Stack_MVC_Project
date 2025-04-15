@@ -1,0 +1,233 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.ReceptionistViewModel>
+
+@{
+    ViewData["Title"] = "All Receptionists";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .page-header h2 {
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    .btn-add {
+        background-color: #198754;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+        .btn-add:hover {
+            background-color: #157347;
+            transform: scale(1.05);
+        }
+
+        .btn-add:active {
+            background-color: #145a30;
+            transform: scale(1);
+        }
+
+        .btn-add i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+    .card-container {
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-custom {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+        .table-custom th,
+        .table-custom td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+
+        .table-custom th {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .table-custom tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: #eef1f5;
+        }
+
+    .action-btns .btn {
+        padding: 0;
+        font-size: 15px;
+        width: auto;
+        height: auto;
+        border: none;
+        background: transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .action-btns .btn i {
+            margin: 0;
+        }
+
+        .action-btns .btn:hover {
+            opacity: 0.8;
+        }
+
+    .action-btns .btn-danger {
+        color: black;
+    }
+
+    .action-btns .btn-warning {
+        color: black;
+    }
+
+    .badge-status {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .badge-success {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    .page-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 25px;
+    }
+
+        .page-header .left-section {
+            flex: 1;
+        }
+
+        .page-header .right-section {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+</style>
+
+<div class="card-container">
+    <div class="page-header">
+        <div class="left-section">
+            <h2>All Receptionists</h2>
+        </div>
+        <div class="right-section">
+            <a class="btn-add" href="@Url.Action("CreateReceptionist", "User")">
+                <i class="fas fa-user-plus"></i> Add Receptionist
+            </a>
+        </div>
+    </div>
+
+    <table class="table-custom">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+                <th>Date of Birth</th>
+                <th>Qualification</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 1;
+            }
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.MobileNo</td>
+                    <td>@user.DateOfBirth.ToShortDateString()</td>
+                    <td>@user.Qualification</td>
+                    <td>
+                        @if (user.Status)
+                        {
+                            <span class="badge-status badge-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge-status badge-danger">Inactive</span>
+                        }
+                    </td>
+                    <td class="action-btns">
+                        <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form asp-action="Delete" asp-controller="User" method="post" style="display:inline;">
+                            <input type="hidden" name="email" value="@user.Email" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure to delete this receptionist?');" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            // Delete Modal Logic
+            const deleteModal = document.getElementById('deleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const userEmail = button.getAttribute('data-user-email');
+                    const userName = button.getAttribute('data-user-name');
+
+                    const modalUserEmail = deleteModal.querySelector('#c');
+                    const modalUserName = deleteModal.querySelector('#deleteUserName');
+
+                    modalUserEmail.value = userEmail;
+                    modalUserName.textContent = userName;
+
+                    const form = deleteModal.querySelector('#deleteForm');
+                    form.action = '@Url.Action("DeleteConfirmedByEmail", "User")';
+                });
+            }
+        });
+    </script>
+}

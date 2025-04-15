@@ -20,6 +20,11 @@ using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 using Microsoft.EntityFrameworkCore;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement;
+using MediCare_MVC_Project.MediCare.Application.DTOs.LabTestManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.PaymentManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
+using MediCare_MVC_Project.MediCare.Application.DTOs.AdmissionDTOs;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -28,20 +33,28 @@ namespace MediCare_MVC_Project.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IRoomService _roomService;
         private readonly ICheckUpService _checkUpService;
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
+        private readonly ILabTestService _labTestService;
+        private readonly IPaymentService _paymentService;
+        private readonly IPatientTestService _patientTestService;
         private readonly IAppointmentService _appointmentService;
         private readonly IReceptionistService _receptionistService;
         private readonly ISpecializationService _specializationService;
 
-        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService, IAppointmentService appointmentService, ICheckUpService checkUpService)
+        public AdminController(IMapper mapper, IUserService userService, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService, IPatientService patientService, IAppointmentService appointmentService, ICheckUpService checkUpService, ILabTestService labTestService, IPatientTestService patientTestService, IPaymentService paymentService, IRoomService roomService)
         {
             _mapper = mapper;
             _userService = userService;
+            _roomService = roomService;
             _doctorService = doctorService;
+            _labTestService = labTestService;
             _checkUpService = checkUpService;
             _patientService = patientService;
+            _paymentService = paymentService;
+            _patientTestService = patientTestService;
             _appointmentService = appointmentService;
             _receptionistService = receptionistService;
             _specializationService = specializationService;
@@ -62,318 +75,53 @@ namespace MediCare_MVC_Project.Controllers
             return View();
         }
 
-        // -------------- Load _UserForm form creating Admin User --------------
-        public IActionResult CreateAdminUser()
+        // -------------- Show all the Lab Test list in Lab Test Module --------------
+        public async Task<IActionResult> LabTestList()
         {
             ViewBag.HideLayoutElements = true;
-            return PartialView("_UserForm", new UserRegisterDTO());
+            var TestLists = await _labTestService.GetAllTestAsync();
+            var viewModelList = _mapper.Map<List<LabTestViewModel>>(TestLists);
+            return View(viewModelList);
         }
 
-        // -------------- Take Data from form to add new Admin User --------------
         [HttpPost]
-        public async Task<IActionResult> CreateAdminUser(UserRegisterDTO userDto)
+        public async Task<IActionResult> AddLabTest(LabTestDTO labTest)
         {
-            ViewBag.HideLayoutElements = true;
 
             if (!ModelState.IsValid)
             {
-                return View("_UserForm", userDto);
+                return RedirectToAction("LabTestList");
             }
 
-            int loggedInUser = GetLoggedInUserId();
-            await _userService.AddUserAsync(loggedInUser, userDto);
-
-            return RedirectToAction("UserList", "Admin");
+            await _labTestService.AddNewTestAsync(labTest);
+            return RedirectToAction("LabTestList");
         }
 
-        // -------------- Show all the Admin User list in User Module --------------
-        public async Task<IActionResult> UserList()
+        public async Task<IActionResult> DeleteLabTest(int testId)
         {
-            ViewBag.HideLayoutElements = true;
-            var users = await _userService.GetAllUsersAsync();
-            var viewModelList = _mapper.Map<List<UserViewModel>>(users);
-            return View(viewModelList);
-        }
-
-        // ---------------------------------------------------------------------------------------------
-        // -------------- Load _DoctorForm form creating Doctor User --------------
-        public IActionResult CreateDoctor()
-        {
-            ViewBag.HideLayoutElements = true;
-            return PartialView("_DoctorForm", new UserDoctorDTO());
-        }
-
-        // -------------- Take Data from form to add new doctor User --------------
-        [HttpPost]
-        public async Task<IActionResult> CreateDoctor(UserDoctorDTO userDoctorDTO)
-        {
-            ViewBag.HideLayoutElements = true;
-            if (!ModelState.IsValid)
-            {
-                return View("_DoctorForm", userDoctorDTO);
-            }
-
-            int loggedInUser = GetLoggedInUserId();
-            await _doctorService.AddDoctorAsync(loggedInUser, userDoctorDTO);
-            return RedirectToAction("DoctorList", "Admin");
-        }
-
-        // -------------- Load All the Specialization in _DoctorForm --------------
-        public async Task<IActionResult> SpecializationDropDown()
-        {
-            try
-            {
-                var specializations = await _specializationService.GetAllSpecializationAsync();
-                var viewModelList = _mapper.Map<List<GetSpecializationDTO>>(specializations);
-                return Json(viewModelList); 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "An error occurred while fetching specializations.", Error = ex.Message });
-            }
-        }
-
-        // -------------- Show all the Doctor User list in Doctor Module --------------
-        public async Task<IActionResult> DoctorList()
-        {
-            ViewBag.HideLayoutElements = true;
-            var doctors = await _doctorService.GetAllDoctorAsync();
-            var viewModelList = _mapper.Map<List<DoctorViewModel>>(doctors);
-            return View(viewModelList);
-        }
-
-
-        // ---------------------------------------------------------------------------------------------
-        // -------------- Load _ReceptionistForm form creating Receptionist User --------------
-        public IActionResult CreateReceptionist()
-        {
-            ViewBag.HideLayoutElements = true;
-            return PartialView("_ReceptionistForm", new UserReceptionistDTO());
-        }
-
-        // -------------- Take Data from form to add new Receptionist User --------------
-        [HttpPost]
-        public async Task<IActionResult> CreateReceptionist(UserReceptionistDTO userDto)
-        {
-            ViewBag.HideLayoutElements = true;
-
-            if (!ModelState.IsValid)
-            {
-                return View("_ReceptionistForm", userDto);
-            }
-
-            int loggedInUser = GetLoggedInUserId();
-            await _receptionistService.AddReceptionistAsync(loggedInUser, userDto);
-
-            return RedirectToAction("ReceptionistList", "Admin");
-        }
-
-        // -------------- Show all the Receptionist list in Receptionist Module --------------
-        public async Task<IActionResult> ReceptionistList()
-        {
-            ViewBag.HideLayoutElements = true;
-            var receptionist = await _receptionistService.GetAllReceptionistAsync();
-            var viewModelList = _mapper.Map<List<ReceptionistViewModel>>(receptionist);
-            return View(viewModelList);
-        }
-
-        // ---------------------------------------------------------------------------------------------
-        // -------------- Load _PatientForm form creating Patient --------------
-
-        public IActionResult CreatePatient()
-        {
-            ViewBag.HideLayoutElements = true;
-            return PartialView("_PatientForm", new GetPatientDTO());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreatePatient(GetPatientDTO userDto)
-        {
-            ViewBag.HideLayoutElements = true;
-
-            if (!ModelState.IsValid)
-            {
-                return View("_PatientForm", userDto);
-            }
-
-            int loggedInUser = GetLoggedInUserId();
-            await _patientService.AddPatientAsync(loggedInUser, userDto);
-
-            return RedirectToAction("PatientList", "Admin");
-        }
-
-        // -------------- Show all the Patient User list in Patient Module --------------
-        public async Task<IActionResult> PatientList()
-        {
-            ViewBag.HideLayoutElements = true;
-            var patientList = await _patientService.GetAllPatientAsync();
-            var viewModelList = _mapper.Map<List<PatientViewModel>>(patientList);
-            return View(viewModelList);
-        }
-
-        public async Task<IActionResult> DeletePatient(int id)
-        {
-            try
-            {
-                await _patientService.DeletePatientAsync(id);
-                return RedirectToAction("PatientList", "Admin");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "Error while deleting Patient record.", Error = ex.Message });
-            }
-        }
-
-
-
-        // ---------------------------------------------------------------------------------------------
-        // -------------- Show all the Specialization list in Specialization Module --------------
-        public async Task<IActionResult> SpecializationList()
-        {
-            try
-            {
-                var specializations = await _specializationService.GetAllSpecializationAsync();
-                var viewModelList = _mapper.Map<List<GetSpecializationDTO>>(specializations);
-                return View(viewModelList); 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "An error occurred while fetching specializations.", Error = ex.Message });
-            }
-        }
-
-        // -------------- Take Data Input Field from Specialization module to add new Specialization --------------
-        [HttpPost]
-        public async Task<IActionResult> AddSpecialization(string specializationName)
-        {
-            if (!string.IsNullOrWhiteSpace(specializationName))
-            {
-                int loggedInUser = GetLoggedInUserId();
-                await _specializationService.AddSpecializationAsync(loggedInUser, specializationName);
-            }
-            return RedirectToAction("SpecializationList");
-        }
-
-
-        // ---------------------------------------------------------------------------------------------
-        // -------------- Load Appointment Form  --------------
-        public IActionResult BookAppointment(int patientId)
-        {
-            var model = new AppointmentDTO
-            {
-                PatientId = patientId,
-            };
-
-            return PartialView("_AppointmentForm", model); // but only works if used inside an already loaded view
-        }
-
-        public async Task<IActionResult> GetDoctorsDropdown()
-        {
-            var doctors = await _doctorService.GetAllDoctorAsync(); // or however you're fetching
-            var result = doctors.Select(d => new
-            {
-                doctorId = d.DoctorId,
-                doctorName = d.FirstName + " " + d.LastName,
-                specialization = d.Specialization
-            });
-
-            return Json(result);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BookAppointment(AppointmentDTO model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("_AppointmentForm", model);
-            }
-
-            int loggedUser = GetLoggedInUserId();
-            await _appointmentService.BookAppointmentAsync(loggedUser, model);
-
-            return RedirectToAction("AppointmentList", "Admin");
-        }
-
-        public async Task<IActionResult> AppointmentList()
-        {
-            ViewBag.HideLayoutElements = true;
-            var appointmentList = await _appointmentService.GetAllAppointmentAsync();
-            var viewModelList = _mapper.Map<List<AppointmentViewModel>>(appointmentList);
-            return View(viewModelList);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                await _appointmentService.DeleteAppointmentByIdAsync(id);
-
-                TempData["Success"] = "Appointment Record Deleted Successfully.";
-
-                return RedirectToAction("AppointmentList", "Admin");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "Error while deleting Appointment record.", Error = ex.Message });
-            }
-        }
-
-        // ---------------------------------------------------------------------------------------------
-        public async Task<IActionResult> CheckUpList()
-        {
-            ViewBag.HideLayoutElements = true;
-            var checkupList = await _checkUpService.GetAllCheckUpAsync();
-            var viewModelList = _mapper.Map<List<CheckUpViewModel>>(checkupList);
-            return View(viewModelList);
-        }
-
-        public async Task<IActionResult> DeleteCheckUp(int id)
-        {
-            try
-            {
-                await _checkUpService.DeletePatientNotesAsync(id);
-                return RedirectToAction("CheckUpList", "Admin");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "Error while deleting Patient's note record.", Error = ex.Message });
-            }
-        }
-
-
-        public async Task<IActionResult> DownloadNotes(int id)
-        {
-            if (id == 0)
+            if(testId == 0)
                 return NotFound();
 
-            var pdfBytes = await _checkUpService.DownloadNotesPdfAsync(id);
+            await _labTestService.DeleteTestAsync(testId);
 
-            if (pdfBytes == null || pdfBytes.Length == 0)
-                return NotFound("PDF generation failed or empty file.");
-
-            return File(pdfBytes, "application/pdf", $"Patient_Notes_{id}.pdf");
+            return RedirectToAction("LabTestList");
         }
 
-        public async Task<IActionResult> SendEmailWithNotes(int id)
+        // -------------- Show all the Patient's Lab Test list in Lab Test Module --------------
+        public async Task<IActionResult> PatientTestList()
         {
-            if (id == null)
-                return NotFound();
+            ViewBag.HideLayoutElements = true;
+            var PatientTestLists = await _patientTestService.GetAllPatientTestAsync();
+            var viewModelList = _mapper.Map<List<PatientTestViewModel>>(PatientTestLists);
+            return View(viewModelList);
+        }
 
-            var emailStatus = await _checkUpService.SendPatientNotePdfAsync(id);
-
-            if (emailStatus)
-            {
-                TempData["Success"] = "Patient note sent successfully!";
-            }
-            else
-            {
-                TempData["Error"] = "Failed to send email.";
-            }
-
-            return RedirectToAction("CheckUpList");
+        public async Task<IActionResult> PaymentInvoiceList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var invoicesList = await _paymentService.GetAllPaymentAsync();
+            var viewModelList = _mapper.Map<List<PaymentInvoiceViewModel>>(invoicesList);
+            return View(viewModelList);
         }
     }
 }

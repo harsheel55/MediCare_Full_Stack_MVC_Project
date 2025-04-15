@@ -1,0 +1,215 @@
+﻿@model IEnumerable<MediCare_MVC_Project.MediCare.Application.DTOs.SpecializationDTOs.GetSpecializationDTO>
+
+@{
+    ViewData["Title"] = "All Specializations";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+<style>
+    .page-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .page-header h2 {
+        font-weight: 600;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .btn-add {
+        background-color: #198754;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-add:hover {
+        background-color: #157347;
+        transform: scale(1.05);
+    }
+
+    .btn-add:active {
+        background-color: #145a30;
+        transform: scale(1);
+    }
+
+    .btn-add i {
+        margin-right: 8px;
+    }
+
+    .card-container {
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-custom {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .table-custom th,
+    .table-custom td {
+        padding: 14px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 14px;
+    }
+
+    .table-custom th {
+        background-color: #0d6efd;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .table-custom tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .table-custom tbody tr:hover {
+        background-color: #eef1f5;
+    }
+
+    .action-btns {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .action-btns .btn {
+        padding: 6px;
+        font-size: 15px;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-btns .btn:hover {
+        opacity: 0.8;
+    }
+
+    .action-btns .btn-danger,
+    .action-btns .btn-warning,
+    .action-btns .btn-success,
+    .action-btns .btn-secondary {
+        color: black;
+    }
+
+    .form-inline {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .editable-input {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="card-container">
+    <div class="page-header">
+        <h2>All Specializations</h2>
+        <form asp-action="AddSpecialization" asp-controller="Specialization" method="post" class="form-inline">
+            <input type="text" name="SpecializationName" class="form-control" placeholder="Enter Specialization Name" required />
+            <button type="submit" class="btn-add">
+                <i class="fas fa-plus"></i> Add Specialization
+            </button>
+        </form>
+    </div>
+
+    <table class="table-custom">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Specialization Name</th>
+                <th>Total Doctors</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int index = 1;
+                foreach (var item in Model)
+                {
+                    <tr id="row-@item.SpecializationId">
+                        <td>@index</td>
+                        <td>
+                            <span id="name-text-@item.SpecializationId">@item.SpecializationName</span>
+                            <form id="edit-form-@item.SpecializationId" asp-action="Update" asp-controller="Specialization" method="post" style="display:none;">
+                                <input type="hidden" name="id" value="@item.SpecializationId" />
+                                <input type="text" name="specializationName" class="editable-input" value="@item.SpecializationName" required />
+                            </form>
+                        </td>
+                        <td>@item.TotalDoctors</td>
+                        <td class="action-btns">
+                            <div id="btn-group-@item.SpecializationId" class="d-flex">
+                                <button type="button" class="btn btn-warning" onclick="enableEdit(@item.SpecializationId)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form asp-action="Delete" asp-controller="Specialization" method="post">
+                                    <input type="hidden" name="id" value="@item.SpecializationId" />
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div id="edit-actions-@item.SpecializationId" class="d-flex" style="display:none;">
+                                <button type="submit" class="btn btn-success" form="edit-form-@item.SpecializationId">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelEdit(@item.SpecializationId)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">No specializations found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function enableEdit(id) {
+        document.getElementById('name-text-' + id).style.display = 'none';
+        document.getElementById('edit-form-' + id).style.display = 'inline';
+        document.getElementById('btn-group-' + id).style.display = 'none';
+        document.getElementById('edit-actions-' + id).style.display = 'inline-flex';
+    }
+
+    function cancelEdit(id) {
+        document.getElementById('name-text-' + id).style.display = 'inline';
+        document.getElementById('edit-form-' + id).style.display = 'none';
+        document.getElementById('btn-group-' + id).style.display = 'inline-flex';
+        document.getElementById('edit-actions-' + id).style.display = 'none';
+    }
+</script>

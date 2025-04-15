@@ -1,0 +1,208 @@
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserRegisterDTO
+@{
+    ViewData["Title"] = "User Form";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    /* Default Styles for the Form */
+    form {
+        width: 100%;
+        max-width: 800px;
+        background: white;
+        padding: 30px;
+        margin-left: 130px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .mb-3 {
+        margin-bottom: 15px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-check-input {
+        margin-right: 10px;
+    }
+
+    .text-end {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+
+<form asp-action="@(Model.Id == 0 ? "CreateAdminUser" : "EditAdmin")" method="post" asp-controller="User" id="userFrom">
+    @if (Model.Id != 0)
+    {
+        <input type="hidden" asp-for="Id" />
+    }
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="FirstName" class="form-label">First Name</label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="LastName" class="form-label">Last Name</label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Password" class="form-label">Password</label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="MobileNo" class="form-label">Mobile No.</label>
+            <input asp-for="MobileNo" class="form-control" />
+            <span asp-validation-for="MobileNo" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="EmergencyNo" class="form-label">Emergency No.</label>
+            <input asp-for="EmergencyNo" class="form-control" />
+            <span asp-validation-for="EmergencyNo" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="DateOfBirth" class="form-label">Date Of Birth</label>
+            <input asp-for="DateOfBirth" type="date" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="DateOfJoining" class="form-label">Date Of Joining</label>
+            <input asp-for="DateOfJoining" type="date" class="form-control" />
+            <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="DateOfRelieving" class="form-label">Date Of Relieving</label>
+            <input asp-for="DateOfRelieving" type="date" class="form-control" />
+            <span asp-validation-for="DateOfRelieving" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Role</label>
+            <input type="text" value="Administrator" class="form-control" readonly />
+            <input type="hidden" name="RoleId" value="1" />
+            <span asp-validation-for="RoleId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3 form-check">
+            <input asp-for="Active" type="checkbox" class="form-check-input" />
+            <label asp-for="Active" class="form-check-label">Active</label>
+            <span asp-validation-for="Active" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="text-end">
+        <a asp-action="UserList" asp-controller="User" class="btn btn-secondary me-2" style="text-decoration:none;">Back</a>
+        <button type="submit" class="btn btn-success" onclick="startLoading()">Save</button>
+    </div>
+
+    <!-- Loading Progress Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#userForm').css({
+                'display': 'none',
+                'position': 'relative',
+                'top': '-30px',
+                'opacity': '0'
+            }).animate({
+                top: '0',
+                opacity: '1'
+            }, 500);
+        });
+    </script>
+}

@@ -35,14 +35,17 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
         public async Task<ICollection<GetRoomDTO>> GetAllRoomQuery()
         {
-            var recordsList = await _context.Rooms.Include(r => r.Beds)
-                                                  .GroupBy(r => new { r.RoomId, r.RoomType })
-                                                  .Select(g => new GetRoomDTO
-                                                  {
-                                                    RoomId = g.Key.RoomId,
-                                                    RoomType = g.Key.RoomType,
-                                                    TotalBeds = g.SelectMany(r => r.Beds).Count()
-                                                  }).ToListAsync();
+            var recordsList = await _context.Rooms
+                .Include(r => r.Beds)
+                .GroupBy(r => new { r.RoomId, r.RoomNumber, r.RoomType })
+                .Select(g => new GetRoomDTO
+                {
+                    RoomId = g.Key.RoomId,
+                    RoomNo = g.Key.RoomNumber,       
+                    RoomType = g.Key.RoomType,
+                    TotalBeds = g.SelectMany(r => r.Beds).Count()
+                })
+                .ToListAsync();
 
             if (recordsList == null)
                 throw new Exception("No Records found.");

@@ -1,0 +1,201 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.RoomViewModel>
+
+@{
+    ViewData["Title"] = "All Rooms";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        font-size: 12px;
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .editable-input {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    .form-inline {
+        display: flex;
+        gap: 10px;
+    }
+
+    .room-button {
+        margin-right: 50px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .d-flex.justify-content-between.align-items-center {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>All Rooms</h2>
+    <div class="room-button">
+        <form asp-action="AddRoom" asp-controller="Room" method="post" class="form-inline">
+            <input type="number" name="RoomNo" class="form-control" placeholder="Room No" required />
+            <input type="text" name="RoomType" class="form-control" placeholder="Room Type" required />
+            <button type="submit" class="btn btn-success">Add</button>
+        </form>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Room No</th>
+            <th>Room Type</th>
+            <th>Total Beds</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int index = 1;
+            foreach (var item in Model)
+            {
+                    <tr id="row-@item.RoomId">
+                        <td>@index</td>
+
+                        <td>
+                            <span id="roomno-text-@item.RoomId">@item.RoomNo</span>
+                        </td>
+
+                        <td>
+                            <span id="type-text-@item.RoomId">@item.RoomType</span>
+                        </td>
+
+                        <td>
+                            <span id="beds-text-@item.RoomId">@item.TotalBeds</span>
+                        </td>
+
+                        <td>
+                            <div class="action-buttons">
+                                <div id="btn-group-@item.RoomId">
+                                    <button type="button" class="btn btn-sm btn-warning" onclick="enableEdit(@item.RoomId)">Edit</button>
+                                </div>
+
+                                <form id="edit-form-@item.RoomId" asp-action="Update" asp-controller="Room" method="post" style="display:none;" class="form-inline">
+                                    <input type="hidden" name="RoomId" value="@item.RoomId" />
+                                    <input type="number" name="RoomNo" class="editable-input" value="@item.RoomNo" required />
+                                    <input type="text" name="RoomType" class="editable-input" value="@item.RoomType" required />
+                                    @* <input type="number" name="TotalBeds" class="editable-input" value="@item.TotalBeds" required /> *@
+
+                                    <div id="edit-actions-@item.RoomId">
+                                        <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="cancelEdit(@item.RoomId)">Cancel</button>
+                                    </div>
+                                </form>
+
+                                <form asp-action="Delete" asp-controller="Room" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@item.RoomId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">No rooms found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function enableEdit(id) {
+        document.getElementById('roomno-text-' + id).style.display = 'none';
+        document.getElementById('type-text-' + id).style.display = 'none';
+        document.getElementById('beds-text-' + id).style.display = 'none';
+        document.getElementById('edit-form-' + id).style.display = 'inline';
+        document.getElementById('btn-group-' + id).style.display = 'none';
+        document.getElementById('edit-actions-' + id).style.display = 'inline';
+    }
+
+    function cancelEdit(id) {
+        document.getElementById('roomno-text-' + id).style.display = 'inline';
+        document.getElementById('type-text-' + id).style.display = 'inline';
+        document.getElementById('beds-text-' + id).style.display = 'inline';
+        document.getElementById('edit-form-' + id).style.display = 'none';
+        document.getElementById('btn-group-' + id).style.display = 'inline';
+        document.getElementById('edit-actions-' + id).style.display = 'none';
+    }
+</script>

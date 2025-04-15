@@ -143,16 +143,16 @@
                     <td>@item.AppointmentDescription</td>
                     <td>@item.NoteText</td>
                     <td class="action-icons">
-                        <a asp-action="EditCheckUp" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Edit">
+                        <a asp-action="EditCheckUp" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a asp-action="DeleteCheckUp" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Delete" onclick="return confirm('Are you sure to delete this checkup note?');">
+                        <a asp-action="DeleteCheckUp" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Delete" onclick="return confirm('Are you sure to delete this checkup note?');">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                        <a asp-action="DownloadNotes" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Download Notes">
+                        <a asp-action="DownloadNotes" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Download Notes">
                             <i class="fas fa-download"></i>
                         </a>
-                        <a asp-action="SendEmailWithNotes" asp-controller="Admin" asp-route-id="@item.PatientNoteId" title="Send Email">
+                        <a asp-action="SendEmailWithNotes" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Send Email">
                             <i class="fas fa-envelope"></i>
                         </a>
                     </td>

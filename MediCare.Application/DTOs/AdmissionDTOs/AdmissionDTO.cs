@@ -2,7 +2,7 @@
 {
     public class AdmissionDTO
     {
-        public int PatientId { get; set; }
+        public string AadharNo { get; set; }
         public int BedId { get; set; }
         public DateOnly AdmissionDate { get; set; }
         public DateOnly DischargeDate { get; set; }

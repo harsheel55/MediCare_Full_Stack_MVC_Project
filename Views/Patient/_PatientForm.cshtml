@@ -1,6 +1,7 @@
-﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserRegisterDTO
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs.GetPatientDTO
+
 @{
-    ViewData["Title"] = "User Form";
+    ViewData["Title"] = "Patient Form";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -105,26 +106,54 @@
     .btn-success:hover {
         background-color: #218838;
     }
-
 </style>
 
-<form asp-action="@(Model.Id == 0 ? "CreateAdminUser" : "EditAdmin")" method="post" asp-controller="Admin">
-    @if (Model.Id != 0)
+<form asp-action="@(Model.PatientId == 0 ? "CreatePatient" : "Edit")" method="post" asp-controller="Patient">
+    @if (Model.PatientId != 0)
     {
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PatientId" />
     }
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label asp-for="FirstName" class="form-label">First Name</label>
+            <label asp-for="FirstName" class="form-label"></label>
             <input asp-for="FirstName" class="form-control" />
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="LastName" class="form-label">Last Name</label>
+            <label asp-for="LastName" class="form-label"></label>
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="DateOfBirth" class="form-label"></label>
+            <input asp-for="DateOfBirth" type="date" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Gender" class="form-label"></label>
+            <select asp-for="Gender" class="form-select">
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="AadharNo" class="form-label"></label>
+            <input asp-for="AadharNo" class="form-control" />
+            <span asp-validation-for="AadharNo" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="MobileNo" class="form-label"></label>
+            <input asp-for="MobileNo" class="form-control" />
+            <span asp-validation-for="MobileNo" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
@@ -134,48 +163,16 @@
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="Password" class="form-label"></label>
-            <input asp-for="Password" class="form-control" type="password" />
-            <span asp-validation-for="Password" class="text-danger"></span>
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="MobileNo" class="form-label">Mobile No.</label>
-            <input asp-for="MobileNo" class="form-control" />
-            <span asp-validation-for="MobileNo" class="text-danger"></span>
+            <label asp-for="City" class="form-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
         </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="EmergencyNo" class="form-label">Emergency No.</label>
-            <input asp-for="EmergencyNo" class="form-control" />
-            <span asp-validation-for="EmergencyNo" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="DateOfBirth" class="form-label">Date Of Birth</label>
-            <input asp-for="DateOfBirth" type="date" class="form-control" />
-            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="DateOfJoining" class="form-label">Date Of Joining</label>
-            <input asp-for="DateOfJoining" type="date" class="form-control" />
-            <span asp-validation-for="DateOfJoining" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="DateOfRelieving" class="form-label">Date Of Relieving</label>
-            <input asp-for="DateOfRelieving" type="date" class="form-control" />
-            <span asp-validation-for="DateOfRelieving" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Role</label>
-            <input type="text" value="Administrator" class="form-control" readonly />
-            <input type="hidden" name="RoleId" value="1" />
-            <span asp-validation-for="RoleId" class="text-danger"></span>
-        </div>
-
 
         <div class="col-md-6 mb-3 form-check mt-4">
             <input asp-for="Active" type="checkbox" class="form-check-input" />
@@ -185,7 +182,7 @@
     </div>
 
     <div class="text-end">
-        <a asp-action="UserList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
+        <a asp-action="PatientList" asp-controller="Patient" class="btn btn-secondary me-2">Back</a>
         <button type="submit" class="btn btn-success">Save</button>
     </div>
 </form>

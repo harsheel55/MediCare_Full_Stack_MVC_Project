@@ -1,0 +1,113 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.PatientTestViewModel>
+
+@{
+    ViewData["Title"] = "Patient Test List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            font-size: 12px;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .action-icons a {
+        margin-right: 10px;
+        font-size: 16px;
+    }
+
+    .fa-edit {
+        color: #ffc107;
+    }
+
+    .fa-trash-alt {
+        color: #dc3545;
+    }
+</style>
+
+<div class="d-flex d-flex-row justify-content-between align-items-center mb-3">
+    <h2>All Patient Tests</h2>
+</div>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Patient Name</th>
+            <th>Test Name</th>
+            <th>Test Date</th>
+            <th>Cost</th>
+            <th>Result</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>@item.TestName</td>
+                    <td>@item.TestDate.ToString("dd-MM-yyyy")</td>
+                    <td>₹@item.Cost.ToString("F2")</td>
+                    <td>@item.Result</td>
+                    <td class="action-icons">
+                        <a asp-action="EditTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="DeleteTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" title="Delete"
+                           onclick="return confirm('Are you sure you want to delete this test entry?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">No patient test records found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

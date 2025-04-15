@@ -18,6 +18,11 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             return _doctorRepository.AddDoctorQuery(id, doctor);
         }
 
+        public async Task DeleteDoctorAsync(string email)
+        {
+            await _doctorRepository.DeleteDoctorQuery(email);
+        }
+
         public async Task<ICollection<GetDoctorDTO>> GetAllDoctorAsync()
         {
             var doctorList = await _doctorRepository.GetAllDoctorQuery();

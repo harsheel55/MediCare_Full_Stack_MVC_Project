@@ -1,0 +1,134 @@
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.LabTestManagement.PatientTestDTO
+
+@{
+    ViewData["Title"] = "Add Lab Test";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    form {
+        max-width: 800px;
+        background: white;
+        padding: 30px;
+        margin: 20px auto;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+    }
+
+    .text-end {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+
+<form asp-action="CreateLabTest" method="post" asp-controller="LabTest">
+    <input type="hidden" asp-for="AadharNo" />
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Lab Test Type</label>
+            <select asp-for="TestId" class="form-select" id="labTestDropdown">
+                <option value="">-- Select Test --</option>
+            </select>
+            <span asp-validation-for="TestId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Test Date</label>
+            <input asp-for="TestDate" type="date" class="form-control" />
+            <span asp-validation-for="TestDate" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label class="form-label">Result</label>
+            <textarea asp-for="Result" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Result" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="text-end">
+        <a asp-action="AppointmentList" asp-controller="Appointment" class="btn btn-secondary me-2">Back</a>
+        <button type="submit" class="btn btn-success">Add Test</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/LabTest/LabTestListDropDown',
+                method: 'GET',
+                success: function (data) {
+                    const dropdown = $('#labTestDropdown');
+                    dropdown.empty();
+                    dropdown.append('<option value="">-- Select Test --</option>');
+                    data.forEach(function (item) {
+                        dropdown.append(`<option value="${item.testId}">${item.testName}</option>`);
+                    });
+                },
+                error: function (err) {
+                    console.error('Error loading lab tests:', err);
+                }
+            });
+        });
+    </script>
+}

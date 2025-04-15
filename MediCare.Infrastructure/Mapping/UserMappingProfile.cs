@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using MediCare_MVC_Project.MediCare.Application.DTOs.AdmissionDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.DoctorDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.LabTestManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.PaymentDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.ReceptionistDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
@@ -18,7 +21,13 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
             CreateMap<GetPatientDTO, PatientViewModel>();
             CreateMap<GetAppointmentDTO, AppointmentViewModel>();
             CreateMap<GetCheckUpDTO, CheckUpViewModel>();
+            CreateMap<GetPaymentDTO, PaymentInvoiceViewModel>();
+            CreateMap<LabTest, LabTestViewModel>();
+            CreateMap<GetPatientTestDTO, PatientTestViewModel>();
             CreateMap<CheckUpDTO, PatientNoteViewModel>();
+            CreateMap<GetRoomDTO, RoomViewModel>();
+            CreateMap<GetAdmissionDTO, AdmissionViewModel>();
+            CreateMap<GetBedDTO,  BedViewModel>();
 
             CreateMap<DateOnly, DateTime>()
                .ConvertUsing(dateOnly => dateOnly.ToDateTime(new TimeOnly(0, 0))); 

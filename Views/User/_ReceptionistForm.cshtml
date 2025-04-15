@@ -1,6 +1,6 @@
-﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs.UserDoctorDTO
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs.UserReceptionistDTO
 @{
-    ViewData["Title"] = "Doctor Form";
+    ViewData["Title"] = "Receptionist Form";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -108,7 +108,7 @@
 
 </style>
 
-<form asp-action="@(Model.Id == 0 ? "CreateDoctor" : "Edit")" method="post" asp-controller="Admin">
+<form asp-action="@(Model.Id == 0 ? "CreateReceptionist" : "Edit")" method="post" asp-controller="User">
     @if (Model.Id != 0)
     {
         <input type="hidden" asp-for="Id" />
@@ -116,13 +116,13 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label asp-for="FirstName" class="form-label"></label>
+            <label asp-for="FirstName" class="form-label">First Name</label>
             <input asp-for="FirstName" class="form-control" />
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="LastName" class="form-label"></label>
+            <label asp-for="LastName" class="form-label">Last Name</label>
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
@@ -135,65 +135,51 @@
 
         <div class="col-md-6 mb-3">
             <label asp-for="Password" class="form-label"></label>
-            <input asp-for="Password" type="password" class="form-control" />
+            <input asp-for="Password" class="form-control" type="password" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="MobileNo" class="form-label"></label>
+            <label asp-for="MobileNo" class="form-label">Mobile No.</label>
             <input asp-for="MobileNo" class="form-control" />
             <span asp-validation-for="MobileNo" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="EmergencyNo" class="form-label"></label>
+            <label asp-for="EmergencyNo" class="form-label">Emergency No.</label>
             <input asp-for="EmergencyNo" class="form-control" />
             <span asp-validation-for="EmergencyNo" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="DateOfBirth" class="form-label"></label>
+            <label asp-for="DateOfBirth" class="form-label">Date Of Birth</label>
             <input asp-for="DateOfBirth" type="date" class="form-control" />
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="DateOfJoining" class="form-label"></label>
+            <label asp-for="DateOfJoining" class="form-label">Date Of Joining</label>
             <input asp-for="DateOfJoining" type="date" class="form-control" />
             <span asp-validation-for="DateOfJoining" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="DateOfRelieving" class="form-label"></label>
+            <label asp-for="DateOfRelieving" class="form-label">Date Of Relieving</label>
             <input asp-for="DateOfRelieving" type="date" class="form-control" />
             <span asp-validation-for="DateOfRelieving" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Role</label>
+            <input type="text" value="Receptionist" class="form-control" readonly />
+            <input type="hidden" name="RoleId" value="3" />
+            <span asp-validation-for="RoleId" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
             <label asp-for="Qualification" class="form-label"></label>
             <input asp-for="Qualification" class="form-control" />
             <span asp-validation-for="Qualification" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="LicenseNumber" class="form-label"></label>
-            <input asp-for="LicenseNumber" class="form-control" />
-            <span asp-validation-for="LicenseNumber" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="SpecializationId" class="form-label">Specialization</label>
-            <select asp-for="SpecializationId" class="form-select" id="SpecializationId">
-                <option value="">-- Select Specialization --</option>
-            </select>
-            <span asp-validation-for="SpecializationId" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Role</label>
-            <input type="text" value="Doctor" class="form-control" readonly />
-            <input type="hidden" asp-for="RoleId" value="2" />
-            <span asp-validation-for="RoleId" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3 form-check mt-4">
@@ -204,30 +190,7 @@
     </div>
 
     <div class="text-end">
-        <a asp-action="DoctorList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
+        <a asp-action="ReceptionistList" asp-controller="User" class="btn btn-secondary me-2">Back</a>
         <button type="submit" class="btn btn-success">Save</button>
     </div>
 </form>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: '/Admin/SpecializationDropDown',
-                method: 'GET',
-                success: function (data) {
-                    const dropdown = $('#SpecializationId');
-                    dropdown.empty();
-                    dropdown.append('<option value="">-- Select Specialization --</option>');
-
-                    data.forEach(function (item) {
-                        dropdown.append(`<option value="${item.specializationId}">${item.specializationName}</option>`);
-                    });
-                },
-                error: function (err) {
-                    console.error('Error loading specializations:', err);
-                }
-            });
-        });
-    </script>
-}

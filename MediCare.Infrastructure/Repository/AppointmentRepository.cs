@@ -3,10 +3,12 @@ using MediCare_MVC_Project.MediCare.Application.Interfaces;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.MediCare.Infrastructure.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 {
+    [Authorize(Roles="Administrator")]
     public class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
     {
         private readonly IEmailHelper _emailHelper;

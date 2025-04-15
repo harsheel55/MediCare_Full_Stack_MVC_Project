@@ -28,6 +28,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<ILabTestRepository, LabTestRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IPatientTestRepository, PatientTestRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
@@ -48,6 +49,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<ILabTestService, LabTestService>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IPatientTestService, PatientTestService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IReceptionistService, ReceptionistService>();
             services.AddScoped<IRoomService, RoomService>();
@@ -57,4 +59,6 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             return services;
         }
     }
+
+
 }

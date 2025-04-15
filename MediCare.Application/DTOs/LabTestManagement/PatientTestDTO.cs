@@ -2,7 +2,7 @@
 {
     public class PatientTestDTO
     {
-        public int PatientId { get; set; }
+        public string AadharNo { get; set; }
         public int TestId { get; set; }
         public DateOnly TestDate { get; set; }
         public string? Result { get; set; } = null;

@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using AutoMapper;
 using MediCare_MVC_Project.MediCare.Application.DTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.SpecializationDTOs;
+using MediCare_MVC_Project.Models;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.SpecializationManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 
 namespace MediCare_MVC_Project.Controllers
 {
@@ -12,10 +17,17 @@ namespace MediCare_MVC_Project.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IDoctorService _doctorService;
+        private readonly IReceptionistService _receptionistService;
+
+        private readonly ISpecializationService _specializationService;
         private readonly IMapper _mapper;
 
-        public UserController(IUserService userService, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper, ISpecializationService specializationService, IDoctorService doctorService, IReceptionistService receptionistService)
         {
+            _doctorService = doctorService;
+            _receptionistService = receptionistService;
+            _specializationService = specializationService;
             _userService = userService;
             _mapper = mapper;
         }
@@ -40,6 +52,20 @@ namespace MediCare_MVC_Project.Controllers
         //    return RedirectToAction("UserList", "Admin");
         //}
 
+        public async Task<IActionResult> GetDoctorsDropdown()
+        {
+            var doctors = await _doctorService.GetAllDoctorAsync(); // or however you're fetching
+            var result = doctors.Select(d => new
+            {
+                doctorId = d.DoctorId,
+                doctorName = d.FirstName + " " + d.LastName,
+                specialization = d.Specialization
+            });
+
+            return Json(result);
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAdmin(int id, UserRegisterDTO dto)
@@ -51,7 +77,7 @@ namespace MediCare_MVC_Project.Controllers
             }
             await _userService.UpdateUserAsync(GetLoggedInUserId(), id, dto);
             TempData["SuccessMessage"] = "User updated successfully!";
-            return RedirectToAction("UserList", "Admin");
+            return RedirectToAction("UserList", "User");
         }
 
         [HttpPost]
@@ -62,7 +88,117 @@ namespace MediCare_MVC_Project.Controllers
                 await _userService.DeleteUserAsync(email);
             }
 
-            return RedirectToAction("UserList", "Admin");
+            return RedirectToAction("UserList", "User");
+        }
+
+
+        // -------------- Load _UserForm form creating Admin User --------------
+        public IActionResult CreateAdminUser()
+        {
+            ViewBag.HideLayoutElements = true;
+            return PartialView("_UserForm", new UserRegisterDTO());
+        }
+
+        // -------------- Take Data from form to add new Admin User --------------
+        [HttpPost]
+        public async Task<IActionResult> CreateAdminUser(UserRegisterDTO userDto)
+        {
+            ViewBag.HideLayoutElements = true;
+
+            if (!ModelState.IsValid)
+            {
+                return View("_UserForm", userDto);
+            }
+
+            int loggedInUser = GetLoggedInUserId();
+            await _userService.AddUserAsync(loggedInUser, userDto);
+
+            return RedirectToAction("UserList", "User");
+        }
+
+        // -------------- Show all the Admin User list in User Module --------------
+        public async Task<IActionResult> UserList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var users = await _userService.GetAllUsersAsync();
+            var viewModelList = _mapper.Map<List<UserViewModel>>(users);
+            return View(viewModelList);
+        }
+
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load _DoctorForm form creating Doctor User --------------
+        public IActionResult CreateDoctor()
+        {
+            ViewBag.HideLayoutElements = true;
+            return PartialView("_DoctorForm", new UserDoctorDTO());
+        }
+
+        // -------------- Take Data from form to add new doctor User --------------
+        [HttpPost]
+        public async Task<IActionResult> CreateDoctor(UserDoctorDTO userDoctorDTO)
+        {
+            ViewBag.HideLayoutElements = true;
+            if (!ModelState.IsValid)
+            {
+                return View("_DoctorForm", userDoctorDTO);
+            }
+
+            int loggedInUser = GetLoggedInUserId();
+            await _doctorService.AddDoctorAsync(loggedInUser, userDoctorDTO);
+            return RedirectToAction("DoctorList", "User");
+        }
+
+
+        // -------------- Show all the Doctor User list in Doctor Module --------------
+        public async Task<IActionResult> DoctorList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var doctors = await _doctorService.GetAllDoctorAsync();
+            var viewModelList = _mapper.Map<List<DoctorViewModel>>(doctors);
+            return View(viewModelList);
+        }
+
+        public async Task<IActionResult> DeleteDoctor(string email)
+        {
+            if (email == null)
+                throw new Exception("Email is needed.");
+
+            await _doctorService.DeleteDoctorAsync(email);
+            return RedirectToAction("DoctorList", "User");
+        }
+
+        // ---------------------------------------------------------------------------------------------
+        // -------------- Load _ReceptionistForm form creating Receptionist User --------------
+        public IActionResult CreateReceptionist()
+        {
+            ViewBag.HideLayoutElements = true;
+            return PartialView("_ReceptionistForm", new UserReceptionistDTO());
+        }
+
+        // -------------- Take Data from form to add new Receptionist User --------------
+        [HttpPost]
+        public async Task<IActionResult> CreateReceptionist(UserReceptionistDTO userDto)
+        {
+            ViewBag.HideLayoutElements = true;
+
+            if (!ModelState.IsValid)
+            {
+                return View("_ReceptionistForm", userDto);
+            }
+
+            int loggedInUser = GetLoggedInUserId();
+            await _receptionistService.AddReceptionistAsync(loggedInUser, userDto);
+
+            return RedirectToAction("ReceptionistList", "User");
+        }
+
+        // -------------- Show all the Receptionist list in Receptionist Module --------------
+        public async Task<IActionResult> ReceptionistList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var receptionist = await _receptionistService.GetAllReceptionistAsync();
+            var viewModelList = _mapper.Map<List<ReceptionistViewModel>>(receptionist);
+            return View(viewModelList);
         }
     }
 }

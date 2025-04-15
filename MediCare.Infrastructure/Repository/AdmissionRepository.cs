@@ -15,14 +15,16 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
         public async Task AddAdmissionRecordsQuery(AdmissionDTO admission)
         {
-            var existingRecords = await _context.PatientAdmissions.FirstOrDefaultAsync(p => p.PatientId == admission.PatientId && p.AdmissionDate == admission.AdmissionDate && p.BedId == admission.BedId);
+            var existingRecords = await _context.PatientAdmissions.Include(s => s.Patient).FirstOrDefaultAsync(p => p.Patient.AadharNo == admission.AadharNo && p.AdmissionDate == admission.AdmissionDate && p.BedId == admission.BedId);
 
             if (existingRecords != null)
                 throw new Exception("Records already exists");
 
+            var patientRecord = await _context.Patients.FirstOrDefaultAsync(s => s.AadharNo == admission.AadharNo);
+
             var newRecords = new PatientAdmission
             {
-                PatientId = admission.PatientId,
+                PatientId = patientRecord.PatientId,
                 BedId = admission.BedId,
                 AdmissionDate = admission.AdmissionDate,
                 DischargeDate = admission.DischargeDate,

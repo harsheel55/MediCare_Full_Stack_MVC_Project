@@ -1,0 +1,123 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.PaymentInvoiceViewModel>
+
+@{
+    ViewData["Title"] = "All Payment Invoices";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        font-size: 12px;
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .action-icons a {
+        margin-right: 10px;
+        font-size: 16px;
+    }
+
+    .fa-edit { color: #ffc107; }
+    .fa-trash-alt { color: #dc3545; }
+    .fa-download { color: #28a745; }
+    .fa-envelope { color: #007bff; }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>All Payment Invoices</h2>
+    <a asp-action="AddPayment" asp-controller="Admin" class="btn-primary">Add Payment</a>
+</div>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Patient Name</th>
+            <th>Email</th>
+            <th>Mobile No</th>
+            <th>Appointment ID</th>
+            <th>Total Amount</th>
+            <th>Amount Paid</th>
+            <th>Payment Status</th>
+            <th>Method</th>
+            <th>Payment Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>@item.MobileNo</td>
+                    <td>@item.AppointmentId</td>
+                    <td>₹@item.Amount.ToString("F2")</td>
+                    <td>₹@item.AmoundPaid.ToString("F2")</td>
+                    <td>@item.PaymentStatus</td>
+                    <td>@item.PaymentMethod</td>
+                    <td>@item.PaymentDate.ToString("dd-MM-yyyy")</td>
+                    <td class="action-icons">
+                        <a asp-action="EditPayment" asp-controller="Admin" asp-route-id="@item.PaymentId" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="DeletePayment" asp-controller="Admin" asp-route-id="@item.PaymentId" title="Delete"
+                           onclick="return confirm('Are you sure you want to delete this payment?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <a asp-action="DownloadReceipt" asp-controller="Admin" asp-route-id="@item.PaymentId" title="Download Receipt">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <a asp-action="SendPaymentEmail" asp-controller="Admin" asp-route-id="@item.PaymentId" title="Send Email Receipt">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr><td colspan="11">No payment records found.</td></tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

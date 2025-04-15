@@ -1,0 +1,185 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.LabTestViewModel>
+
+@{
+    ViewData["Title"] = "Lab Tests";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            font-size: 12px;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .form-inline {
+        display: flex;
+        gap: 10px;
+        margin: 0px 0px 30px 0px;
+        justify-content: center;
+    }
+
+    .editable-input {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Lab Tests</h2>
+    <form asp-action="AddLabTest" asp-controller="Admin" method="post" class="form-inline">
+        <input type="text" name="TestName" class="form-control" placeholder="Test Name" required />
+        <input type="text" name="Description" class="form-control" placeholder="Description" required />
+        <input type="number" step="0.01" name="Cost" class="form-control" placeholder="Cost" required />
+        <button type="submit" class="btn btn-success">Add</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Test Name</th>
+            <th>Description</th>
+            <th>Cost</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int index = 1;
+            foreach (var test in Model)
+            {
+                <tr id="row-@test.TestId">
+                    <td>@index</td>
+
+                    <td>
+                        <span id="name-text-@test.TestId">@test.TestName</span>
+                        <form id="edit-form-name-@test.TestId" asp-action="UpdateLabTest" asp-controller="LabTest" method="post" style="display:none;">
+                            <input type="hidden" name="TestId" value="@test.TestId" />
+                            <input type="text" name="TestName" class="editable-input" value="@test.TestName" required />
+                        </form>
+                    </td>
+
+                    <td>
+                        <span id="desc-text-@test.TestId">@test.Description</span>
+                        <form id="edit-form-desc-@test.TestId" asp-action="UpdateLabTest" asp-controller="LabTest" method="post" style="display:none;">
+                            <input type="hidden" name="TestId" value="@test.TestId" />
+                            <input type="text" name="Description" class="editable-input" value="@test.Description" required />
+                        </form>
+                    </td>
+
+                    <td>
+                        <span id="cost-text-@test.TestId">@test.Cost</span>
+                        <form id="edit-form-cost-@test.TestId" asp-action="UpdateLabTest" asp-controller="LabTest" method="post" style="display:none;">
+                            <input type="hidden" name="TestId" value="@test.TestId" />
+                            <input type="number" name="Cost" step="0.01" class="editable-input" value="@test.Cost" required />
+                        </form>
+                    </td>
+
+                    <td>
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-sm btn-warning" title="Edit" onclick="enableEdit(@test.TestId)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+
+                            <form asp-action="DeleteLabTest" asp-controller="Admin" method="post" onsubmit="return confirm('Are you sure?');">
+                                <input type="hidden" name="TestId" value="@test.TestId" />
+                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+
+                            <div id="edit-actions-@test.TestId" style="display:none;">
+                                <button type="submit" class="btn btn-sm btn-success" form="edit-form-name-@test.TestId">Save</button>
+                                <button type="button" class="btn btn-sm btn-secondary" onclick="cancelEdit(@test.TestId)">Cancel</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">No lab tests found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function enableEdit(id) {
+        ['name', 'desc', 'cost'].forEach(field => {
+            document.getElementById(`${field}-text-${id}`).style.display = 'none';
+            document.getElementById(`edit-form-${field}-${id}`).style.display = 'inline';
+        });
+        document.getElementById(`edit-actions-${id}`).style.display = 'inline';
+    }
+
+    function cancelEdit(id) {
+        ['name', 'desc', 'cost'].forEach(field => {
+            document.getElementById(`${field}-text-${id}`).style.display = 'inline';
+            document.getElementById(`edit-form-${field}-${id}`).style.display = 'none';
+        });
+        document.getElementById(`edit-actions-${id}`).style.display = 'none';
+    }
+</script>

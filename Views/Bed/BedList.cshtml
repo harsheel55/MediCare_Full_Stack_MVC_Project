@@ -1,0 +1,118 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.BedViewModel>
+
+@{
+    ViewData["Title"] = "All Beds";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            font-size: 12px;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+    .btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .action-icons a {
+        margin-right: 10px;
+        font-size: 16px;
+    }
+
+    .fa-edit {
+        color: #ffc107;
+    }
+
+    .fa-trash-alt {
+        color: #dc3545;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>All Beds</h2>
+        <a asp-action="AddBed" asp-controller="Bed" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Bed
+        </a>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Bed No</th>
+            <th>Room No</th>
+            <th>Room Type</th>
+            <th>Is Occupied</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var bed in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@bed.BedNo</td>
+                    <td>@bed.RoomNo</td>
+                    <td>@bed.RoomType</td>
+                    <td>@(bed.IsOccupied ? "Yes" : "No")</td>
+                    <td class="action-icons">
+                        <a asp-action="EditBed" asp-controller="Bed" asp-route-id="@bed.BedId" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="EmptyBed" asp-controller="Bed" asp-route-id="@bed.BedId" title="Delete" onclick="return confirm('Are you sure to delete this bed?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr><td colspan="6">No beds found.</td></tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

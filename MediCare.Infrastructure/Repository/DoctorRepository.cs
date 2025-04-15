@@ -77,6 +77,25 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             }
         }
 
+        public async Task DeleteDoctorQuery(string email)
+        {
+            // First find the doctor that uses the user
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.User.Email == email);
+            if (doctor != null)
+            {
+                _context.Doctors.Remove(doctor);
+                await _context.SaveChangesAsync(); 
+            }
+
+            // Then delete the user
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync(); 
+            }
+        }
+
         public async Task<ICollection<GetDoctorDTO>> GetAllDoctorQuery()
         {
             var doctorList = await _context.Users.Include(u => u.Doctor)

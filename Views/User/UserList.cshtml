@@ -1,0 +1,315 @@
+﻿@model IEnumerable<MediCare_MVC_Project.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "All Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+<style>
+    .page-header h2 {
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    .page-header p {
+        margin: 0;
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    .search-form .form-control {
+        border-radius: 20px 0 0 20px;
+        font-size: 14px;
+    }
+
+    .search-form .btn {
+        border-radius: 0 20px 20px 0;
+        background-color: #007bff;
+        color: white;
+    }
+
+        .search-form .btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Add User Button */
+    .btn-add {
+        background-color: #198754; /* Green background */
+        text-decoration: none;
+        color: #fff; /* White text */
+        padding: 10px 20px; /* Spacing inside the button */
+        border-radius: 6px; /* Rounded corners */
+        font-weight: 500; /* Slightly bold text */
+        font-size: 14px; /* Set a good font size */
+        text-align: center; /* Center the text */
+        display: inline-flex; /* Ensure it's aligned properly */
+        align-items: center; /* Center the icon and text vertically */
+        justify-content: center; /* Center the icon and text horizontally */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+        border: none; /* Remove any default borders */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        cursor: pointer; /* Pointer cursor for better interaction */
+    }
+
+        .btn-add:hover {
+            background-color: #157347; /* Darker green on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        .btn-add:active {
+            background-color: #145a30; /* Even darker green on click */
+            transform: scale(1); /* Reset zoom effect */
+        }
+
+        .btn-add i {
+            margin-right: 8px; /* Space between icon and text */
+            font-size: 16px; /* Icon size */
+        }
+
+    .card-container {
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-custom {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+        .table-custom th,
+        .table-custom td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+
+        .table-custom th {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .table-custom tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: #eef1f5;
+        }
+
+    /* Ensure only the icons are visible and the button is not affecting styling */
+    .action-btns .btn {
+        padding: 0; /* Remove padding for icons */
+        font-size: 15px; /* Icon size */
+        width: auto;
+        height: auto;
+        border: none; /* Remove border */
+        background: transparent; /* Transparent background */
+        display: inline-flex; /* Align icon properly */
+        align-items: center; /* Center the icon vertically */
+        justify-content: center; /* Center the icon horizontally */
+    }
+
+        .action-btns .btn i {
+            margin: 0; /* Remove any margins around the icon */
+        }
+
+        /* Optional: For hover effects */
+        .action-btns .btn:hover {
+            opacity: 0.8; /* Slight opacity change on hover */
+        }
+
+    /* Styling for the delete icon */
+    .action-btns .btn-danger {
+        color: black; /* Red color for the delete icon */
+    }
+
+    .action-btns .btn-warning {
+        color: black; /* Yellow color for the edit icon */
+    }
+
+
+    .badge-status {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .badge-success {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    .page-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 25px;
+    }
+
+        .page-header .left-section {
+            flex: 1;
+        }
+
+        .page-header .right-section {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+    .search-form {
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+    }
+
+        .search-form input {
+            width: 250px; /* Make the input a fixed size */
+        }
+
+        .search-form button {
+            border-radius: 0 20px 20px 0;
+        }
+
+    .btn-add {
+        background-color: #198754;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        width: auto;
+    }
+
+        .btn-add:hover {
+            background-color: #157347;
+        }
+</style>
+
+<div class="card-container">
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <div class="left-section">
+            <h2 class="mb-0">👥 All Users</h2>
+            @* <p class="text-muted">Manage all registered users from this panel.</p> *@
+        </div>
+        <div class="right-section d-flex align-items-center">
+            <form class="search-form me-3" method="get" action="@Url.Action("Index", "User")">
+                <div class="input-group">
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Search users..." />
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            <a class="btn-add" href="@Url.Action("CreateAdminUser", "User")">
+                <i class="fas fa-user-plus"></i> Add User
+            </a>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Mobile No</th>
+                    @* <th>Emergency No</th> *@
+                    <th>DOB</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.UserId</td>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.MobileNo</td>
+                            @* <td>@user.EmergencyNo</td> *@
+                            <td>@user.DateOfBirth.ToShortDateString()</td>
+                            <td>@user.Role</td>
+                            <td>
+                                @if (user.Status)
+                                {
+                                    <span class="badge-status badge-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-status badge-danger">Inactive</span>
+                                }
+                            </td>
+                            <td class="action-btns">
+                                @if (user.Role == "Administrator")
+                                {
+                                    <a class="btn btn-sm btn-warning" title="Edit User"
+                                       href="@Url.Action("EditAdmin", "User", new { id = user.UserId })">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                }
+                                <form asp-action="Delete" asp-controller="User" method="post" style="display:inline;">
+                                    <input type="hidden" name="email" value="@user.Email" />
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this user?');"
+                                            title="Delete User">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center">No users found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // ✅ Delete Modal Logic
+            const deleteModal = document.getElementById('deleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const userEmail = button.getAttribute('data-user-email');
+                    const userName = button.getAttribute('data-user-name');
+
+                    const modalUserEmail = deleteModal.querySelector('#c');
+                    const modalUserName = deleteModal.querySelector('#deleteUserName');
+
+                    modalUserEmail.value = userEmail;
+                    modalUserName.textContent = userName;
+
+                    const form = deleteModal.querySelector('#deleteForm');
+                    form.action = '@Url.Action("DeleteConfirmedByEmail", "User")';
+                });
+            }
+        });
+    </script>
+}

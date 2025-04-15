@@ -80,7 +80,7 @@
     }
 </style>
 
-<form asp-action="BookAppointment" method="post" asp-controller="Admin">
+<form asp-action="BookAppointment" method="post" asp-controller="Appointment">
     <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
 
     <div class="row">
@@ -135,7 +135,7 @@
     </div>
 
     <div class="text-end">
-        <a asp-action="PatientList" asp-controller="Admin" class="btn btn-secondary me-2">Back</a>
+        <a asp-action="PatientList" asp-controller="Patient" class="btn btn-secondary me-2">Back</a>
         <button type="submit" class="btn btn-success">Book</button>
     </div>
 </form>
@@ -144,7 +144,7 @@
     <script>
         $(document).ready(function () {
             $.ajax({
-                url: '/Admin/GetDoctorsDropdown',
+                url: '/User/GetDoctorsDropdown',
                 method: 'GET',
                 success: function (data) {
                     const dropdown = $('#doctorDropdown');
