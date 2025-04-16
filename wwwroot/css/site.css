@@ -42,6 +42,15 @@ header, footer {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Add this to your site's CSS file */
+.nav-links li a.active {
+    background-color:white;
+    border-radius: 10px;
+    color: #007bff; /* Change this to your desired active link color */
+    font-weight: bold; /* Optional: Makes the active link bold */
+}
+
+
 .logo img {
     height: 50px;
     margin-right: 50px;

@@ -5,109 +5,140 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
 <style>
-    .table {
+    .card-container {
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+        .page-header h2 {
+            font-weight: 600;
+            font-size: 24px;
+            margin: 0;
+        }
+
+    .table-custom {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 20px;
+        margin-top: 15px;
     }
 
-        .table th, .table td {
-            font-size: 12px;
-            padding: 12px 15px;
+        .table-custom th,
+        .table-custom td {
+            padding: 14px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
         }
 
-        .table th {
-            background-color: #343a40;
-            color: white;
+        .table-custom th {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
         }
 
-        .table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .table-custom tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
-        .table tbody tr:hover {
-            background-color: #e0e0e0;
+        .table-custom tbody tr:hover {
+            background-color: #eef1f5;
         }
 
-    .btn-primary {
-        background-color: #007bff;
-        color: white;
-        padding: 8px 15px;
-        border-radius: 4px;
-        text-decoration: none;
-        font-size: 14px;
+    .action-btns .btn {
+        padding: 0;
+        font-size: 15px;
+        width: auto;
+        height: auto;
+        border: none;
+        background: transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .action-icons a {
-        margin-right: 10px;
-        font-size: 16px;
-    }
+        .action-btns .btn i {
+            margin: 0;
+        }
 
-    .fa-edit {
-        color: #ffc107;
-    }
+        .action-btns .btn:hover {
+            opacity: 0.8;
+        }
 
-    .fa-trash-alt {
+    .action-btns .btn-danger {
         color: #dc3545;
+    }
+
+    .action-btns .btn-warning {
+        color: #ffc107;
     }
 </style>
 
-<div class="d-flex d-flex-row justify-content-between align-items-center mb-3">
-    <h2>All Patient Tests</h2>
-</div>
+<div class="card-container">
+    <div class="page-header">
+        <h2>🧪 Patient Test List</h2>
+    </div>
 
-<table class="table table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>#</th>
-            <th>Patient Name</th>
-            <th>Test Name</th>
-            <th>Test Date</th>
-            <th>Cost</th>
-            <th>Result</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int index = 1;
-        }
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var item in Model)
-            {
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
                 <tr>
-                    <td>@index</td>
-                    <td>@item.FirstName @item.LastName</td>
-                    <td>@item.TestName</td>
-                    <td>@item.TestDate.ToString("dd-MM-yyyy")</td>
-                    <td>₹@item.Cost.ToString("F2")</td>
-                    <td>@item.Result</td>
-                    <td class="action-icons">
-                        <a asp-action="EditTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a asp-action="DeleteTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" title="Delete"
-                           onclick="return confirm('Are you sure you want to delete this test entry?');">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </td>
+                    <th>#</th>
+                    <th>Patient Name</th>
+                    <th>Test Name</th>
+                    <th>Test Date</th>
+                    <th>Cost</th>
+                    <th>Result</th>
+                    <th>Actions</th>
                 </tr>
-                index++;
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="8">No patient test records found.</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@section Scripts {
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-}
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                }
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td>@item.FirstName @item.LastName</td>
+                            <td>@item.TestName</td>
+                            <td>@item.TestDate.ToString("dd-MM-yyyy")</td>
+                            <td>₹@item.Cost.ToString("F2")</td>
+                            <td>@item.Result</td>
+                            <td class="action-btns">
+                                <a class="btn btn-warning" asp-action="EditTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-danger" asp-action="DeleteTest" asp-controller="Admin" asp-route-id="@item.PatientTestId"
+                                   onclick="return confirm('Are you sure you want to delete this test entry?');"
+                                   title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7">No patient test records found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

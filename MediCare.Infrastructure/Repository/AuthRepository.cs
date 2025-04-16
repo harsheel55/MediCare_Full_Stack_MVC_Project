@@ -39,6 +39,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         {
             // Generate a reset token (Base64-encoded GUID)
             string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 20);
+            Console.WriteLine(token);
             string encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
             return encodedToken;

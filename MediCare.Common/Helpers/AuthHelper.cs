@@ -64,7 +64,7 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
 
             // Store OTP in memory (key: email)
             _otpStore[forgotPwd.Email] = (otp, expiry);
-
+            Console.WriteLine("Forgot Password OTP: " + otp);
             var emailBody = $@"
                 <h2>Password Reset OTP</h2>
                 <p>Use the following OTP to reset your password:</p>

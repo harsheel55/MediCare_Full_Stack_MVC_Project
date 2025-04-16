@@ -22,6 +22,7 @@ namespace MediCare_MVC_Project.Controllers
             _logger = logger;
         }
 
+
         // GET: /Auth/Login
         [HttpGet]
         public IActionResult Login()

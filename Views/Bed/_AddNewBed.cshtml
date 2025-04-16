@@ -6,55 +6,69 @@
 }
 
 <style>
-    form {
-        max-width: 600px;
-        background-color: #fff;
-        padding: 30px;
+    .bed-form-card {
+        max-width: 750px;
         margin: 40px auto;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
     }
 
-    h2 {
+        .bed-form-card:hover {
+            transform: scale(1.01);
+        }
+
+    .form-title {
         text-align: center;
-        margin-bottom: 25px;
-        font-weight: bold;
+        font-size: 28px;
+        font-weight: 700;
         color: #333;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
 
     .form-label {
         font-weight: 600;
-        margin-bottom: 5px;
-        display: block;
+        color: #444;
     }
 
     .form-control,
     .form-select {
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
+        border-radius: 8px;
         font-size: 15px;
-        width: 100%;
+        border: 1px solid #ccc;
+        padding: 10px;
+        transition: border-color 0.3s;
     }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #007bff;
+            box-shadow: none;
+        }
 
     .text-danger {
         font-size: 13px;
-        color: #dc3545;
+        margin-top: 3px;
+        display: block;
+    }
+
+    .form-btns {
+        text-align: end;
+        margin-top: 30px;
     }
 
     .btn {
         padding: 10px 20px;
-        border-radius: 5px;
+        border-radius: 8px;
         font-size: 16px;
+        font-weight: 500;
     }
 
     .btn-primary {
         background-color: #007bff;
-        color: #fff;
+        color: white;
         border: none;
     }
 
@@ -73,34 +87,42 @@
         }
 </style>
 
-<h2>Add New Bed</h2>
+<div class="container-fluid">
+    <div class="bed-form-card">
+        <div class="form-title">Add New Bed</div>
 
-<form asp-action="AddBed" asp-controller="Bed" method="post" class="mt-4">
-    <div class="form-group">
-        <label asp-for="BedNo" class="form-label">Bed Number</label>
-        <input asp-for="BedNo" class="form-control" />
-        <span asp-validation-for="BedNo" class="text-danger"></span>
+        <form asp-action="AddBed" asp-controller="Bed" method="post">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label asp-for="BedNo" class="form-label">Bed Number</label>
+                    <input asp-for="BedNo" class="form-control" />
+                    <span asp-validation-for="BedNo" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="RoomNo" class="form-label">Room Number</label>
+                    <input asp-for="RoomNo" class="form-control" />
+                    <span asp-validation-for="RoomNo" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="RoomType" class="form-label">Room Type</label>
+                    <select asp-for="RoomType" class="form-select">
+                        <option value="">-- Select Room Type --</option>
+                    </select>
+                    <span asp-validation-for="RoomType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-btns">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <a asp-action="AllBeds" asp-controller="Bed" class="btn btn-secondary ms-2">Cancel</a>
+            </div>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label asp-for="RoomNo" class="form-label">Room Number</label>
-        <input asp-for="RoomNo" class="form-control" />
-        <span asp-validation-for="RoomNo" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="RoomType" class="form-label">Room Type</label>
-        <select asp-for="RoomType" class="form-select">
-            <option value="">-- Select Room Type --</option>
-        </select>
-        <span asp-validation-for="RoomType" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        <i class="fas fa-save"></i> Save
-    </button>
-    <a asp-action="AllBeds" asp-controller="Bed" class="btn btn-secondary ms-2">Cancel</a>
-</form>
+</div>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -126,7 +148,5 @@
         });
     </script>
 
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

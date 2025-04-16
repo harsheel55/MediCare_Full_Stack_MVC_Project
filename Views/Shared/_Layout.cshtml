@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="~/MediCare_MVC_Project.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var shouldHideHeader = ViewBag.HideLayoutElements != null && (bool)ViewBag.HideLayoutElements;
+    }
     @if (!hideLayout)
     {
         <header>
@@ -36,17 +39,19 @@
                 <!-- Navigation Links -->
                 <div>
                     <ul class="nav-links">
-                        <li><a asp-controller="Home" asp-action="Index" style="color:#0069ab">Home</a></li>
-                        <li><a asp-controller="Home" asp-action="Services">Services</a></li>
-                        <!-- <li><a asp-controller="Doctor" asp-action="Find">Find Doctors</a></li> -->
-                        <li><a asp-controller="Home" asp-action="About">About Us</a></li>
-                        <li><a asp-controller="Home" asp-action="Blog">Blog</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Contact Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="Services" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Services" ? "active" : "")">Services</a></li>
+                        <li><a asp-controller="Home" asp-action="About" class="@(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "active" : "")">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Blog" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Blog" ? "active" : "")">Blog</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Contact" ? "active" : "")">Contact Us</a></li>
                     </ul>
                 </div>
 
-                <!-- Check-In (Login) Button -->
-                <button class="check-in" onclick="location.href='@Url.Action("Login", "Home")'">Check-In</button>
+                @if(!shouldHideHeader)
+                {
+                    <!-- Check-In (Login) Button -->
+                    <button class="check-in" onclick="location.href='@Url.Action("Login", "Home")'">Check-In</button>                    
+                }
             </nav>
         </header>
     }

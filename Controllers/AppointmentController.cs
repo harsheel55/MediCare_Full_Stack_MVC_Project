@@ -72,8 +72,9 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+
+        [HttpPost("DeleteAppointment")]
+        public async Task<IActionResult> DeleteAppointment(int id)
         {
             try
             {

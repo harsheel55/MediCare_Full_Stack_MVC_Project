@@ -235,21 +235,6 @@
         <div class="contact-container">
             <div class="contact-form">
                 <h1><span class="highlight">Contact</span> Us</h1>
-
-                @if (TempData["Success"] != null)
-                {
-                    <div class="alert alert-success text-center" role="alert">
-                        @TempData["Success"]
-                    </div>
-                }
-
-                @if (TempData["Error"] != null)
-                {
-                    <div class="alert alert-danger text-center" role="alert">
-                        @TempData["Error"]
-                    </div>
-                }
-
                 <form asp-action="Contact" asp-controller="Home" method="post">
                     <div class="form-group">
                         <input asp-for="Name" class="form-control" placeholder="Your Name" />

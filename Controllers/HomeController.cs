@@ -89,6 +89,7 @@ namespace MediCare_MVC_Project.Controllers
 
         public IActionResult Login()
         {
+            ViewBag.HideLayoutElements = true;
             return RedirectToAction("Login", "Auth");
         }
 

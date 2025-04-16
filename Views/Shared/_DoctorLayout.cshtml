@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/doctor-dashboard.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="~/images/logo.jpg" alt="MediCare Logo" style="height: 50px; margin-right: 10px;" />
+            </div>
+            <div class="user-info">
+                <div class="avatar-circle">
+                    <span class="initial">@User.Identity.Name?[0]</span>
+                </div>
+                <div class="user-details">
+                    <div class="user-name">@User.Identity.Name</div>
+                    <div class="user-email">doctor@example.com</div>
+                </div>
+            </div>
+            <ul>
+                <li class="has-submenu">
+                    <a href="@Url.Action("DoctorDashboard", "Doctor")"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" class="submenu-toggle"><i class="fas fa-user-md"></i> <span>My Patients</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="@Url.Action("MyPatients", "Doctor")">Patient List</a></li>
+                        <li><a href="@Url.Action("MyAppointments", "Doctor")">Appointments</a></li>
+                        <li><a href="@Url.Action("MyCheckUps", "Doctor")">Check Ups</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" class="submenu-toggle"><i class="fas fa-prescription-bottle-alt"></i> <span>Prescriptions</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="@Url.Action("MyPrescriptions", "Doctor")">Prescription List</a></li>
+                        <li><a href="@Url.Action("CreatePrescription", "Doctor")">Create Prescription</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="@Url.Action("LabTestList", "Admin")"><i class="fas fa-vials"></i> <span>Lab Test</span></a></li>
+                <li><a href="@Url.Action("SpecializationList", "Specialization")"><i class="fas fa-briefcase-medical"></i> <span>Specializations</span></a></li>
+                <li><a href="/Settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+                <li><a href="/Auth/Logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+            </ul>
+        </div>
+        <div class="main-content" id="mainContent">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script>
+        // Show loader on any form submit
+        $(document).on("submit", "form", function () {
+            $("#loadingSpinner").show();
+        });
+
+        // Show loader on all AJAX requests
+        $(document).ajaxStart(function () {
+            $("#loadingSpinner").show();
+        }).ajaxStop(function () {
+            $("#loadingSpinner").hide();
+        });
+
+        // Optional: hide on window load
+        $(window).on("load", function () {
+            $("#loadingSpinner").hide();
+        });
+
+        document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle('open');
+            });
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

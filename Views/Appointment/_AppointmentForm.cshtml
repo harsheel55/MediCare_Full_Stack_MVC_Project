@@ -7,10 +7,10 @@
 
 <style>
     form {
-        max-width: 800px;
+        max-width: 850px;
         background: white;
         padding: 30px;
-        margin: 20px auto;
+        margin: 30px auto;
         border-radius: 10px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     }
@@ -18,43 +18,58 @@
     .row {
         display: flex;
         flex-wrap: wrap;
-        margin-bottom: 20px;
+        gap: 20px;
     }
 
-    .col-md-6 {
-        flex: 0 0 50%;
-        padding: 0 10px;
+    .col-md-6, .col-md-12 {
+        flex: 1 1 calc(50% - 20px);
         box-sizing: border-box;
     }
 
+    .col-md-12 {
+        flex-basis: 100%;
+    }
+
     .form-label {
+        display: block;
+        margin-bottom: 6px;
         font-weight: 600;
         color: #333;
     }
 
-    .form-control, .form-select {
+    .form-control, .form-select, textarea {
         width: 100%;
-        padding: 10px;
+        padding: 10px 12px;
         border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 16px;
+        border-radius: 6px;
+        font-size: 15px;
+        box-sizing: border-box;
     }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
 
     .text-danger {
         color: #dc3545;
         font-size: 14px;
+        margin-top: 4px;
+        display: block;
     }
 
     .text-end {
         text-align: right;
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     .btn {
-        padding: 12px 20px;
+        padding: 12px 24px;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
         font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s ease;
     }
 
     .btn-secondary {
@@ -69,6 +84,7 @@
 
     .btn:hover {
         transform: translateY(-2px);
+        opacity: 0.9;
     }
 
     .btn-secondary:hover {
@@ -115,13 +131,13 @@
             <select asp-for="Status" class="form-select" id="statusDropdown">
                 <option value="">-- Select Status --</option>
                 <option value="Scheduled">Scheduled</option>
-                <option value="CheckedIn">CheckedIn</option>
-                <option value="InProgress">InProgress</option>
+                <option value="CheckedIn">Checked In</option>
+                <option value="InProgress">In Progress</option>
                 <option value="Completed">Completed</option>
                 <option value="Cancelled">Cancelled</option>
-                <option value="NoShow">NoShow</option>
+                <option value="NoShow">No Show</option>
                 <option value="Rescheduled">Rescheduled</option>
-                <option value="PendingApproval">PendingApproval</option>
+                <option value="PendingApproval">Pending Approval</option>
                 <option value="Rejected">Rejected</option>
             </select>
             <span asp-validation-for="Status" class="text-danger"></span>

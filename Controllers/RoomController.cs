@@ -30,9 +30,18 @@ namespace MediCare_MVC_Project.Controllers
         public async Task<IActionResult> RoomList()
         {
             ViewBag.HideLayoutElements = true;
-            var roomList = await _roomService.GetAllRoomAsync();
-            var viewModelList = _mapper.Map<List<RoomViewModel>>(roomList);
-            return View(viewModelList);
+
+            try
+            {
+                var roomList = await _roomService.GetAllRoomAsync();
+                var viewModelList = _mapper.Map<List<RoomViewModel>>(roomList);
+                return View(viewModelList);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "Unable to fetch room list.";
+                return View(new List<RoomViewModel>());
+            }
         }
 
         [HttpPost]
@@ -40,19 +49,46 @@ namespace MediCare_MVC_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["ErrorMessage"] = "Please fill all the required fields correctly.";
                 return RedirectToAction("RoomList");
             }
 
-            int loggedUser = GetLoggedInUserId();
-            await _roomService.AddNewRoomAsync(loggedUser, room);
+            try
+            {
+                int loggedUser = GetLoggedInUserId();
+                await _roomService.AddNewRoomAsync(loggedUser, room);
+
+                TempData["SuccessMessage"] = "Room added successfully!";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (optional)
+                TempData["ErrorMessage"] = "Something went wrong while adding the room.";
+            }
+
             return RedirectToAction("RoomList");
         }
 
-        //public async Task<IActionResult> Delete(int roomId)
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteRoom(int roomId)
         //{
-        //    if (roomId == 0)
-        //        throw new Exception("Id is not valid");
+        //    if (roomId <= 0)
+        //    {
+        //        TempData["ErrorMessage"] = "Invalid Room ID.";
+        //        return RedirectToAction("RoomList");
+        //    }
 
+        //    try
+        //    {
+        //        await _roomService.DeleteRoomAsync(roomId);
+        //        TempData["SuccessMessage"] = "Room deleted successfully!";
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["ErrorMessage"] = "Failed to delete the room.";
+        //    }
+
+        //    return RedirectToAction("RoomList");
         //}
     }
 }

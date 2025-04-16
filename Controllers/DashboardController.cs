@@ -15,14 +15,14 @@ namespace MediCare_MVC_Project.Controllers
         public IActionResult DoctorDashboard()
         {
             // Your logic here for Doctor Dashboard
-            return View();
+            return View("~/Views/Doctor/DoctorDashboard.cshtml");
         }
 
         // Receptionist Dashboard
         public IActionResult ReceptionistDashboard()
         {
             // Your logic here for Receptionist Dashboard
-            return View();
+            return View("~/Views/Receptionist/ReceptionistDashboard.cshtml");
         }
     }
 }
