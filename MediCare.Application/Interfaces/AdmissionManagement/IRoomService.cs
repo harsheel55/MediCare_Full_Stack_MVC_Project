@@ -6,5 +6,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManageme
     {
         Task<ICollection<GetRoomDTO>> GetAllRoomAsync();
         Task AddNewRoomAsync(int id, RoomDTO room);
+        Task UpdateRoomAsync(int roomId, int roomNo, string roomType);
+        Task DeleteRoomAsync(int id);
     }
 }

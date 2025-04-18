@@ -10,5 +10,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement
         Task AddDoctorAsync(int id, UserDoctorDTO doctor);
         //Task UpdateDoctorAsync(int updatedById, int id, DoctorDTO patient);
         Task DeleteDoctorAsync(string email);
+        Task<UserDoctorDTO> GetDoctorByEmailAsync(string email);
+        Task UpdateDoctorAsync(string email, UserDoctorDTO updateDoctor, int updatedById);
     }
 }

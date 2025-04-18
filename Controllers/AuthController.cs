@@ -36,7 +36,6 @@ namespace MediCare_MVC_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = "Please enter valid login details.";
                 return View(model);
             }
 
@@ -73,7 +72,6 @@ namespace MediCare_MVC_Project.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Login error.");
-                TempData["Error"] = "Something went wrong during login.";
                 return View(model);
             }
         }
@@ -149,14 +147,12 @@ namespace MediCare_MVC_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = "Please check the input fields.";
                 return View(model);
             }
 
             if (model.NewPassword != model.ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Passwords do not match.");
-                TempData["Error"] = "Passwords do not match.";
                 return View(model);
             }
 
@@ -165,7 +161,6 @@ namespace MediCare_MVC_Project.Controllers
                 var result = await _authService.ResetPassword(model);
                 if (result)
                 {
-                    TempData["Success"] = "Password reset successful!";
                     _logger.LogInformation("Password reset for {Email}", model.Email);
                     return RedirectToAction("ResetPasswordConfirmation");
                 }
@@ -176,7 +171,6 @@ namespace MediCare_MVC_Project.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during password reset.");
-                TempData["Error"] = "Unable to reset password. Try again.";
                 return View(model);
             }
         }

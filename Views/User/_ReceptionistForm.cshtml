@@ -108,10 +108,10 @@
 
 </style>
 
-<form asp-action="@(Model.Id == 0 ? "CreateReceptionist" : "Edit")" method="post" asp-controller="User">
-    @if (Model.Id != 0)
+<form asp-action="@(Model.UserId == 0 ? "CreateReceptionist" : "EditReceptionist")" method="post" asp-controller="User">
+    @if (Model.UserId != 0)
     {
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="UserId" />
     }
 
     <div class="row">

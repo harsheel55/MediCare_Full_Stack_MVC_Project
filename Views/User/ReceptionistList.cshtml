@@ -42,6 +42,9 @@
             font-size: 16px;
         }
 
+    .right-section a {
+        text-decoration: none;
+    }
     .card-container {
         background: #fff;
         padding: 25px;
@@ -190,7 +193,7 @@
                         }
                     </td>
                     <td class="action-btns">
-                        <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning" title="Edit">
+                        <a href="@Url.Action("EditReceptionist", "User", new { id = user.UserId })" class="btn btn-warning" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <form asp-action="Delete" asp-controller="User" method="post" style="display:inline;">

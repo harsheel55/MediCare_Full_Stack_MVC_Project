@@ -23,5 +23,15 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             var receptionistList = await _receptionistRepository.GetAllReceptionistQuery();
             return receptionistList;
         }
+
+        public async Task<UserReceptionistDTO> GetReceptionistByIdAsync(int id)
+        {
+            return await _receptionistRepository.GetReceptionistByIdQuery(id);
+        }
+
+        public async Task UpdateReceptionistAsync(int id, UserReceptionistDTO receptionistDto, int updatedById)
+        {
+            await _receptionistRepository.UpdateReceptionistQuery(id, receptionistDto, updatedById);
+        }
     }
 }

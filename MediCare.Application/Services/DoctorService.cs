@@ -28,5 +28,15 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             var doctorList = await _doctorRepository.GetAllDoctorQuery();
             return doctorList;
         }
+
+        public Task<UserDoctorDTO> GetDoctorByEmailAsync(string email)
+        {
+            return _doctorRepository.GetDoctorByEmailQuery(email);
+        }
+
+        public async Task UpdateDoctorAsync(string email, UserDoctorDTO updateDoctor, int updatedById)
+        {
+            await _doctorRepository.UpdateDoctorQuery(email, updateDoctor, updatedById);
+        }
     }
 }

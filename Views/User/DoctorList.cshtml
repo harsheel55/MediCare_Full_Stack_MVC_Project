@@ -250,7 +250,7 @@
                         }
                     </td>
                     <td class="action-btns">
-                        <a href="@Url.Action("Edit", "User", new { id = user.id })" class="btn btn-warning" title="Edit">
+                        <a href="@Url.Action("EditDoctor", "User", new { email = user.Email })" class="btn btn-warning" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <form asp-action="DeleteDoctor" asp-controller="User" method="post" style="display:inline;">

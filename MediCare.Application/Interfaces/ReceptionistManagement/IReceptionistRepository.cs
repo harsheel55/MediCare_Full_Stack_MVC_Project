@@ -7,5 +7,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.ReceptionistManag
     {
         Task<ICollection<GetReceptionistDTO>> GetAllReceptionistQuery();
         Task AddReceptionistQuery(int id, UserReceptionistDTO receptionist);
+        Task<UserReceptionistDTO> GetReceptionistByIdQuery(int id);
+        Task UpdateReceptionistQuery(int id, UserReceptionistDTO receptionistDto, int updatedById);
     }
 }

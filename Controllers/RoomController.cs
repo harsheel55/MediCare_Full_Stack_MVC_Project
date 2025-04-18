@@ -69,26 +69,45 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("RoomList");
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteRoom(int roomId)
-        //{
-        //    if (roomId <= 0)
-        //    {
-        //        TempData["ErrorMessage"] = "Invalid Room ID.";
-        //        return RedirectToAction("RoomList");
-        //    }
+        public async Task<IActionResult> UpdateRoom(int roomId, int roomNo, string roomType)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(roomType))
+                {
+                    return BadRequest("Room type name is required.");
+                }
 
-        //    try
-        //    {
-        //        await _roomService.DeleteRoomAsync(roomId);
-        //        TempData["SuccessMessage"] = "Room deleted successfully!";
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["ErrorMessage"] = "Failed to delete the room.";
-        //    }
+                await _roomService.UpdateRoomAsync(roomId, roomNo, roomType);
 
-        //    return RedirectToAction("RoomList");
-        //}
+                return RedirectToAction("RoomList", "Room");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error while updating room.", Error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRoom(int roomNo)
+        {
+            if (roomNo <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Room ID.";
+                return RedirectToAction("RoomList");
+            }
+
+            try
+            {
+                await _roomService.DeleteRoomAsync(roomNo);
+                TempData["SuccessMessage"] = "Room deleted successfully!";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "Failed to delete the room.";
+            }
+
+            return RedirectToAction("RoomList");
+        }
     }
 }

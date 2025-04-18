@@ -54,11 +54,11 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 newUser.Password = hashedPassword;
                 newUser.RoleId = doctor.RoleId;
                 newUser.CreatedBy = id;
-
+                newUser.Active = doctor.Active;
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
 
-                doctor.Id = newUser.UserId;
+                doctor.UserId = newUser.UserId;
 
                 var newDoctor = _mapper.Map<Doctor>(doctor);
                 newDoctor.CreatedAt = DateTime.UtcNow;
@@ -111,6 +111,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                      DateOfBirth = s.DateOfBirth,
                                                      Specialization = s.Doctor.Specialization.SpecializationName,
                                                      Qualification = s.Doctor.Qualification,
+                                                     Status = s.Active,
                                                      LicenseNumber = s.Doctor.LicenseNumber
                                                  }).ToArrayAsync();
 
@@ -119,6 +120,90 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new KeyNotFoundException("No Data found");
             }
             return doctorList;
+        }
+
+        public async Task<UserDoctorDTO> GetDoctorByEmailQuery(string email)
+        {
+            var exitingDoctor = await _context.Doctors.Include(s => s.User)
+                                                      .Include(s => s.Specialization)
+                                                      .Where(c => c.User.Email == email)
+                                                      .Select(s => new UserDoctorDTO
+                                                      {
+                                                          UserId = s.User.UserId,
+                                                          FirstName = s.User.FirstName,
+                                                          LastName = s.User.LastName,
+                                                          Email = s.User.Email,
+                                                          DateOfBirth = s.User.DateOfBirth,
+                                                          MobileNo = s.User.MobileNo,
+                                                          EmergencyNo = s.User.EmergencyNo,
+                                                          DateOfJoining = s.User.DateOfJoining,
+                                                          DateOfRelieving = s.User.DateOfRelieving,
+                                                          Password = s.User.Password,
+                                                          RoleId = s.User.RoleId,
+                                                          Active = s.User.Active,
+                                                          SpecializationId = s.SpecializationId,
+                                                          Qualification = s.Qualification,
+                                                          LicenseNumber = s.LicenseNumber
+                                                      })
+                                                      .FirstOrDefaultAsync();
+
+            if (exitingDoctor == null)
+                throw new Exception("No doctor found.");
+
+            return exitingDoctor;
+        }
+
+        public async Task UpdateDoctorQuery(string email, UserDoctorDTO updateDoctor, int updateById)
+        {
+            try
+            {
+                var doctor = await _context.Doctors
+                    .Include(d => d.User)
+                    .FirstOrDefaultAsync(d => d.User.Email == email);
+
+                if (doctor == null)
+                    throw new ArgumentNullException(nameof(doctor), "Doctor not found for the given email.");
+
+                var user = doctor.User;
+
+                if (string.IsNullOrWhiteSpace(updateDoctor.Email))
+                    throw new ArgumentException("Email is required.");
+
+                if (updateDoctor.RoleId <= 0)
+                    throw new ArgumentException("Invalid RoleId.");
+
+                // Update User fields
+                user.FirstName = updateDoctor.FirstName;
+                user.LastName = updateDoctor.LastName;
+                user.DateOfBirth = updateDoctor.DateOfBirth;
+                user.EmergencyNo = updateDoctor.EmergencyNo;
+                user.Password = updateDoctor.Password;
+                user.Email = updateDoctor.Email;
+                user.MobileNo = updateDoctor.MobileNo;
+                user.RoleId = updateDoctor.RoleId;
+                user.Active = updateDoctor.Active;
+                user.UpdatedAt = DateTime.UtcNow;
+                user.UpdatedBy = updateById;
+
+                // Hash password if provided
+                if (!string.IsNullOrWhiteSpace(updateDoctor.Password))
+                {
+                    var passwordHasher = new PasswordHasher<UserDoctorDTO>();
+                    user.Password = passwordHasher.HashPassword(updateDoctor, updateDoctor.Password);
+                }
+
+                // Update Doctor fields
+                doctor.SpecializationId = updateDoctor.SpecializationId;
+                doctor.Qualification = updateDoctor.Qualification;
+                doctor.LicenseNumber = updateDoctor.LicenseNumber;
+                doctor.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to update doctor: " + ex.Message);
+            }
         }
     }
 }

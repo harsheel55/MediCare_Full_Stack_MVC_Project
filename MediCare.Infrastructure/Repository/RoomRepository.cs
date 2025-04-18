@@ -33,6 +33,17 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteRoomQuery(int roomNo)
+        {
+            var existingRoom = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomNumber == roomNo);
+
+            if (existingRoom == null)
+                throw new Exception("No Room Data found.");
+
+            _context.Rooms.Remove(existingRoom);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<ICollection<GetRoomDTO>> GetAllRoomQuery()
         {
             var recordsList = await _context.Rooms
@@ -51,6 +62,20 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception("No Records found.");
 
             return recordsList;
+        }
+
+        public async Task UpdateRoomQuery(int roomId, int roomNo, string roomType)
+        {
+            var existingRoom = await _context.Rooms.FindAsync(roomId);
+
+            if (existingRoom == null)
+                throw new Exception("No room found.");
+
+            existingRoom.RoomNumber = roomNo;
+            existingRoom.RoomType = roomType;
+
+            _context.Rooms.Update(existingRoom);
+            await _context.SaveChangesAsync();
         }
     }
 }

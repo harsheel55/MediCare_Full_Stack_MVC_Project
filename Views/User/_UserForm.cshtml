@@ -107,13 +107,14 @@
     }
 </style>
 
-<form asp-action="@(Model.Id == 0 ? "CreateAdminUser" : "EditAdmin")" method="post" asp-controller="User" id="userFrom">
-    @if (Model.Id != 0)
+<form asp-action="@(Model.UserId == 0 ? "CreateAdminUser" : "EditAdmin")" method="post" asp-controller="User" id="userFrom">
+    @if (Model.UserId != 0)
     {
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="UserId" />
     }
     <div class="row">
         <div class="col-md-6 mb-3">
+            @* <p>Model.Id: @Model.UserId</p> *@
             <label asp-for="FirstName" class="form-label">First Name</label>
             <input asp-for="FirstName" class="form-control" />
             <span asp-validation-for="FirstName" class="text-danger"></span>

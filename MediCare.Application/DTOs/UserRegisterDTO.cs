@@ -4,7 +4,7 @@ namespace MediCare_MVC_Project.MediCare.Application.DTOs
 {
     public class UserRegisterDTO
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required(ErrorMessage = "First name is required.")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "First name must be between 2 and 50 characters.")]

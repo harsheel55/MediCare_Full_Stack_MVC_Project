@@ -35,5 +35,4 @@ namespace MediCare_MVC_Project.MediCare.Application.DTOs.UserDTOs
         [Required(ErrorMessage = "Status is required.")]
         public bool Status { get; set; }
     }
-
 }

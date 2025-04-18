@@ -17,9 +17,19 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             await _roomRepository.AddNewRoomQuery(id, room);
         }
 
+        public async Task DeleteRoomAsync(int roomNo)
+        {
+            await _roomRepository.DeleteRoomQuery(roomNo);
+        }
+
         public Task<ICollection<GetRoomDTO>> GetAllRoomAsync()
         {
             return _roomRepository.GetAllRoomQuery();
+        }
+
+        public async Task UpdateRoomAsync(int roomId, int roomNo, string roomType)
+        {
+            await _roomRepository.UpdateRoomQuery(roomId, roomNo, roomType);
         }
     }
 }

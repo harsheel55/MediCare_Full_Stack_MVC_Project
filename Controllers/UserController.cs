@@ -45,13 +45,6 @@ namespace MediCare_MVC_Project.Controllers
             return View(user);
         }
 
-        //public async Task<IActionResult> EditAdmin(int id)
-        //{
-        //    await _userService.UpdateUserAsync(GetLoggedInUserId(), id, );
-        //    TempData["SuccessMessage"] = "User updated successfully!";
-        //    return RedirectToAction("UserList", "Admin");
-        //}
-
         public async Task<IActionResult> GetDoctorsDropdown()
         {
             var doctors = await _doctorService.GetAllDoctorAsync(); // or however you're fetching
@@ -65,30 +58,17 @@ namespace MediCare_MVC_Project.Controllers
             return Json(result);
         }
 
+        // --------------------------------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------- Admin User APIs ----------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------------------
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAdmin(int id, UserRegisterDTO dto)
+        // -------------- Show all the Admin User list in User Module --------------
+        public async Task<IActionResult> UserList()
         {
-            if (!ModelState.IsValid)
-            {
-
-                return View("_UserForm", dto);
-            }
-            await _userService.UpdateUserAsync(GetLoggedInUserId(), id, dto);
-            TempData["SuccessMessage"] = "User updated successfully!";
-            return RedirectToAction("UserList", "User");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(string email)
-        {
-            if (!string.IsNullOrWhiteSpace(email))
-            {
-                await _userService.DeleteUserAsync(email);
-            }
-
-            return RedirectToAction("UserList", "User");
+            ViewBag.HideLayoutElements = true;
+            var users = await _userService.GetAllUsersAsync();
+            var viewModelList = _mapper.Map<List<UserViewModel>>(users);
+            return View(viewModelList);
         }
 
 
@@ -116,16 +96,59 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("UserList", "User");
         }
 
-        // -------------- Show all the Admin User list in User Module --------------
-        public async Task<IActionResult> UserList()
+        // -------------- Fill form for update data --------------
+        [HttpGet]
+        public async Task<IActionResult> EditAdmin(int id)
+        {
+            var userDto = await _userService.GetUserByIdAsync(id);
+            if (userDto == null)
+            {
+                return NotFound();
+            }
+            var userRegisterDto = _mapper.Map<UserRegisterDTO>(userDto);
+            return View("_UserForm", userRegisterDto);
+        }
+
+        // -------------- Update data into Database --------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAdmin(int id, UserRegisterDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("_UserForm", dto);
+            }
+
+            await _userService.UpdateUserAsync(GetLoggedInUserId(), id, dto);
+            return RedirectToAction("UserList", "User");
+        }
+
+        // -------------- Delete User by email --------------
+        [HttpPost]
+        public async Task<IActionResult> Delete(string email)
+        {
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                await _userService.DeleteUserAsync(email);
+            }
+
+            return RedirectToAction("UserList", "User");
+        }
+
+        // --------------------------------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------- Doctor User APIs ---------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------------------
+
+        // -------------- Show all the Doctor User list in Doctor Module --------------
+        public async Task<IActionResult> DoctorList()
         {
             ViewBag.HideLayoutElements = true;
-            var users = await _userService.GetAllUsersAsync();
-            var viewModelList = _mapper.Map<List<UserViewModel>>(users);
+            var doctors = await _doctorService.GetAllDoctorAsync();
+            var viewModelList = _mapper.Map<List<DoctorViewModel>>(doctors);
             return View(viewModelList);
         }
 
-        // ---------------------------------------------------------------------------------------------
+
         // -------------- Load _DoctorForm form creating Doctor User --------------
         public IActionResult CreateDoctor()
         {
@@ -148,16 +171,33 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("DoctorList", "User");
         }
 
-
-        // -------------- Show all the Doctor User list in Doctor Module --------------
-        public async Task<IActionResult> DoctorList()
+        // -------------- Fill form for update data --------------
+        [HttpGet]
+        public async Task<IActionResult> EditDoctor(string email)
         {
-            ViewBag.HideLayoutElements = true;
-            var doctors = await _doctorService.GetAllDoctorAsync();
-            var viewModelList = _mapper.Map<List<DoctorViewModel>>(doctors);
-            return View(viewModelList);
+            var userDto = await _doctorService.GetDoctorByEmailAsync(email);
+            if (userDto == null)
+            {
+                return NotFound();
+            }
+            return View("_DoctorForm", userDto);
         }
 
+        // -------------- Update data into Database --------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDoctor(string email, UserDoctorDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("_DoctorForm", dto);
+            }
+            var loggedIdUser = GetLoggedInUserId();
+            await _doctorService.UpdateDoctorAsync(email, dto, loggedIdUser);
+            return RedirectToAction("DoctorList", "User");
+        }
+
+        // -------------- Delete Doctor record using email --------------
         public async Task<IActionResult> DeleteDoctor(string email)
         {
             if (email == null)
@@ -167,7 +207,19 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("DoctorList", "User");
         }
 
-        // ---------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------- Receptionist User APIs ------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------------------
+
+        // -------------- Show all the Receptionist list in Receptionist Module --------------
+        public async Task<IActionResult> ReceptionistList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var receptionist = await _receptionistService.GetAllReceptionistAsync();
+            var viewModelList = _mapper.Map<List<ReceptionistViewModel>>(receptionist);
+            return View(viewModelList);
+        }
+
         // -------------- Load _ReceptionistForm form creating Receptionist User --------------
         public IActionResult CreateReceptionist()
         {
@@ -192,13 +244,30 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("ReceptionistList", "User");
         }
 
-        // -------------- Show all the Receptionist list in Receptionist Module --------------
-        public async Task<IActionResult> ReceptionistList()
+        // -------------- Fill form for update data --------------
+        [HttpGet]
+        public async Task<IActionResult> EditReceptionist(int id)
         {
-            ViewBag.HideLayoutElements = true;
-            var receptionist = await _receptionistService.GetAllReceptionistAsync();
-            var viewModelList = _mapper.Map<List<ReceptionistViewModel>>(receptionist);
-            return View(viewModelList);
+            var userDto = await _receptionistService.GetReceptionistByIdAsync(id);
+            if (userDto == null)
+            {
+                return NotFound();
+            }
+            return View("_ReceptionistForm", userDto);
+        }
+
+        // -------------- Update data into Database --------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditReceptionist(int id, UserReceptionistDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("_ReceptionistForm", dto);
+            }
+            var loggedIdUser = GetLoggedInUserId();
+            await _receptionistService.UpdateReceptionistAsync(id, dto, loggedIdUser);
+            return RedirectToAction("ReceptionistList", "User");
         }
     }
 }

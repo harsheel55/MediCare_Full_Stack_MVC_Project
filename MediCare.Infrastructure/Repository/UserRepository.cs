@@ -50,7 +50,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                     MobileNo = userDto.MobileNo,
                     EmergencyNo = userDto.EmergencyNo,
                     Password = hashedPassword,
-                    Active = true,
+                    Active = userDto.Active,
                     RoleId = userDto.RoleId,
                     CreatedBy = id, // No need to convert since it's already an int
                     CreatedAt = DateTime.UtcNow
@@ -222,6 +222,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 var user = await _context.Users.Where(s => s.UserId == id)
                                              .Select(s => new UserDTO
                                              {
+                                                 UserId = s.UserId,
                                                  FirstName = s.FirstName,
                                                  LastName = s.LastName,
                                                  Email = s.Email,

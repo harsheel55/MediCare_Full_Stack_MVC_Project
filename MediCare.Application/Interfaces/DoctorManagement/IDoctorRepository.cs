@@ -10,5 +10,8 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement
         Task AddDoctorQuery(int id, UserDoctorDTO patient);
         //Task UpdateDoctorQuery(int updatedById, int id, DoctorDTO patient);
         Task DeleteDoctorQuery(string email);
+        Task<UserDoctorDTO> GetDoctorByEmailQuery(string email);
+        Task UpdateDoctorQuery(string email, UserDoctorDTO updateDoctor, int updatedById);
+
     }
 }
