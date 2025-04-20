@@ -3,6 +3,7 @@ using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.Authentication;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.DashboardManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
@@ -34,6 +35,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
@@ -55,6 +57,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<ISpecializationService, SpecializationService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 
             return services;
         }

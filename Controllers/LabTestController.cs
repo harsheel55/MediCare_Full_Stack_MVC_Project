@@ -44,13 +44,22 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("AppointmentList", "Appointment");
         }
 
-
         [HttpGet]
         public async Task<IActionResult> LabTestListDropDown()
         {
             var TestLists = await _labTestService.GetAllTestAsync();
             var viewModelList = _mapper.Map<List<LabTestViewModel>>(TestLists);
             return Json(viewModelList); 
+        }
+
+        [HttpPost("UpdateLabTest")]
+        public async Task<IActionResult> UpdateLabTest(int TestId, string TestName, string Description, decimal Cost)
+        {
+            if (string.IsNullOrEmpty(TestName) || string.IsNullOrEmpty(Description) || Cost <= 0)
+                return RedirectToAction("LabTestList", "Admin");
+
+            await _labTestService.UpdateLabTestAsync(TestId, TestName, Description, Cost);
+            return RedirectToAction("LabTestList", "Admin");
         }
 
     }

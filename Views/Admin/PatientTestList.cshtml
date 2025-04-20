@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
 
 <style>
     .card-container {
@@ -21,12 +21,6 @@
         align-items: center;
         margin-bottom: 25px;
     }
-
-        .page-header h2 {
-            font-weight: 600;
-            font-size: 24px;
-            margin: 0;
-        }
 
     .table-custom {
         width: 100%;
@@ -56,32 +50,19 @@
             background-color: #eef1f5;
         }
 
-    .action-btns .btn {
-        padding: 0;
+    .action-btns {
+        display: flex;
+        gap: 10px;
+    }
+
+    .editable-input {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    .btn {
         font-size: 15px;
-        width: auto;
-        height: auto;
-        border: none;
-        background: transparent;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .action-btns .btn i {
-            margin: 0;
-        }
-
-        .action-btns .btn:hover {
-            opacity: 0.8;
-        }
-
-    .action-btns .btn-danger {
-        color: black;
-    }
-
-    .action-btns .btn-warning {
-        color: black;
     }
 </style>
 
@@ -90,55 +71,78 @@
         <h2>Patient Test List</h2>
     </div>
 
-    <div class="table-responsive">
-        <table class="table-custom">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Patient Name</th>
-                    <th>Test Name</th>
-                    <th>Test Date</th>
-                    <th>Cost</th>
-                    <th>Result</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int index = 1;
-                }
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@index</td>
-                            <td>@item.FirstName @item.LastName</td>
-                            <td>@item.TestName</td>
-                            <td>@item.TestDate.ToString("dd-MM-yyyy")</td>
-                            <td>₹@item.Cost.ToString("F2")</td>
-                            <td>@item.Result</td>
-                            <td class="action-btns">
-                                <a class="btn btn-warning" asp-action="EditTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a class="btn btn-danger" asp-action="DeleteTest" asp-controller="Admin" asp-route-id="@item.PatientTestId"
-                                   onclick="return confirm('Are you sure you want to delete this test entry?');"
-                                   title="Delete">
+    <table class="table-custom">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Patient Name</th>
+                <th>Test Name</th>
+                <th>Test Date</th>
+                <th>Cost</th>
+                <th>Result</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr id="row-@item.PatientTestId">
+                    <td>@index</td>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>@item.TestName</td>
+                    <td>
+                        <span class="display-text">@item.TestDate.ToString("yyyy-MM-dd")</span>
+                        <input type="date" class="editable-input edit-field" name="TestDate" value="@item.TestDate.ToString("yyyy-MM-dd")" form="edit-form-@item.PatientTestId" style="display:none;" />
+                    </td>
+                    <td>₹@item.Cost.ToString("F2")</td>
+                    <td>
+                        <span class="display-text">@item.Result</span>
+                        <input type="text" class="editable-input edit-field" name="Result" value="@item.Result" form="edit-form-@item.PatientTestId" style="display:none;" />
+                    </td>
+                    <td>
+                        <div class="action-btns" id="default-actions-@item.PatientTestId">
+                            <button type="button" class="btn btn-warning" onclick="enableEdit(@item.PatientTestId)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form asp-action="DeletePatientTest" asp-controller="Admin" asp-route-id="@item.PatientTestId" method="post" onsubmit="return confirm('Are you sure?');">
+                                <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        index++;
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="7">No patient test records found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="action-btns" id="edit-actions-@item.PatientTestId" style="display:none;">
+                            <form asp-action="UpdatePatientTest" asp-controller="Admin" method="post" id="edit-form-@item.PatientTestId" style="display: inline;">
+                                <input type="hidden" name="PatientTestId" value="@item.PatientTestId" />
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" onclick="cancelEdit(@item.PatientTestId)">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
 </div>
+
+<script>
+    function enableEdit(id) {
+        document.querySelectorAll(`#row-${id} .display-text`).forEach(el => el.style.display = 'none');
+        document.querySelectorAll(`#row-${id} .edit-field`).forEach(el => el.style.display = 'inline-block');
+
+        document.getElementById(`default-actions-${id}`).style.display = 'none';
+        document.getElementById(`edit-actions-${id}`).style.display = 'flex';
+    }
+
+    function cancelEdit(id) {
+        document.querySelectorAll(`#row-${id} .display-text`).forEach(el => el.style.display = 'inline');
+        document.querySelectorAll(`#row-${id} .edit-field`).forEach(el => el.style.display = 'none');
+
+        document.getElementById(`default-actions-${id}`).style.display = 'flex';
+        document.getElementById(`edit-actions-${id}`).style.display = 'none';
+    }
+</script>

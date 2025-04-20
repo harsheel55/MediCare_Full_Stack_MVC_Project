@@ -25,10 +25,11 @@ using MediCare_MVC_Project.MediCare.Application.DTOs.LabTestManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PaymentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AdmissionDTOs;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles ="Administrator")]
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         private readonly IMapper _mapper;
@@ -97,16 +98,6 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("LabTestList");
         }
 
-        public async Task<IActionResult> DeleteLabTest(int testId)
-        {
-            if(testId == 0)
-                return NotFound();
-
-            await _labTestService.DeleteTestAsync(testId);
-
-            return RedirectToAction("LabTestList");
-        }
-
         // -------------- Show all the Patient's Lab Test list in Lab Test Module --------------
         public async Task<IActionResult> PatientTestList()
         {
@@ -114,6 +105,25 @@ namespace MediCare_MVC_Project.Controllers
             var PatientTestLists = await _patientTestService.GetAllPatientTestAsync();
             var viewModelList = _mapper.Map<List<PatientTestViewModel>>(PatientTestLists);
             return View(viewModelList);
+        }
+
+        public async Task<IActionResult> UpdatePatientTest(int patientTestId, DateOnly testDate, string result)
+        {
+            if (patientTestId <= 0 || testDate == DateOnly.MinValue || string.IsNullOrEmpty(result))
+                throw new Exception("Invalid Data.");
+
+            await _patientTestService.UpdatePatientTestAsync(patientTestId, testDate, result);
+            return RedirectToAction("PatientTestList", "Admin");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletePatientTest(int id)
+        {
+            if (id == 0)
+                throw new Exception("TestId is invalid.");
+
+            await _patientTestService.DeletePatientTestAsync(id);
+            return RedirectToAction("PatientTestList", "Admin");
         }
 
         public async Task<IActionResult> PaymentInvoiceList()

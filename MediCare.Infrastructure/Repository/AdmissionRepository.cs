@@ -56,6 +56,23 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<AdmissionUpdateDTO> GetAdmissionRecordsByIdQuery(int id)
+        {
+            var existingRecords = await _context.PatientAdmissions.Where(s => s.AdmissionId == id)
+                                                                  .Select(s => new AdmissionUpdateDTO
+                                                                  {
+                                                                      BedId = s.BedId,
+                                                                      AdmissionDate = s.AdmissionDate,
+                                                                      DischargeDate = s.DischargeDate,
+                                                                      IsDischarged = s.IsDischarged
+                                                                  }).FirstOrDefaultAsync();
+
+            if (existingRecords == null)
+                throw new Exception($"No Records found with {id}");
+
+            return existingRecords;
+        }
+
         public async Task<ICollection<GetAdmissionDTO>> GetAllAdmissionRecordsQuery()
         {
             var recordsList = await _context.PatientAdmissions.Include(p => p.Patient)
@@ -79,6 +96,22 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception("No Records found.");
 
             return recordsList;
+        }
+
+        public async Task UpdateAdmissionRecordQuery(int AdmissionId, AdmissionUpdateDTO admission)
+        {
+            var existingRecords = await _context.PatientAdmissions.Include(s => s.Bed).FirstOrDefaultAsync(s => s.AdmissionId == AdmissionId);
+
+            if (existingRecords == null)
+                throw new Exception($"No records found with {AdmissionId}");
+
+            existingRecords.BedId = admission.BedId;
+            existingRecords.AdmissionDate = admission.AdmissionDate;
+            existingRecords.DischargeDate = admission.DischargeDate;
+            existingRecords.IsDischarged = admission.IsDischarged;
+
+            _context.PatientAdmissions.Update(existingRecords);
+            await _context.SaveChangesAsync();
         }
     }
 }

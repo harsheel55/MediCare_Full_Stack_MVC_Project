@@ -68,6 +68,18 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return testList;
         }
 
+        public async Task UpdatePatientTestQuery(int patientTestId, DateOnly date, string result)
+        {
+            var existingRecords = await _context.PatientTests.FindAsync(patientTestId);
 
+            if (existingRecords == null)
+                throw new Exception("No Record found.");
+
+            existingRecords.TestDate = date;
+            existingRecords.Result = result;
+
+            _context.PatientTests.Update(existingRecords);
+            await _context.SaveChangesAsync();
+        }
     }
 }

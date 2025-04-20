@@ -66,5 +66,21 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
             return BedList;
         }
+
+        public async Task UpdateBedQuery(int BedId, int bedNo, int roomNo, string RoomType, bool IsOccupied)
+        {
+            var existingRecords = await _context.Beds.Include(s => s.Room).FirstOrDefaultAsync(s => s.BedId == BedId);
+            var roomData = await _context.Rooms.FirstOrDefaultAsync(s => s.RoomType == RoomType);
+
+            if (existingRecords == null || roomData == null)
+                throw new Exception($"No record is found with {BedId}");
+
+            existingRecords.BedNumber = bedNo;
+            existingRecords.RoomId = roomData.RoomId;
+            existingRecords.IsOccupied = IsOccupied;
+
+            _context.Beds.Update(existingRecords);
+            await _context.SaveChangesAsync();
+        }
     }
 }

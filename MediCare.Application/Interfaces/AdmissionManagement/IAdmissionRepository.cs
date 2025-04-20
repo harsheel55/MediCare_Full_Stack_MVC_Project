@@ -7,5 +7,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManageme
         Task<ICollection<GetAdmissionDTO>> GetAllAdmissionRecordsQuery();
         Task AddAdmissionRecordsQuery(AdmissionDTO admission);
         Task DeleteAdmissionRecordQuery(int AdmissionId);
+        Task UpdateAdmissionRecordQuery(int AdmissionId, AdmissionUpdateDTO admission);
+        Task<AdmissionUpdateDTO> GetAdmissionRecordsByIdQuery(int id);
     }
 }

@@ -26,5 +26,10 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
         {
             return await _bedRepository.GetAllBedsQuery();
         }
+
+        public async Task UpdateBedAsync(int BedId, int BedNo, int RoomNo, string RoomType, bool IsOccupied)
+        {
+            await _bedRepository.UpdateBedQuery(BedId, BedNo, RoomNo, RoomType, IsOccupied);
+        }
     }
 }

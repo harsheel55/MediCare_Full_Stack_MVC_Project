@@ -1,0 +1,147 @@
+﻿@model MediCare_MVC_Project.MediCare.Application.DTOs.AdmissionDTOs.AdmissionUpdateDTO
+
+@{
+    ViewData["Title"] = "Update Admission";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    form {
+        max-width: 800px;
+        background: white;
+        padding: 30px;
+        margin: 20px auto;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+    }
+
+    .text-end {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+
+<form asp-action="EditAdmission" asp-controller="Admission" method="post">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Bed</label>
+            <select asp-for="BedId" class="form-select" id="bedDropdown">
+                <option value="">-- Select Bed --</option>
+            </select>
+            <span asp-validation-for="BedId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Admission Date</label>
+            <input asp-for="AdmissionDate" type="date" class="form-control" />
+            <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Discharge Date</label>
+            <input asp-for="DischargeDate" type="date" class="form-control" />
+            <span asp-validation-for="DischargeDate" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label class="form-label">Is Discharged</label>
+            <select asp-for="IsDischarged" class="form-select">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+            </select>
+            <span asp-validation-for="IsDischarged" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="text-end">
+        <a asp-action="AdmissionList" asp-controller="Bed" class="btn btn-secondary me-2">Back</a>
+        <button type="submit" class="btn btn-success">Update</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Bed/GetAvailableBedsDropdown',
+                method: 'GET',
+                success: function (data) {
+                    const dropdown = $('#bedDropdown');
+                    dropdown.empty();
+                    dropdown.append('<option value="">-- Select Bed --</option>');
+                    data.forEach(function (item) {
+                        dropdown.append(`<option value="${item.bedId}">${item.roomType} - Bed: ${item.bedNo} - Room: ${item.roomNo}</option>`);
+                    });
+
+                    // Optionally retain selected BedId after loading (for edit case)
+                    const selectedValue = '@Model.BedId';
+                    if (selectedValue) {
+                        dropdown.val(selectedValue);
+                    }
+                },
+                error: function (err) {
+                    console.error('Error loading beds:', err);
+                }
+            });
+        });
+    </script>
+}

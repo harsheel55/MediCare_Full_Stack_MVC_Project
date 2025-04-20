@@ -57,5 +57,20 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
             return testsList;
         }
+
+        public async Task UpdateLabTestQuery(int TestId, string TestName, string Description, decimal cost)
+        {
+            var existingTest = await _context.LabTests.FindAsync(TestId);
+
+            if (existingTest == null)
+                throw new Exception($"No Lab Test found with {TestId}");
+
+            existingTest.TestName = TestName;
+            existingTest.Description = Description;
+            existingTest.Cost = cost;
+
+            _context.LabTests.Update(existingTest);
+            await _context.SaveChangesAsync();
+        }
     }
 }

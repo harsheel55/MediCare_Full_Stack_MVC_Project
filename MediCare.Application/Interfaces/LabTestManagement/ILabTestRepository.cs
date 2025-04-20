@@ -8,5 +8,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement
         Task<ICollection<LabTest>> GetAllTestQuery();
         Task AddNewTestQuery(LabTestDTO labTest);
         Task DeleteTestQuery(int LabTestId);
+        Task UpdateLabTestQuery(int TestId, string TestName, string Description, decimal cost);
     }
 }

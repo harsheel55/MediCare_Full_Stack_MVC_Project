@@ -27,5 +27,10 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
         {
             return await _labTestRepository.GetAllTestQuery();
         }
+
+        public async Task UpdateLabTestAsync(int TestId, string TestName, string Description, decimal cost)
+        {
+            await _labTestRepository.UpdateLabTestQuery(TestId, TestName, Description, cost);
+        }
     }
 }

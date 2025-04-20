@@ -7,5 +7,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManageme
         Task<ICollection<GetBedDTO>> GetAllBedsAsync();
         Task AddNewBedAsync(BedDTO bed);
         Task DeleteBedAsync(int BedId);
+        Task UpdateBedAsync(int BedId, int bedNo, int roomNo, string RoomType, bool IsOccupied);
     }
 }

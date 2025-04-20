@@ -73,6 +73,18 @@
         </div>
         <div class="col-md-3">
             <div class="card text-center p-4">
+                <p>@(ViewBag.TotalReceptionists ?? 0)</p>
+                <h5>Total Receptionists</h5>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center p-4">
+                <p>@(ViewBag.TotalLabTests ?? 0)</p>
+                <h5>Total Lab Tests</h5>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center p-4">
                 <p>@(ViewBag.AppointmentsToday ?? 0)</p>
                 <h5>Appointments Today</h5>
             </div>
@@ -88,18 +100,6 @@
             <div class="card text-center p-4">
                 <p>@(ViewBag.TotalAppointments ?? 0)</p>
                 <h5>Total Appointments</h5>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-center p-4">
-                <p>@(ViewBag.TotalReceptionists ?? 0)</p>
-                <h5>Total Receptionists</h5>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-center p-4">
-                <p>@(ViewBag.TotalLabTests ?? 0)</p>
-                <h5>Total Lab Tests</h5>
             </div>
         </div>
         <div class="col-md-3">

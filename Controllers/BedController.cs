@@ -83,13 +83,21 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("BedList", "Bed");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EmptyBed(int id)
+        [HttpPost]
+        public async Task<IActionResult> EditBed(int BedId, int BedNo, int RoomNo, string RoomType, bool IsOccupied)
         {
-            if (id == 0)
+            await _bedService.UpdateBedAsync(BedId, BedNo, RoomNo, RoomType, IsOccupied);
+
+            return RedirectToAction("BedList", "Bed");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EmptyBed(int BedId)
+        {
+            if (BedId == 0)
                 throw new Exception("Id is not valid.");
 
-            await _bedService.DeleteBedAsync(id);
+            await _bedService.DeleteBedAsync(BedId);
             return RedirectToAction("BedList", "Bed");
         }
 

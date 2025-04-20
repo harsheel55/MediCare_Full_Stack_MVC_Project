@@ -26,5 +26,10 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
         {
             return _patientTestRepository.GetAllPatientTestQuery();
         }
+
+        public async Task UpdatePatientTestAsync(int patientTestId, DateOnly date, string result)
+        {
+            await _patientTestRepository.UpdatePatientTestQuery(patientTestId, date, result);
+        }
     }
 }

@@ -22,9 +22,19 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             await _admissionRepository.DeleteAdmissionRecordQuery(AdmissionId);
         }
 
+        public async Task<AdmissionUpdateDTO> GetAdmissionRecordsByIdAsync(int id)
+        {
+            return await _admissionRepository.GetAdmissionRecordsByIdQuery(id);
+        }
+
         public async Task<ICollection<GetAdmissionDTO>> GetAllAdmissionRecordsAsync()
         {
             return await _admissionRepository.GetAllAdmissionRecordsQuery();
+        }
+
+        public async Task UpdateAdmissionRecordAsync(int AdmissionId, AdmissionUpdateDTO admission)
+        {
+            await _admissionRepository.UpdateAdmissionRecordQuery(AdmissionId, admission);
         }
     }
 }
