@@ -166,5 +166,17 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task UpdateCheckupNotesQuery(int noteId, string notes)
+        {
+            var existingNotes = await _context.PatientNotes.FindAsync(noteId);
+
+            if (existingNotes == null)
+                throw new Exception("No notes found.");
+
+            existingNotes.NoteUrl = notes;
+            _context.PatientNotes.Update(existingNotes);
+            await _context.SaveChangesAsync();
+        }
     }
 }

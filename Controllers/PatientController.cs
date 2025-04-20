@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using MediCare_MVC_Project.MediCare.Application.DTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
 using MediCare_MVC_Project.Models;
@@ -71,6 +72,34 @@ namespace MediCare_MVC_Project.Controllers
             {
                 return StatusCode(500, new { Message = "Error while deleting Patient record.", Error = ex.Message });
             }
+        }
+
+        // -------------- Fill form for update data --------------
+        [HttpGet]
+        public async Task<IActionResult> EditPatient(int id)
+        {
+            var userDto = await _patientService.GetPatientByIdAsync(id);
+            if (userDto == null)
+            {
+                return NotFound();
+            }
+            //var userRegisterDto = _mapper.Map<GetPatientDTO>(userDto);
+            return View("_PatientForm", userDto);
+        }
+
+        // -------------- Update data into Database --------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPatient(int id, GetPatientDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("_PatientForm", dto);
+            }
+
+            var loggedInUser = GetLoggedInUserId();
+            await _patientService.UpdatePatientAsync(id, dto, loggedInUser);
+            return RedirectToAction("PatientList", "Patient");
         }
     }
 }

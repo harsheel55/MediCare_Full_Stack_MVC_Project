@@ -135,6 +135,55 @@
         .modal-body {
             padding: 20px;
         }
+
+    /* Appointment Status Badges */
+    .badge-status {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-block;
+        min-width: 90px;
+        text-align: center;
+    }
+
+    / /* Specific status styles */
+    .badge-pending {
+        background-color: #fff3cd; /* Soft warning */
+        color: #664d03;
+    }
+
+    .badge-completed {
+        background-color: #d1e7dd; /* Soft success */
+        color: #0f5132;
+    }
+
+    .badge-scheduled {
+        background-color: #cff4fc; /* Soft info */
+        color: #055160;
+    }
+
+    .badge-inprogress {
+        background-color: #cfe2ff; /* Soft primary */
+        color: #084298;
+    }
+
+    .badge-rescheduled {
+        background-color: #e2d9f3; /* Soft purple */
+        color: #3c0d99;
+    }
+
+    .badge-no-show {
+        background-color: #e2e3e5; /* Soft secondary */
+        color: #41464b;
+    }
+
+    .badge-cancelled {
+        background-color: #f8d7da; /* Soft danger */
+        color: #842029;
+    }
+
+
     </style>
 
     @if (TempData["Success"] != null)
@@ -165,6 +214,7 @@
         <div class="page-header d-flex justify-content-between align-items-center mb-3">
             <h2>All Appointments</h2>
         </div>
+        
         <table class="table-custom">
             <thead>
                 <tr>
@@ -198,7 +248,22 @@
                             - @DateTime.Today.Add(TimeSpan.Parse(item.AppointmentEnds)).ToString("hh:mm tt")
                         </td>
                         @* <td>@item.AppointmentDescription</td> *@
-                        <td><span class="badge badge-info">@item.Status</span></td>
+                        <td>
+                            @{
+                                var statusClass = item.Status.ToLower() switch
+                                {
+                                    "pending" => "badge-pending",
+                                    "completed" => "badge-completed",
+                                    "cancelled" => "badge-cancelled",
+                                    "scheduled" => "badge-scheduled",
+                                    "in progress" => "badge-inprogress",
+                                    "rescheduled" => "badge-rescheduled",
+                                    "no show" => "badge-no-show",
+                                    _ => "badge-secondary"
+                                };
+                            }
+                            <span class="badge-status @statusClass">@item.Status</span>
+                        </td>
                         <td>
                             <a class="btn btn-sm btn-success" href="@Url.Action("Checkup", "Appointment", new { id = item.AppointmentId })" title="Checkup">
                                 <i class="fas fa-notes-medical"></i>
@@ -215,7 +280,7 @@
                             </a>
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Appointment", new { id = item.AppointmentId })" title="Edit">
+                            <a class="btn btn-sm btn-warning" href="@Url.Action("EditAppointment", "Appointment", new { id = item.PatientId, date = item.AppointmentDate })" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <a class="btn btn-sm btn-primary" href="@Url.Action("SendReminder", "Appointment", new { id = item.AppointmentId })" title="Send Reminder">

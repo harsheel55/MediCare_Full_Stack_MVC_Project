@@ -78,5 +78,53 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
             return patientList;
         }
+
+        public async Task<GetPatientDTO> GetPatientByIdQuery(int id)
+        {
+            var existingPatient = await _context.Patients.Where(s => s.PatientId == id)
+                                                         .Select(s => new GetPatientDTO
+                                                         {
+                                                             PatientId = s.PatientId,
+                                                             FirstName = s.FirstName,
+                                                             LastName = s.LastName, 
+                                                             Email = s.Email,
+                                                             DateOfBirth = s.DateOfBirth,
+                                                             Gender = s.Gender,
+                                                             AadharNo = s.AadharNo,
+                                                             Address = s.Address, 
+                                                             City = s.City, 
+                                                             MobileNo = s.MobileNo, 
+                                                             Active = s.Active
+                                                         }).FirstOrDefaultAsync();
+
+            if (existingPatient == null)
+                throw new Exception("No Patient found.");
+
+            return existingPatient;
+        }
+
+        public async Task UpdatePatientQuery(int id, GetPatientDTO getPatient, int updatedBy)
+        {
+            var existingPatient = await this.GetByIdAsync(id);
+
+            if (existingPatient == null)
+                throw new Exception($"No Patient found with {id}.");
+
+            existingPatient.FirstName = getPatient.FirstName;
+            existingPatient.LastName = getPatient.LastName;
+            existingPatient.DateOfBirth = getPatient.DateOfBirth;
+            existingPatient.AadharNo = getPatient.AadharNo;
+            existingPatient.MobileNo = getPatient.MobileNo;
+            existingPatient.Gender = getPatient.Gender;
+            existingPatient.Address = getPatient.Address;
+            existingPatient.City = getPatient.City;
+            existingPatient.Email = getPatient.Email;
+            existingPatient.Active = getPatient.Active;
+            existingPatient.UpdatedBy = updatedBy;
+            existingPatient.UpdatedAt = DateTime.UtcNow;
+
+            _context.Patients.Update(existingPatient);
+            await _context.SaveChangesAsync();
+        }
     }
 }

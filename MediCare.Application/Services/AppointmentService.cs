@@ -1,5 +1,6 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
+using MediCare_MVC_Project.MediCare.Domain.Entity;
 
 namespace MediCare_MVC_Project.MediCare.Application.Services
 {
@@ -28,9 +29,19 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             return appointmentList;
         }
 
+        public Task<Appointment> GetAppointmentByIdAsync(int id, DateOnly date)
+        {
+            return _appointmentRepository.GetAppointmentByIdQuery(id, date);
+        }
+
         public Task SendReminderEmailAsync(int id)
         {
             return _appointmentRepository.SendReminderEmailQuery(id);
+        }
+
+        public async Task UpdateAppointmentAsync(int id, AppointmentDTO appointment, int updatedBy, DateOnly date)
+        {
+            await _appointmentRepository.UpdateAppointmentQuery(id, appointment, updatedBy, date);
         }
     }
 }

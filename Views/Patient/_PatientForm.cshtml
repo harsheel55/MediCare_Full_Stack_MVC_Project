@@ -108,7 +108,7 @@
     }
 </style>
 
-<form asp-action="@(Model.PatientId == 0 ? "CreatePatient" : "Edit")" method="post" asp-controller="Patient">
+<form asp-action="@(Model.PatientId == 0 ? "CreatePatient" : "EditPatient")" method="post" asp-controller="Patient">
     @if (Model.PatientId != 0)
     {
         <input type="hidden" asp-for="PatientId" />

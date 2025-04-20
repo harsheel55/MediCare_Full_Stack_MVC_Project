@@ -21,6 +21,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Mapping
             CreateMap<GetDoctorDTO, DoctorViewModel>();
             CreateMap<GetPatientDTO, PatientViewModel>();
             CreateMap<GetAppointmentDTO, AppointmentViewModel>();
+            CreateMap<Appointment, AppointmentDTO>();
             CreateMap<GetCheckUpDTO, CheckUpViewModel>();
             CreateMap<GetPaymentDTO, PaymentInvoiceViewModel>();
             CreateMap<LabTest, LabTestViewModel>();

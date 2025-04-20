@@ -44,5 +44,10 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             await _checkUpRepository.SendPatientNotePdfQuery(id);
             return true;
         }
+
+        public async Task UpdateCheckupNotesAsync(int noteId, string notes)
+        {
+            await _checkUpRepository.UpdateCheckupNotesQuery(noteId, notes);
+        }
     }
 }

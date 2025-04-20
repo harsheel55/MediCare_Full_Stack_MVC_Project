@@ -71,6 +71,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                                 .ThenInclude(d => d.User)
                                                              .Select(s => new GetAppointmentDTO
                                                              {
+                                                                 PatientId = s.PatientId,
                                                                  AppointmentId = s.AppointmentId,
                                                                  FirstName = s.Patient.FirstName,
                                                                  LastName = s.Patient.LastName,
@@ -91,7 +92,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return appointmentList;
         }
 
-        public async Task<GetAppointmentDTO> GetAppointmentByIdQuery(int id)
+        public async Task<GetAppointmentDTO> GetAppointmentByIdSendMailQuery(int id)
         {
             var appointment = await _context.Appointments.Include(p => p.Patient)
                                                              .Include(d => d.Doctor)
@@ -99,6 +100,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                              .Where(c => c.AppointmentId == id)
                                                              .Select(s => new GetAppointmentDTO
                                                              {
+                                                                 PatientId = s.PatientId,
                                                                  AppointmentId = s.AppointmentId,
                                                                  FirstName = s.Patient.FirstName,
                                                                  LastName = s.Patient.LastName,
@@ -110,7 +112,6 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                                  AppointmentEnds = s.AppointmentEnds,
                                                                  Status = s.Status,
                                                                  AppointmentDescription = s.AppointmentDescription
-
                                                              }).FirstOrDefaultAsync();
 
             if (appointment == null)
@@ -121,8 +122,58 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 
         public async Task SendReminderEmailQuery(int id)
         {
-            var existingAppointment = await this.GetAppointmentByIdQuery(id);
+            var existingAppointment = await this.GetAppointmentByIdSendMailQuery(id);
             await _emailHelper.SendAppointmentReminderEmailAsync(existingAppointment.Email, existingAppointment.DoctorName, existingAppointment);
+        }
+
+        public async Task UpdateAppointmentQuery(int id, AppointmentDTO appointment, int updatedBy, DateOnly date)
+        {
+            var existingRecords = await _context.Appointments
+                .Include(a => a.Doctor)
+                .ThenInclude(d => d.User)
+                .Include(a => a.Patient)
+                .FirstOrDefaultAsync(s => s.PatientId == id && s.AppointmentDate == date);
+
+            if (existingRecords == null)
+                throw new Exception($"No records found with id = {id}");
+
+            existingRecords.DoctorId = appointment.DoctorId;
+            existingRecords.AppointmentDate = appointment.AppointmentDate;
+            existingRecords.AppointmentStarts = appointment.AppointmentStarts;
+            existingRecords.AppointmentEnds = appointment.AppointmentEnds;
+            existingRecords.Status = appointment.Status;
+            existingRecords.AppointmentDescription = appointment.AppointmentDescription;
+            existingRecords.UpdatedAt = DateTime.UtcNow;
+            existingRecords.UpdatedBy = updatedBy;
+
+            await _context.SaveChangesAsync(); // no need to call _context.Appointments.Update()
+
+            string doctorName = existingRecords.Doctor?.User != null
+                ? $"{existingRecords.Doctor.User.FirstName} {existingRecords.Doctor.User.LastName}"
+                : "Doctor";
+            await _emailHelper.SendAppointmentStatusEmailAsync(existingRecords.Patient.Email, doctorName, existingRecords);
+        }
+
+        public async Task<Appointment> GetAppointmentByIdQuery(int id, DateOnly date)
+        {
+            var existingRecords = await _context.Appointments.Where(s => s.PatientId == id && s.AppointmentDate == date)
+                                                             .Select(s => new Appointment
+                                                             {
+                                                                 PatientId = s.PatientId,
+                                                                 DoctorId = s.DoctorId,
+                                                                 AppointmentDate = s.AppointmentDate,
+                                                                 AppointmentStarts = s.AppointmentStarts,
+                                                                 AppointmentEnds = s.AppointmentEnds,
+                                                                 AppointmentDescription = s.AppointmentDescription,
+                                                                 Status = s.Status,
+                                                                 UpdatedBy = s.UpdatedBy,
+                                                                 UpdatedAt = s.UpdatedAt
+                                                             }).FirstOrDefaultAsync();
+
+            if (existingRecords == null)
+                throw new Exception("No Record found.");
+
+            return existingRecords;
         }
     }
 }

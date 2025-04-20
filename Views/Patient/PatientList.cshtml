@@ -196,7 +196,7 @@
                             </a>
                         </td>
                         <td class="action-btns">
-                            <a href="@Url.Action("Edit", "Patient", new { id = patient.PatientId })" class="btn btn-warning" title="Edit">
+                            <a href="@Url.Action("EditPatient", "Patient", new { id = patient.PatientId })" class="btn btn-warning" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form asp-action="DeletePatient" asp-controller="Patient" method="post" style="display:inline;">
@@ -221,26 +221,26 @@
 
 @section Scripts {
     <script>
-        // $(document).ready(function () {
+        $(document).ready(function () {
 
-        //     Delete Modal Logic
-        //     const deleteModal = document.getElementById('deleteModal');
-        //     if (deleteModal) {
-        //         deleteModal.addEventListener('show.bs.modal', function (event) {
-        //             const button = event.relatedTarget;
-        //             const userEmail = button.getAttribute('data-user-email');
-        //             const userName = button.getAttribute('data-user-name');
+            Delete Modal Logic
+            const deleteModal = document.getElementById('deleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const userEmail = button.getAttribute('data-user-email');
+                    const userName = button.getAttribute('data-user-name');
 
-        //             const modalUserEmail = deleteModal.querySelector('#c');
-        //             const modalUserName = deleteModal.querySelector('#deleteUserName');
+                    const modalUserEmail = deleteModal.querySelector('#c');
+                    const modalUserName = deleteModal.querySelector('#deleteUserName');
 
-        //             modalUserEmail.value = userEmail;
-        //             modalUserName.textContent = userName;
+                    modalUserEmail.value = userEmail;
+                    modalUserName.textContent = userName;
 
-        //             const form = deleteModal.querySelector('#deleteForm');
-        //             form.action = '@Url.Action("DeleteConfirmedByEmail", "User")';
-        //         });
-        //     }
-        // });
+                    const form = deleteModal.querySelector('#deleteForm');
+                    form.action = '@Url.Action("DeleteConfirmedByEmail", "User")';
+                });
+            }
+        });
     </script>
 }

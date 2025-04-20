@@ -118,7 +118,6 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
             await SendEmailAsync(contactUs.Email, emailSubject, emailBody);
         }
 
-
         public async Task SendUserRegistrationEmailAsync(string toEmail, string? password)
         {
             string emailSubject = "Welcome to Our Platform!";
@@ -253,7 +252,6 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
 
             await SendEmailAsync(patientEmail, emailSubject, emailBody);
         }
-
 
         public async Task SendPatientNotesEmailAsync(string patientEmail, PdfNoteDTO pdfNotesDTO, byte[] PdfBytes)
         {

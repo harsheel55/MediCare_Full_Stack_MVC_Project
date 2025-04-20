@@ -29,5 +29,15 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             var patientList = _patientRepository.GetAllPatientQuery();
             return patientList;
         }
+
+        public async Task<GetPatientDTO> GetPatientByIdAsync(int id)
+        {
+            return await _patientRepository.GetPatientByIdQuery(id);
+        }
+
+        public async Task UpdatePatientAsync(int id, GetPatientDTO getPatient, int updatedBy)
+        {
+            await _patientRepository.UpdatePatientQuery(id, getPatient, updatedBy);
+        }
     }
 }

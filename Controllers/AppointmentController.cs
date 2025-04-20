@@ -2,6 +2,7 @@
 using AutoMapper;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
@@ -45,10 +46,10 @@ namespace MediCare_MVC_Project.Controllers
                 PatientId = patientId,
             };
 
-            return PartialView("_AppointmentForm", model); 
+            return View("_AppointmentForm", model); 
         }
 
-        [HttpPost]
+        [HttpPost("BookAppointment")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BookAppointment(AppointmentDTO model)
         {
@@ -72,6 +73,33 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+        // -------------- Fill form for update data --------------
+        [HttpGet("EditAppointment")]
+        public async Task<IActionResult> EditAppointment(int id, DateOnly date)
+        {
+            var userDto = await _appointmentService.GetAppointmentByIdAsync(id, date);
+            if (userDto == null)
+            {
+                return NotFound();
+            }
+            var appointmentDto = _mapper.Map<AppointmentDTO>(userDto);
+            return View("_AppointmentForm", appointmentDto);
+        }
+
+        // -------------- Update data into Database --------------
+        [HttpPost("EditAppointment")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAppointment(AppointmentDTO dto, DateOnly date)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("_AppointmentForm", dto);
+            }
+
+            var loggedInUser = GetLoggedInUserId();
+            await _appointmentService.UpdateAppointmentAsync(dto.PatientId, dto, loggedInUser, date);
+            return RedirectToAction("AppointmentList", "Appointment");
+        }
 
         [HttpPost("DeleteAppointment")]
         public async Task<IActionResult> DeleteAppointment(int id)
@@ -90,7 +118,7 @@ namespace MediCare_MVC_Project.Controllers
             }
         }
 
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> SendReminder(int id)
         {
             try
@@ -117,6 +145,7 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+        [HttpGet("DeleteCheckUp/{id}")]
         public async Task<IActionResult> DeleteCheckUp(int id)
         {
             try
@@ -162,6 +191,17 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("CheckUpList", "Appointment");
         }
 
+
+        [HttpPost("UpdateNote")]
+        public async Task<IActionResult> UpdateNote(int PatientNoteId, string NoteText)
+        {
+            await _checkUpService.UpdateCheckupNotesAsync(PatientNoteId, NoteText);
+
+            return Json(new { success = true });
+        }
+
+        
+        [HttpGet("DownloadNotes/{id}")]
         public async Task<IActionResult> DownloadNotes(int id)
         {
             if (id == 0)
@@ -175,6 +215,7 @@ namespace MediCare_MVC_Project.Controllers
             return File(pdfBytes, "application/pdf", $"Patient_Notes_{id}.pdf");
         }
 
+        [HttpGet("SendEmailWithNotes/{id}")]
         public async Task<IActionResult> SendEmailWithNotes(int id)
         {
             if (id == null)
