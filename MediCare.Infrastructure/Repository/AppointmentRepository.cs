@@ -1,4 +1,5 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
@@ -174,6 +175,31 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception("No Record found.");
 
             return existingRecords;
+        }
+
+
+        public async Task<ICollection<GetAppointmentDTO>> GetAppointmentByDoctorIdQuery(int id)
+        {
+            var appointmentList = await _context.Appointments.Include(s => s.Patient)
+                                                     .Where(s => s.DoctorId == id)
+                                                     .Select(s => new GetAppointmentDTO
+                                                     {
+                                                         AppointmentId = s.AppointmentId,
+                                                         PatientId = s.Patient.PatientId,
+                                                         FirstName = s.Patient.FirstName,
+                                                         LastName = s.Patient.LastName,
+                                                         Email = s.Patient.Email,
+                                                         AadharNo = s.Patient.AadharNo,
+                                                         AppointmentDate = s.AppointmentDate,
+                                                         AppointmentStarts = s.AppointmentStarts,
+                                                         AppointmentEnds = s.AppointmentEnds,
+                                                         AppointmentDescription = s.AppointmentDescription,
+                                                         Status = s.Status,
+                                                         DoctorName = ""
+                                                     }).ToListAsync();
+            if (appointmentList == null)
+                throw new Exception("No Appointment found.");
+            return appointmentList;
         }
     }
 }

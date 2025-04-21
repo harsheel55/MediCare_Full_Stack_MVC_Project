@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles ="Administrator")]
+    [Authorize(Roles ="Administrator, Doctor")]
     public class LabTestController : Controller
     {
         private readonly IMapper _mapper;
@@ -39,6 +39,11 @@ namespace MediCare_MVC_Project.Controllers
 
             // Save the patient test data
             await _patientTestService.AddPatientTestAsync(patientTestDTO);
+
+            if (User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("CheckUpList", "Doctor");
+            }
 
             // Redirect to AppointmentList action of Appointment controller
             return RedirectToAction("AppointmentList", "Appointment");

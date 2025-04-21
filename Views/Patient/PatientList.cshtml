@@ -2,7 +2,21 @@
 
 @{
     ViewData["Title"] = "All Patients";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var isAdmin = User.IsInRole("Administrator");
+    var isReceptionist = User.IsInRole("Receptionist");
+    var isDoctor = User.IsInRole("Doctor");
+    var showActions = isAdmin || isReceptionist;
+
+    // Set layout conditionally
+    if (isAdmin || isReceptionist)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (isDoctor)
+    {
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+    }
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
@@ -13,7 +27,7 @@
         font-size: 24px;
     }
 
-    .page-header{
+    .page-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -37,20 +51,20 @@
         height: 20px;
     }
 
-    .btn-add:hover {
-        background-color: #157347;
-        transform: scale(1.05);
-    }
+        .btn-add:hover {
+            background-color: #157347;
+            transform: scale(1.05);
+        }
 
-    .btn-add:active {
-        background-color: #145a30;
-        transform: scale(1);
-    }
+        .btn-add:active {
+            background-color: #145a30;
+            transform: scale(1);
+        }
 
-    .btn-add i {
-        margin-right: 8px;
-        font-size: 16px;
-    }
+        .btn-add i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
 
     .card-container {
         background: #fff;
@@ -65,49 +79,46 @@
         margin-top: 15px;
     }
 
-    .table-custom th,
-    .table-custom td {
-        padding: 14px;
-        text-align: left;
-        border-bottom: 1px solid #dee2e6;
-        font-size: 14px;
-    }
+        .table-custom th,
+        .table-custom td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+        }
 
-    .table-custom th {
-        background-color: #0d6efd;
-        color: #fff;
-        font-weight: 600;
-    }
+        .table-custom th {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
 
-    .table-custom tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
+        .table-custom tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-    .table-custom tbody tr:hover {
-        background-color: #eef1f5;
-    }
+        .table-custom tbody tr:hover {
+            background-color: #eef1f5;
+        }
 
     .action-btns {
         text-align: center;
         display: flex;
     }
 
-    .action-btns .btn {
-        padding: 0;
-        font-size: 15px;
-        border: none;
-        background: transparent;
-        margin-right: 10px;
-        color: #0d6efd;
-    }
+        .action-btns .btn {
+            padding: 0;
+            font-size: 15px;
+            border: none;
+            background: transparent;
+            margin-right: 10px;
+            color: #0d6efd;
+        }
 
-    .action-btns .btn-danger {
-        color: black;
-    }
-
-    .action-btns .btn-warning {
-        color: black;
-    }
+        .action-btns .btn-danger,
+        .action-btns .btn-warning {
+            color: black;
+        }
 
     .badge-success {
         background-color: #198754;
@@ -144,12 +155,14 @@
 </style>
 
 <div class="card-container">
-
     <div class="d-flex justify-content-between align-items-center mb-3 page-header">
         <h2>All Patients</h2>
-        <a class="btn-add" href="@Url.Action("CreatePatient", "Patient")" style="text-decoration:none;">
-            <i class="fas fa-user-plus"></i> Add Patient
-        </a>
+        @if (showActions)
+        {
+            <a class="btn-add" href="@Url.Action("CreatePatient", "Patient")" style="text-decoration:none;">
+                <i class="fas fa-user-plus"></i> Add Patient
+            </a>
+        }
     </div>
 
     <table class="table-custom">
@@ -163,8 +176,11 @@
                 <th>Email</th>
                 <th>City</th>
                 <th>Status</th>
-                <th>Book</th>
-                <th>Actions</th>
+                @if (showActions)
+                {
+                    <th>Book</th>
+                    <th>Actions</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -190,29 +206,33 @@
                                 <span class="badge-danger">Inactive</span>
                             }
                         </td>
-                        <td class="book-btn">
-                            <a href="@Url.Action("BookAppointment", "Appointment", new { patientId = patient.PatientId })" class="btn btn-success" title="Book Appointment">
-                                <i class="fas fa-calendar-plus"></i>
-                            </a>
-                        </td>
-                        <td class="action-btns">
-                            <a href="@Url.Action("EditPatient", "Patient", new { id = patient.PatientId })" class="btn btn-warning" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form asp-action="DeletePatient" asp-controller="Patient" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@patient.PatientId" />
-                                <button type="submit" class="btn btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this patient?');">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </td>
+                        
+                        @if (showActions)
+                        {
+                            <td class="book-btn">
+                                <a href="@Url.Action("BookAppointment", "Appointment", new { patientId = patient.PatientId })" class="btn btn-success" title="Book Appointment">
+                                    <i class="fas fa-calendar-plus"></i>
+                                </a>
+                            </td>
+                            <td class="action-btns">
+                                <a href="@Url.Action("EditPatient", "Patient", new { id = patient.PatientId })" class="btn btn-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form asp-action="DeletePatient" asp-controller="Patient" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@patient.PatientId" />
+                                    <button type="submit" class="btn btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this patient?');">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        }
                     </tr>
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="10" class="text-center">No patients found.</td>
+                    <td colspan="@(showActions ? 10 : 9)" class="text-center">No patients found.</td>
                 </tr>
             }
         </tbody>
@@ -222,8 +242,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-
-            Delete Modal Logic
+            // Delete Modal Logic
             const deleteModal = document.getElementById('deleteModal');
             if (deleteModal) {
                 deleteModal.addEventListener('show.bs.modal', function (event) {

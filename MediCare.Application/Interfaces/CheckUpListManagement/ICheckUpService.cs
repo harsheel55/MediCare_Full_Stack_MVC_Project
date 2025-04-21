@@ -12,5 +12,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManage
         Task<bool> SendPatientNotePdfAsync(int id);
         Task<byte[]> DownloadNotesPdfAsync(int id);
         Task DeletePatientNotesAsync(int id);
+        Task<ICollection<GetCheckUpDTO>> GetCheckUpListByDoctorAsync(int doctorId);
     }
 }

@@ -285,5 +285,15 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception($"Error: {ex.Message}");
             }
         }
+
+        public async Task<int> GetDoctorsIdQuery(int userId)
+        {
+            var id = await _context.Users.Include(d => d.Doctor)
+                                         .Where(c => c.UserId == userId)
+                                         .Select(s => s.Doctor.DoctorId).FirstOrDefaultAsync();
+            if (id == 0)
+                throw new Exception("No Doctor found.");
+            return id;
+        }
     }
 }

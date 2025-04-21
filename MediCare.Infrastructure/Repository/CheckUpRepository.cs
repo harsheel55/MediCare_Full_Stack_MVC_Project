@@ -114,6 +114,32 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return existingRecord;
         }
 
+        public async Task<ICollection<GetCheckUpDTO>> GetCheckUpListByDoctorQuery(int doctorId)
+        {
+            var checkUpList = await _context.PatientNotes.Include(s => s.Appointment)
+                                                            .ThenInclude(s => s.Patient)
+                                                            .Where(s => s.Appointment.DoctorId == doctorId)
+                                                            .Select(s => new GetCheckUpDTO
+                                                            {
+                                                                PatientNoteId = s.PatientNoteId,
+                                                                AppointmentId = s.AppointmentId,
+                                                                AppointmentDate = s.Appointment.AppointmentDate,
+                                                                PatientName = s.Appointment.Patient.FirstName +" "+ s.Appointment.Patient.LastName,
+                                                                MobileNo = s.Appointment.Patient.MobileNo,
+                                                                Email = s.Appointment.Patient.Email,
+                                                                StartTime = s.Appointment.AppointmentStarts,
+                                                                EndTime = s.Appointment.AppointmentEnds,
+                                                                AppointmentDescription = s.Appointment.AppointmentDescription,
+                                                                NoteText = s.NoteUrl,
+                                                                DoctorName = ""
+                                                            }).ToListAsync();
+
+            if (checkUpList == null)
+                throw new Exception("No checkup found.");
+
+            return checkUpList;
+        }
+
         public async Task<PdfNoteDTO> GetNotesData(int id)
         {
             var notesData = await _context.Appointments.Include(p => p.Patient)

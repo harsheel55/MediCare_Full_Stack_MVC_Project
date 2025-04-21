@@ -39,6 +39,11 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
            return _checkUpRepository.GetCheckupFormDataQuery(id);
         }
 
+        public async Task<ICollection<GetCheckUpDTO>> GetCheckUpListByDoctorAsync(int doctorId)
+        {
+            return await _checkUpRepository.GetCheckUpListByDoctorQuery(doctorId);
+        }
+
         public async Task<bool> SendPatientNotePdfAsync(int id)
         {
             await _checkUpRepository.SendPatientNotePdfQuery(id);

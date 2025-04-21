@@ -29,6 +29,11 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             return appointmentList;
         }
 
+        public async Task<ICollection<GetAppointmentDTO>> GetAppointmentByDoctorIdAsync(int id)
+        {
+            return await _appointmentRepository.GetAppointmentByDoctorIdQuery(id);
+        }
+
         public Task<Appointment> GetAppointmentByIdAsync(int id, DateOnly date)
         {
             return _appointmentRepository.GetAppointmentByIdQuery(id, date);

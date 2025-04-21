@@ -11,5 +11,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement
         Task DeletePatientQuery(int id);
         Task<GetPatientDTO> GetPatientByIdQuery(int id);
         Task UpdatePatientQuery(int id, GetPatientDTO getPatient, int updatedBy);
+        Task<ICollection<GetPatientDTO>> GetPatientsByDoctorIdQuery(int doctorId);
     }
 }

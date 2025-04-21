@@ -107,6 +107,7 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+        [Authorize(Roles = "Administrator, Doctor")]
         public async Task<IActionResult> UpdatePatientTest(int patientTestId, DateOnly testDate, string result)
         {
             if (patientTestId <= 0 || testDate == DateOnly.MinValue || string.IsNullOrEmpty(result))

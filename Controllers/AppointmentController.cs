@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    //[Authorize(Roles ="Administrator, Doctor")]
+    [Authorize(Roles = "Administrator, Doctor")]
     [Route("Appointment")]
     public class AppointmentController : Controller
     {
@@ -188,6 +188,12 @@ namespace MediCare_MVC_Project.Controllers
             }
             else
                 TempData["Error"] = "Please provide valid input.";
+
+            if (User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("CheckUpList", "Doctor");
+            }
+
             return RedirectToAction("CheckUpList", "Appointment");
         }
 
@@ -230,6 +236,11 @@ namespace MediCare_MVC_Project.Controllers
             else
             {
                 TempData["Error"] = "Failed to send email.";
+            }
+
+            if (User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("CheckUpList", "Doctor");
             }
 
             return RedirectToAction("CheckUpList");

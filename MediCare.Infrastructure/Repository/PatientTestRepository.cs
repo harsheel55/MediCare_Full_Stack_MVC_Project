@@ -68,6 +68,29 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return testList;
         }
 
+        public async Task<ICollection<GetPatientTestDTO>> GetPatientTestByDoctorQuery(int doctorId)
+        {
+            var patientTestList = await _context.Appointments.Where(a => a.DoctorId == doctorId)
+                                                             .Include(a => a.Patient)
+                                                                 .ThenInclude(p => p.PatientTests)
+                                                                     .ThenInclude(pt => pt.LabTest)
+                                                             .SelectMany(a => a.Patient.PatientTests.Select(pt => new GetPatientTestDTO
+                                                             {
+                                                                 PatientTestId = pt.PatientTestId,
+                                                                 FirstName = a.Patient.FirstName,
+                                                                 LastName = a.Patient.LastName,
+                                                                 TestName = pt.LabTest.TestName,
+                                                                 TestDate = pt.TestDate,
+                                                                 Cost = pt.LabTest.Cost,
+                                                                 Result = pt.Result
+                                                             }))
+                                                             .ToListAsync();
+            if (patientTestList == null)
+                throw new Exception("No Patient Test found.");
+
+            return patientTestList;
+        }
+
         public async Task UpdatePatientTestQuery(int patientTestId, DateOnly date, string result)
         {
             var existingRecords = await _context.PatientTests.FindAsync(patientTestId);

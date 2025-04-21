@@ -13,5 +13,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManage
         Task SendReminderEmailAsync(int id);
         Task<Appointment> GetAppointmentByIdAsync(int id, DateOnly date);
         Task UpdateAppointmentAsync(int id, AppointmentDTO appointment, int updatedBy, DateOnly date);
+        Task<ICollection<GetAppointmentDTO>> GetAppointmentByDoctorIdAsync(int id);
     }
 }

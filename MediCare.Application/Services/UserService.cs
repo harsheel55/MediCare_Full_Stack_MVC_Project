@@ -38,6 +38,11 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             return await _userRepository.GetAllUsersQuery();
         }
 
+        public Task<int> GetDoctorsIdAsync(int userId)
+        {
+            return _userRepository.GetDoctorsIdQuery(userId);
+        }
+
         public async Task<UserDTO> GetUserByIdAsync(int userId)
         {
             return await _userRepository.GetUserByIdQuery(userId);

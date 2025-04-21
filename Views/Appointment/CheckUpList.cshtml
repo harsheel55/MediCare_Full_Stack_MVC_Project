@@ -2,7 +2,19 @@
 
 @{
     ViewData["Title"] = "All CheckUps";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var isAdmin = User.IsInRole("Administrator");
+    var isReceptionist = User.IsInRole("Receptionist");
+    var isDoctor = User.IsInRole("Doctor");
+
+    // Set layout conditionally
+    if (isAdmin || isReceptionist)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (isDoctor)
+    {
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+    }
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
@@ -124,7 +136,10 @@
             <tr>
                 <th>#</th>
                 <th>Patient Name</th>
-                <th>Doctor Name</th>
+                @if(isAdmin || isReceptionist)
+                {
+                   <th>Doctor Name</th>
+                }
                 <th>Email</th>
                 <th>Mobile No</th>
                 <th>Appointment Date</th>
@@ -145,7 +160,10 @@
                     <tr data-note-id="@item.PatientNoteId">
                         <td>@index</td>
                         <td>@item.PatientName</td>
-                        <td>@item.DoctorName</td>
+                        @if(isAdmin || isReceptionist)
+                        {
+                            <td>@item.DoctorName</td>
+                        }
                         <td>@item.Email</td>
                         <td>@item.MobileNo</td>
                         <td>@item.AppointmentDate.ToString("dd-MM-yyyy")</td>
@@ -164,9 +182,12 @@
                                 <i class="fas fa-edit"></i>
                             </button>
 
-                            <a asp-action="DeleteCheckUp" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete this checkup note?');">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
+                            @if(isAdmin || isReceptionist)
+                            {
+                                <a asp-action="DeleteCheckUp" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete this checkup note?');">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            }
                             <a asp-action="DownloadNotes" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Download Notes" class="btn btn-success">
                                 <i class="fas fa-download"></i>
                             </a>

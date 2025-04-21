@@ -8,5 +8,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement
         Task AddPatientTestQuery(PatientTestDTO patientTest);
         Task DeletePatientTestQuery(int patientTestId);
         Task UpdatePatientTestQuery(int patientTestId, DateOnly date, string result);
+        Task<ICollection<GetPatientTestDTO>> GetPatientTestByDoctorQuery(int doctorId);
     }
 }

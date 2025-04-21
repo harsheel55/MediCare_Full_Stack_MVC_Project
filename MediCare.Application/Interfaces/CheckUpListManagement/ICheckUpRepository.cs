@@ -13,5 +13,6 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManage
         Task<bool> SendPatientNotePdfQuery(int id);
         Task<byte[]> DownloadNotesPdfQuery(int id);
         Task<PdfNoteDTO> GetNotesData(int id);
+        Task<ICollection<GetCheckUpDTO>> GetCheckUpListByDoctorQuery(int doctorId);
     }
 }

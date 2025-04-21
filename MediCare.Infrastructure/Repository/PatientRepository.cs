@@ -103,6 +103,29 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return existingPatient;
         }
 
+        public async Task<ICollection<GetPatientDTO>> GetPatientsByDoctorIdQuery(int doctorId)
+        {
+            var patientList = await _context.Appointments.Include(s => s.Patient)
+                                                     .Where(s => s.DoctorId == doctorId)
+                                                     .Select(s => new GetPatientDTO
+                                                     {
+                                                         PatientId = s.PatientId,
+                                                         FirstName = s.Patient.FirstName,
+                                                         LastName = s.Patient.LastName,
+                                                         Email = s.Patient.Email,
+                                                         DateOfBirth = s.Patient.DateOfBirth,
+                                                         Gender = s.Patient.Gender,
+                                                         AadharNo = s.Patient.AadharNo,
+                                                         Address = s.Patient.Address,
+                                                         City = s.Patient.City,
+                                                         MobileNo = s.Patient.MobileNo,
+                                                         Active = s.Patient.Active
+                                                     }).ToListAsync();
+            if (patientList == null)
+                throw new Exception("No patient found.");
+            return patientList;
+        }
+
         public async Task UpdatePatientQuery(int id, GetPatientDTO getPatient, int updatedBy)
         {
             var existingPatient = await this.GetByIdAsync(id);
