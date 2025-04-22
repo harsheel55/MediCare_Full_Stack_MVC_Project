@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator, Doctor")]
+    [Authorize(Roles = "Administrator, Doctor, Receptionist")]
     [Route("Appointment")]
     public class AppointmentController : Controller
     {
@@ -125,7 +125,10 @@ namespace MediCare_MVC_Project.Controllers
             {
                 await _appointmentService.SendReminderEmailAsync(id);
 
-                TempData["Success"] = "Reminder Email send Successfully.";
+                if (User.IsInRole("Doctor"))
+                {
+                    return RedirectToAction("AppointmentList", "Doctor");
+                }
 
                 return RedirectToAction("AppointmentList", "Appointment");
             }

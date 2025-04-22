@@ -1,4 +1,5 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.DTOs;
+using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,7 +17,7 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
         }
 
         // Token generation
-        internal string GenerateToken(LoginViewModel login, int roleId, int userId)
+        internal string GenerateToken(LoginViewModel login, int roleId, int userId, string FirstName, string LastName)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -24,11 +25,13 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
             Dictionary<int, string> roles = new Dictionary<int, string> { { 1, "Administrator" }, { 2, "Doctor" }, { 3, "Receptionist" } };
             string newRole = roles[roleId];
 
+            string fullName = FirstName + " " + LastName;
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Name, userId.ToString()),
                 new Claim(ClaimTypes.Email, login.Email),
+                new Claim(ClaimTypes.Name, fullName),
                 new Claim(ClaimTypes.Role, newRole)
             };
 

@@ -50,7 +50,10 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 TestName = s.TestName,
                 Description = s.Description,
                 Cost = s.Cost,
-            }).ToListAsync();
+            })
+            .OrderBy(s => s.TestName)
+            .ThenBy(s => s.Cost)
+            .ToListAsync();
 
             if (testsList == null)
                 throw new Exception("No Data found.");

@@ -27,6 +27,11 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
             return await _admissionRepository.GetAdmissionRecordsByIdQuery(id);
         }
 
+        public async Task<ICollection<GetAdmissionDTO>> GetAllAdmissionByDoctorAsync(int id)
+        {
+            return await _admissionRepository.GetAllAdmissionByDoctorQuery(id);
+        }
+
         public async Task<ICollection<GetAdmissionDTO>> GetAllAdmissionRecordsAsync()
         {
             return await _admissionRepository.GetAllAdmissionRecordsQuery();

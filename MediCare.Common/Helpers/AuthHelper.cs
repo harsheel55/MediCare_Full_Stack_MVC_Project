@@ -41,7 +41,7 @@ namespace MediCare_MVC_Project.MediCare.Common.Helpers
                 if (passwordVerificationResult == PasswordVerificationResult.Failed)
                     throw new Exception("Invalid email or password");
 
-                string token = _tokenService.GenerateToken(userLogin, user.RoleId, user.UserId);
+                string token = _tokenService.GenerateToken(userLogin, user.RoleId, user.UserId, user.FirstName, user.LastName);
                 Console.WriteLine($"Generated Token: {token}");
 
                 return token;

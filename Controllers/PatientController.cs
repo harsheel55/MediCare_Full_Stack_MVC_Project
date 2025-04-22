@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles ="Administrator")]
+    [Authorize(Roles ="Administrator, Receptionist")]
     public class PatientController : Controller
     {
         private readonly IMapper _mapper;

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,16 +14,18 @@
 <body>
     <div class="dashboard-container">
         <div class="sidebar">
-            <div class="logo"> 
-               <img src="~/images/logo.jpg" alt="MediCare Logo" style="height: 50px; margin-right: 10px;" />
-           </div>
+            <div class="logo">
+                <img src="~/images/logo.jpg" alt="MediCare Logo" style="height: 50px; margin-right: 10px;" />
+            </div>
             <div class="user-info">
                 <div class="avatar-circle">
                     <span class="initial">@User.Identity.Name?[0]</span>
                 </div>
                 <div class="user-details">
                     <div class="user-name">@User.Identity.Name</div>
-                    <div class="user-email">user@example.com</div>
+                    <div class="user-email">
+                        @User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
+                    </div>
                 </div>
             </div>
             <ul>

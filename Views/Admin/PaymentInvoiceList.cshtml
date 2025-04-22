@@ -2,7 +2,20 @@
 
 @{
     ViewData["Title"] = "All Payment Invoices";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var isAdmin = User.IsInRole("Administrator");
+    var isReceptionist = User.IsInRole("Receptionist");
+    var isDoctor = User.IsInRole("Doctor");
+    var showActions = isAdmin || isReceptionist;
+
+    // Set layout conditionally
+    if (isReceptionist)
+    {
+        Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
+    }
+    else if (isAdmin)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or null if you want to remove layout
+    }
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />

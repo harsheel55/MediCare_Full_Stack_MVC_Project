@@ -2,7 +2,24 @@
 
 @{
     ViewData["Title"] = "All Beds";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var isAdmin = User.IsInRole("Administrator");
+    var isReceptionist = User.IsInRole("Receptionist");
+    var isDoctor = User.IsInRole("Doctor");
+    var showActions = isAdmin || isReceptionist;
+
+    // Set layout conditionally
+    if (isReceptionist)
+    {
+        Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
+    }
+    else if (isDoctor)
+    {
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+    }
+    else if (isAdmin)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or null if you want to remove layout
+    }
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
@@ -85,6 +102,10 @@
         gap: 10px;
     }
 
+    .action-btns i{
+        color: black;
+    }
+
     .editable-input {
         width: 100%;
         padding: 5px;
@@ -96,6 +117,26 @@
         padding: 20px;
         font-size: 14px;
         color: #6c757d;
+    }
+
+    button[type="submit"], button[type="button"] {
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+        button[type="submit"]:focus, button[type="button"]: focus {
+            outline: none;
+        }
+
+        button[type="submit"] i, button[type="button"] i {
+            color: black;
+            font-size: 15px;
+        }
+
+    a{
+        text-decoration: none;
     }
 </style>
 

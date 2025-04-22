@@ -42,7 +42,10 @@ namespace MediCare_MVC_Project.Controllers
                 return View("_BedAllotmentForm", model);
 
             await _admissionService.AddAdmissionRecordsAsync(model);
-
+            if (User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("AdmissionList", "Doctor");
+            }
             return RedirectToAction("AdmissionList", "Bed");
         }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediCare_MVC_Project.MediCare.Application.DTOs.AppointmentDTOs;
 using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement;
@@ -23,13 +24,16 @@ namespace MediCare_MVC_Project.Controllers
         private readonly IPatientService _patientService;
         private readonly ICheckUpService _checkUpService;
         private readonly IPatientTestService _patientTestService;
-        public DoctorController(IMapper mapper, IUserService userService, IAppointmentService appointmentService, IPatientService patientService, ICheckUpService checkUpService, IPatientTestService patientTestService)
+        private readonly IAdmissionService _admissionService;
+
+        public DoctorController(IMapper mapper, IUserService userService, IAppointmentService appointmentService, IPatientService patientService, ICheckUpService checkUpService, IPatientTestService patientTestService, IAdmissionService admissionService)
         {
             _userService = userService;
             _patientTestService = patientTestService;
             _patientService = patientService;
             _appointmentService = appointmentService;
             _mapper = mapper;
+            _admissionService = admissionService;
             _checkUpService = checkUpService;
         }
 
@@ -90,5 +94,14 @@ namespace MediCare_MVC_Project.Controllers
             return View("~/Views/Admin/PatientTestList.cshtml", viewModelList);
         }
 
+        public async Task<IActionResult> AdmissionList()
+        {
+            ViewBag.HideLayoutElements = true;
+            var loggedInDoctor = GetLoggedInUserId();
+            var doctorId = await _userService.GetDoctorsIdAsync(loggedInDoctor);
+            var admissionList = await _admissionService.GetAllAdmissionByDoctorAsync(doctorId);
+            var viewModelList = _mapper.Map<List<AdmissionViewModel>>(admissionList);
+            return View("~/Views/Bed/AdmissionList.cshtml", viewModelList);
+        }
     }
 }

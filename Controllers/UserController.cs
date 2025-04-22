@@ -13,7 +13,6 @@ using MediCare_MVC_Project.MediCare.Application.Interfaces.DoctorManagement;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -38,6 +37,7 @@ namespace MediCare_MVC_Project.Controllers
             return userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -45,6 +45,7 @@ namespace MediCare_MVC_Project.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "Administrator, Receptionist")]
         public async Task<IActionResult> GetDoctorsDropdown()
         {
             var doctors = await _doctorService.GetAllDoctorAsync(); // or however you're fetching
@@ -63,6 +64,7 @@ namespace MediCare_MVC_Project.Controllers
         // --------------------------------------------------------------------------------------------------------------------------------------------
 
         // -------------- Show all the Admin User list in User Module --------------
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UserList()
         {
             ViewBag.HideLayoutElements = true;
@@ -72,6 +74,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
 
+        [Authorize(Roles = "Administrator")]
         // -------------- Load _UserForm form creating Admin User --------------
         public IActionResult CreateAdminUser()
         {
@@ -80,6 +83,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Take Data from form to add new Admin User --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateAdminUser(UserRegisterDTO userDto)
         {
@@ -97,6 +101,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Fill form for update data --------------
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<IActionResult> EditAdmin(int id)
         {
@@ -110,6 +115,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Update data into Database --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAdmin(int id, UserRegisterDTO dto)
@@ -124,6 +130,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Delete User by email --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Delete(string email)
         {
@@ -140,6 +147,7 @@ namespace MediCare_MVC_Project.Controllers
         // --------------------------------------------------------------------------------------------------------------------------------------------
 
         // -------------- Show all the Doctor User list in Doctor Module --------------
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DoctorList()
         {
             ViewBag.HideLayoutElements = true;
@@ -150,6 +158,7 @@ namespace MediCare_MVC_Project.Controllers
 
 
         // -------------- Load _DoctorForm form creating Doctor User --------------
+        [Authorize(Roles = "Administrator")]
         public IActionResult CreateDoctor()
         {
             ViewBag.HideLayoutElements = true;
@@ -157,6 +166,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Take Data from form to add new doctor User --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateDoctor(UserDoctorDTO userDoctorDTO)
         {
@@ -172,6 +182,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Fill form for update data --------------
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<IActionResult> EditDoctor(string email)
         {
@@ -184,6 +195,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Update data into Database --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDoctor(string email, UserDoctorDTO dto)
@@ -198,6 +210,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Delete Doctor record using email --------------
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteDoctor(string email)
         {
             if (email == null)
@@ -212,6 +225,7 @@ namespace MediCare_MVC_Project.Controllers
         // --------------------------------------------------------------------------------------------------------------------------------------------
 
         // -------------- Show all the Receptionist list in Receptionist Module --------------
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> ReceptionistList()
         {
             ViewBag.HideLayoutElements = true;
@@ -221,6 +235,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Load _ReceptionistForm form creating Receptionist User --------------
+        [Authorize(Roles = "Administrator")]
         public IActionResult CreateReceptionist()
         {
             ViewBag.HideLayoutElements = true;
@@ -228,6 +243,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Take Data from form to add new Receptionist User --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateReceptionist(UserReceptionistDTO userDto)
         {
@@ -245,6 +261,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Fill form for update data --------------
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<IActionResult> EditReceptionist(int id)
         {
@@ -257,6 +274,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Update data into Database --------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditReceptionist(int id, UserReceptionistDTO dto)

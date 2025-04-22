@@ -33,7 +33,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
     }
 
     .table-custom {
@@ -78,6 +77,22 @@
     .btn {
         font-size: 15px;
     }
+
+    button[type="submit"], button[type="button"] {
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+        button[type="submit"]:focus, button[type="button"]: focus {
+            outline: none;
+        }
+
+        button[type="submit"] i, button[type="button"] i {
+            color: black;
+            font-size: 15px;
+        }
 </style>
 
 <div class="card-container">

@@ -2,7 +2,24 @@
 
 @{
     ViewData["Title"] = "Lab Tests";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var isAdmin = User.IsInRole("Administrator");
+    var isReceptionist = User.IsInRole("Receptionist");
+    var isDoctor = User.IsInRole("Doctor");
+    var showActions = isAdmin || isReceptionist;
+
+    // Set layout conditionally
+    if (isReceptionist)
+    {
+        Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
+    }
+    else if (isDoctor)
+    {
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+    }
+    else if (isAdmin)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or null if you want to remove layout
+    }
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
@@ -19,15 +36,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .btn-add {
-        background-color: #198754;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 500;
     }
 
     .table-custom {
@@ -58,6 +66,35 @@
         padding: 5px;
         font-size: 14px;
     }
+
+    button[type="submit"], button[type="button"] {
+        background: transparent; 
+        border: none; 
+        padding: 0; 
+        cursor: pointer; 
+    }
+
+        button[type="submit"]:focus, button[type="button"]: focus {
+            outline: none; 
+        }
+
+        button[type="submit"] i, button[type="button"] i {
+            color: black;
+            font-size: 15px;
+        }
+
+    .btn-add {
+        background-color: #198754;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    .page-header input{
+        padding: 10px;
+        border-radius: 5px;
+    }
 </style>
 
 <div class="card-container">
@@ -67,7 +104,7 @@
             <input type="text" name="TestName" class="form-control" placeholder="Test Name" required />
             <input type="text" name="Description" class="form-control" placeholder="Description" required />
             <input type="number" step="0.01" name="Cost" class="form-control" placeholder="Cost" required />
-            <button type="submit" class="btn-add">
+            <button type="" class="btn-add">
                 <i class="fas fa-plus"></i> Add Test
             </button>
         </form>
@@ -109,7 +146,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
 
-                                <form asp-action="DeleteLabTest" asp-controller="Admin" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                <form asp-action="DeleteLabTest" asp-controller="LabTest" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
                                     <input type="hidden" name="TestId" value="@test.TestId" />
                                     <button type="submit" class="btn btn-danger" title="Delete">
                                         <i class="fas fa-trash-alt"></i>

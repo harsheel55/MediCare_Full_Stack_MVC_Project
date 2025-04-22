@@ -2,42 +2,73 @@
 
 @{
     ViewData["Title"] = "Add Lab Test";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var isAdmin = User.IsInRole("Administrator");
+    var isReceptionist = User.IsInRole("Receptionist");
+    var isDoctor = User.IsInRole("Doctor");
+    var showActions = isAdmin || isReceptionist;
+
+    // Set layout conditionally
+    if (isReceptionist)
+    {
+        Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
+    }
+    else if (isDoctor)
+    {
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+    }
+    else if (isAdmin)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or null if you want to remove layout
+    }
 }
 
 <style>
+    /* Container styling for the form */
     form {
-        max-width: 800px;
-        background: white;
-        padding: 30px;
-        margin: 20px auto;
+        max-width: 600px;
+        background: #fff;
+        padding: 40px;
+        margin: 30px auto;
         border-radius: 10px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    form:hover {
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
     }
 
     .row {
         display: flex;
         flex-wrap: wrap;
-        margin-bottom: 20px;
+        gap: 20px;
+        flex-direction: column;
     }
 
     .col-md-6 {
-        flex: 0 0 50%;
-        padding: 0 10px;
-        box-sizing: border-box;
+        flex: 1 1 48%;
     }
 
     .form-label {
         font-weight: 600;
         color: #333;
+        margin-bottom: 15px;
     }
 
-    .form-control, .form-select {
+    .form-control, .form-select, textarea {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 8px;
         font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+    .form-control:focus, .form-select:focus, textarea:focus {
+        border-color: #5c9e8f;
+        outline: none;
     }
 
     .text-danger {
@@ -47,14 +78,16 @@
 
     .text-end {
         text-align: right;
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     .btn {
-        padding: 12px 20px;
+        padding: 12px 24px;
         border: none;
-        border-radius: 5px;
+        border-radius: 8px;
         font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
     }
 
     .btn-secondary {
@@ -78,6 +111,24 @@
     .btn-success:hover {
         background-color: #218838;
     }
+
+    /* Custom Select Styling */
+    .form-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url('https://cdn.jsdelivr.net/npm/bootstrap-icons/font/font/bootstrap-icons.svg#caret-down') no-repeat right 10px center;
+        background-size: 12px;
+        padding-right: 35px;
+    }
+
+    .col-md-12 {
+        margin-bottom: 20px;
+    }
+
+    a{
+        text-decoration: none;
+    }
 </style>
 
 <form asp-action="CreateLabTest" method="post" asp-controller="LabTest">
@@ -100,7 +151,7 @@
 
         <div class="col-md-12 mb-3">
             <label class="form-label">Result</label>
-            <textarea asp-for="Result" class="form-control" rows="3"></textarea>
+            <textarea asp-for="Result" class="form-control" rows="4" placeholder="Enter test results here..."></textarea>
             <span asp-validation-for="Result" class="text-danger"></span>
         </div>
     </div>

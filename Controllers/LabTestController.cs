@@ -67,5 +67,13 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("LabTestList", "Admin");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteLabTest(int TestId)
+        {
+            await _labTestService.DeleteTestAsync(TestId);
+            return RedirectToAction("LabTestList", "Admin");
+        }
+
+
     }
 }

@@ -73,6 +73,57 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return existingRecords;
         }
 
+        public async Task<ICollection<GetAdmissionDTO>> GetAllAdmissionByDoctorQuery(int id)
+        {
+            //var existingPatientList = await _context.Appointments.Where(s => s.DoctorId == id)
+            //                                                     .Include(p => p.Patient)
+            //                                                        .ThenInclude(p => p.PatientAdmission)
+            //                                                        .ThenInclude(p => p.Patient.PatientAdmission.Bed.Room)
+            //                                                        .Select(s => new GetAdmissionDTO
+            //                                                        {
+            //                                                            AdmissionId = s.Patient.PatientAdmission.AdmissionId,
+            //                                                            FirstName = s.Patient.FirstName,
+            //                                                            LastName = s.Patient.LastName,
+            //                                                            MobileNo = s.Patient.MobileNo,
+            //                                                            Email = s.Patient.Email,
+            //                                                            RoomNo = s.Patient.PatientAdmission.Bed.Room.RoomNumber,
+            //                                                            BedNo = s.Patient.PatientAdmission.Bed.BedNumber,
+            //                                                            RoomType = s.Patient.PatientAdmission.Bed.Room.RoomType,
+            //                                                            AdmissionDate = s.Patient.PatientAdmission.AdmissionDate,
+            //                                                            DischargeDate = s.Patient.PatientAdmission.DischargeDate
+            //                                                        }).ToListAsync();
+
+            var existingPatientList = await _context.Appointments
+    .Where(s => s.DoctorId == id &&
+                s.Patient != null &&
+                s.Patient.PatientAdmission != null &&
+                s.Patient.PatientAdmission.Bed != null &&
+                s.Patient.PatientAdmission.Bed.Room != null)
+    .Include(p => p.Patient)
+        .ThenInclude(p => p.PatientAdmission)
+            .ThenInclude(pa => pa.Bed)
+                .ThenInclude(b => b.Room)
+    .Select(s => new GetAdmissionDTO
+    {
+        AdmissionId = s.Patient.PatientAdmission.AdmissionId,
+        FirstName = s.Patient.FirstName,
+        LastName = s.Patient.LastName,
+        MobileNo = s.Patient.MobileNo,
+        Email = s.Patient.Email,
+        RoomNo = s.Patient.PatientAdmission.Bed.Room.RoomNumber,
+        BedNo = s.Patient.PatientAdmission.Bed.BedNumber,
+        RoomType = s.Patient.PatientAdmission.Bed.Room.RoomType,
+        AdmissionDate = s.Patient.PatientAdmission.AdmissionDate,
+        DischargeDate = s.Patient.PatientAdmission.DischargeDate
+    }).ToListAsync();
+
+
+            if (existingPatientList == null)
+                throw new Exception("No Data found.");
+
+            return existingPatientList;
+        }
+
         public async Task<ICollection<GetAdmissionDTO>> GetAllAdmissionRecordsQuery()
         {
             var recordsList = await _context.PatientAdmissions.Include(p => p.Patient)

@@ -59,7 +59,11 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                                                  BedNo = s.BedNumber,
                                                  RoomType = s.Room.RoomType,
                                                  IsOccupied = s.IsOccupied
-                                             }).ToListAsync();
+                                             })
+                                             .OrderBy(s => s.RoomType)
+                                             .ThenBy(s => s.RoomNo)
+                                             .ThenBy(s => s.BedNo)
+                                             .ToListAsync();
 
             if (BedList == null)
                 throw new Exception("No records found.");

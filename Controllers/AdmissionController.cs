@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Doctor")]
     public class AdmissionController : Controller
     {
         private readonly IAdmissionService _admissionService;
@@ -45,6 +45,10 @@ namespace MediCare_MVC_Project.Controllers
             }
 
             await _admissionService.UpdateAdmissionRecordAsync(id, dto);
+            if (User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("AdmissionList", "Doctor");
+            }
             return RedirectToAction("AdmissionList", "Bed");
         }
 
