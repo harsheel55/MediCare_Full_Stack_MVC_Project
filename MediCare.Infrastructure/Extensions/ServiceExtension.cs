@@ -35,6 +35,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IDoctorDashboardRepository, DoctorDashboardRepository>();
             services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
         }
 
@@ -58,7 +59,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Extensions
             services.AddScoped<ISpecializationService, SpecializationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminDashboardService, AdminDashboardService>();
-
+            services.AddScoped<IDoctorDashboardService, DoctorDashboardService>();
             return services;
         }
     }

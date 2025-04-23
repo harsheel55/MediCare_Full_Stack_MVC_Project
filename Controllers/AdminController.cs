@@ -29,7 +29,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         private readonly IMapper _mapper;
@@ -70,6 +69,7 @@ namespace MediCare_MVC_Project.Controllers
 
         // ---------------------------------------------------------------------------------------------
         // -------------- Load Admin Dashboard After Login Successfully --------------
+        [Authorize(Roles = "Administrator")]
         public IActionResult AdminDashboard()
         {
             ViewBag.HideLayoutElements = true;
@@ -77,6 +77,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Show all the Lab Test list in Lab Test Module --------------
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> LabTestList()
         {
             ViewBag.HideLayoutElements = true;
@@ -85,6 +86,7 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> AddLabTest(LabTestDTO labTest)
         {
@@ -99,6 +101,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Show all the Patient's Lab Test list in Lab Test Module --------------
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PatientTestList()
         {
             ViewBag.HideLayoutElements = true;
@@ -107,16 +110,23 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
-        [Authorize(Roles = "Administrator, Doctor")]
+        [Authorize(Roles = "Administrator,Doctor")]
         public async Task<IActionResult> UpdatePatientTest(int patientTestId, DateOnly testDate, string result)
         {
             if (patientTestId <= 0 || testDate == DateOnly.MinValue || string.IsNullOrEmpty(result))
                 throw new Exception("Invalid Data.");
 
             await _patientTestService.UpdatePatientTestAsync(patientTestId, testDate, result);
+
+
+            if (User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("PatientTestList", "Doctor");
+            }
             return RedirectToAction("PatientTestList", "Admin");
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<IActionResult> DeletePatientTest(int id)
         {
@@ -127,6 +137,7 @@ namespace MediCare_MVC_Project.Controllers
             return RedirectToAction("PatientTestList", "Admin");
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PaymentInvoiceList()
         {
             ViewBag.HideLayoutElements = true;

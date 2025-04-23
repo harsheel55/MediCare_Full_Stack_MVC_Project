@@ -181,7 +181,8 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         public async Task<ICollection<GetAppointmentDTO>> GetAppointmentByDoctorIdQuery(int id)
         {
             var appointmentList = await _context.Appointments.Include(s => s.Patient)
-                                                     .Where(s => s.DoctorId == id)
+                                                     .Include(s => s.PatientNote)
+                                                     .Where(s => s.DoctorId == id && s.PatientNote.AppointmentId != s.AppointmentId)
                                                      .Select(s => new GetAppointmentDTO
                                                      {
                                                          AppointmentId = s.AppointmentId,

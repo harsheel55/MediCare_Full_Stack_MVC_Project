@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator, Doctor, Receptionist")]
+    [Authorize(Roles = "Administrator,Doctor,Receptionist")]
     [Route("Appointment")]
     public class AppointmentController : Controller
     {
@@ -199,7 +199,6 @@ namespace MediCare_MVC_Project.Controllers
 
             return RedirectToAction("CheckUpList", "Appointment");
         }
-
 
         [HttpPost("UpdateNote")]
         public async Task<IActionResult> UpdateNote(int PatientNoteId, string NoteText)

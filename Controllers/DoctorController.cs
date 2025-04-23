@@ -4,6 +4,7 @@ using MediCare_MVC_Project.MediCare.Application.DTOs.PatientDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.DashboardManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.PatientManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.UserManagement;
@@ -11,6 +12,7 @@ using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims; // Add this
 
 namespace MediCare_MVC_Project.Controllers
@@ -25,8 +27,9 @@ namespace MediCare_MVC_Project.Controllers
         private readonly ICheckUpService _checkUpService;
         private readonly IPatientTestService _patientTestService;
         private readonly IAdmissionService _admissionService;
+        private readonly IDoctorDashboardService _doctorDashboardService;
 
-        public DoctorController(IMapper mapper, IUserService userService, IAppointmentService appointmentService, IPatientService patientService, ICheckUpService checkUpService, IPatientTestService patientTestService, IAdmissionService admissionService)
+        public DoctorController(IMapper mapper, IUserService userService, IAppointmentService appointmentService, IPatientService patientService, ICheckUpService checkUpService, IPatientTestService patientTestService, IAdmissionService admissionService, IDoctorDashboardService doctorDashboardService)
         {
             _userService = userService;
             _patientTestService = patientTestService;
@@ -34,6 +37,7 @@ namespace MediCare_MVC_Project.Controllers
             _appointmentService = appointmentService;
             _mapper = mapper;
             _admissionService = admissionService;
+            _doctorDashboardService = doctorDashboardService;
             _checkUpService = checkUpService;
         }
 
@@ -45,12 +49,39 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // ---------------------------------------------------------------------------------------------
+        //// -------------- Load Doctor Dashboard After Login Successfully --------------
+        //public IActionResult DoctorDashboard()
+        //{
+        //    ViewBag.HideLayoutElements = true;
+        //    return View();
+        //}
+
         // -------------- Load Doctor Dashboard After Login Successfully --------------
-        public IActionResult DoctorDashboard()
-        {
-            ViewBag.HideLayoutElements = true;
-            return View();
-        }
+        //public async Task<IActionResult> DoctorDashboard()
+        //{
+        //    var loggedInDoctor = GetLoggedInUserId();
+        //    var doctorId = await _userService.GetDoctorsIdAsync(loggedInDoctor);
+
+        //    // Fetch the doctor's name and data for the dashboard
+        //    var doctorName = "Dr. John Doe"; 
+        //    var totalAppointments = await _doctorDashboardService.GetTotalAppointmentAsync(doctorId);
+        //    var completedAppointments = await _doctorDashboardService.GetCompletedAppointmentAsync(doctorId);
+        //    var pendingAppointments = await _doctorDashboardService.GetPendingAppointmentAsync(doctorId);
+        //    var totalRevenue = await _doctorDashboardService.GetTotalRevenueAsync(doctorId);
+        //    var upcomingAppointments = await _doctorDashboardService.GetUpcomingAppointmentAsync(doctorId);
+
+        //    // Pass the fetched data to the view using ViewBag
+        //    ViewBag.DoctorName = doctorName;
+        //    ViewBag.TotalAppointments = totalAppointments;
+        //    ViewBag.CompletedAppointments = completedAppointments;
+        //    ViewBag.PendingAppointments = pendingAppointments;
+        //    ViewBag.TotalRevenue = totalRevenue;
+        //    ViewBag.UpcomingAppointments = upcomingAppointments;
+        //    ViewBag.HideLayoutElements = true;  // Keep this flag for UI
+
+        //    return View();
+        //}
+
 
         //fetch all the loggedIn doctor related patientList
         public async Task<IActionResult> PatientList()
