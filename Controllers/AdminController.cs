@@ -69,15 +69,15 @@ namespace MediCare_MVC_Project.Controllers
 
         // ---------------------------------------------------------------------------------------------
         // -------------- Load Admin Dashboard After Login Successfully --------------
-        [Authorize(Roles = "Administrator")]
-        public IActionResult AdminDashboard()
-        {
-            ViewBag.HideLayoutElements = true;
-            return View();
-        }
+        //[Authorize(Roles = "Administrator")]
+        //public IActionResult AdminDashboard()
+        //{
+        //    ViewBag.HideLayoutElements = true;
+        //    return View();
+        //}
 
         // -------------- Show all the Lab Test list in Lab Test Module --------------
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Receptionist")]
         public async Task<IActionResult> LabTestList()
         {
             ViewBag.HideLayoutElements = true;
@@ -101,7 +101,7 @@ namespace MediCare_MVC_Project.Controllers
         }
 
         // -------------- Show all the Patient's Lab Test list in Lab Test Module --------------
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Receptionist")]
         public async Task<IActionResult> PatientTestList()
         {
             ViewBag.HideLayoutElements = true;
@@ -110,7 +110,7 @@ namespace MediCare_MVC_Project.Controllers
             return View(viewModelList);
         }
 
-        [Authorize(Roles = "Administrator,Doctor")]
+        [Authorize(Roles = "Administrator,Doctor,Receptionist")]
         public async Task<IActionResult> UpdatePatientTest(int patientTestId, DateOnly testDate, string result)
         {
             if (patientTestId <= 0 || testDate == DateOnly.MinValue || string.IsNullOrEmpty(result))
@@ -123,6 +123,11 @@ namespace MediCare_MVC_Project.Controllers
             {
                 return RedirectToAction("PatientTestList", "Doctor");
             }
+            else if (User.IsInRole("Receptionist"))
+            {
+                return RedirectToAction("PatientTestList", "Receptionist");
+            }
+
             return RedirectToAction("PatientTestList", "Admin");
         }
 

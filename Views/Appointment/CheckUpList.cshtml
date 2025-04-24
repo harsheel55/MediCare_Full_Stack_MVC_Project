@@ -191,7 +191,7 @@
                             }
 
 
-                            @if(isAdmin || isReceptionist)
+                            @if(isAdmin)
                             {
                                 <a asp-action="DeleteCheckUp" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete this checkup note?');">
                                     <i class="fas fa-trash-alt"></i>

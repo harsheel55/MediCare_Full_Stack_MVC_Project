@@ -9,9 +9,13 @@
     var showActions = isAdmin || isReceptionist;
 
     // Set layout conditionally
-    if (isAdmin || isReceptionist)
+    if (isAdmin)
     {
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (isReceptionist)
+    {
+        Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
     }
     else if (isDoctor)
     {

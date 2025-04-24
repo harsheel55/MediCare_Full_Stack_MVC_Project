@@ -36,7 +36,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Services
 
         public Task<Appointment> GetAppointmentByIdAsync(int id, DateOnly date)
         {
-            return _appointmentRepository.GetAppointmentByIdQuery(id, date);
+            return _appointmentRepository.GetAppointmentByPatientIdQuery(id, date);
         }
 
         public Task SendReminderEmailAsync(int id)

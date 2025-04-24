@@ -26,7 +26,7 @@
             </div>
             <ul>
                 <li class="has-submenu">
-                    <a href="@Url.Action("ReceptionistDashboard", "Receptionist")"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+                    <a href="@Url.Action("ReceptionistDashboard", "Dashboard")"><i class="fas fa-home"></i> <span>Dashboard</span></a>
                 </li>
 
                 <li class="has-submenu">
@@ -41,14 +41,31 @@
                     <a href="#" class="submenu-toggle"><i class="fas fa-calendar-check"></i> <span>Appointments</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
                     <ul class="submenu">
                         <li><a href="@Url.Action("AppointmentList", "Appointment")">Appointments</a></li>
-                        <li><a href="@Url.Action("AppointmentSchedule", "Appointment")">Schedule Appointment</a></li>
+                        @* <li><a href="@Url.Action("AppointmentSchedule", "Appointment")">Schedule Appointment</a></li> *@
                     </ul>
                 </li>
 
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle"><i class="fas fa-file-medical-alt"></i> <span>Check Ups</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
                     <ul class="submenu">
-                        <li><a href="@Url.Action("CheckUpList", "CheckUp")">Check Ups</a></li>
+                        <li><a href="@Url.Action("CheckUpList", "Appointment")">Check Ups</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" class="submenu-toggle"><i class="fas fa-vials"></i> <span>Tests</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="@Url.Action("LabTestList", "Admin")">Lab Test</a></li>
+                        <li><a href="@Url.Action("PatientTestList", "Receptionist")">Patient Test</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" class="submenu-toggle"><i class="fas fa-hospital"></i> <span>Room Management</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="@Url.Action("RoomList", "Room")">Rooms</a></li>
+                        <li><a href="@Url.Action("BedList", "Bed")">Beds</a></li>
+                        <li><a href="@Url.Action("AdmissionList", "Bed")">Bed Allotment</a></li>
                     </ul>
                 </li>
 

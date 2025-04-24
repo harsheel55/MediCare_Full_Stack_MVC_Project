@@ -4,10 +4,12 @@ using MediCare_MVC_Project.MediCare.Application.Interfaces.AdmissionManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.LabTestManagement;
 using MediCare_MVC_Project.MediCare.Application.Services;
 using MediCare_MVC_Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediCare_MVC_Project.Controllers
 {
+    [Authorize(Roles ="Administrator,Doctor,Receptionist")]
     public class BedController : Controller
     {
         private readonly IMapper _mapper;

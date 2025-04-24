@@ -23,20 +23,20 @@
         transition: transform 0.2s ease;
     }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+    .card:hover {
+        transform: translateY(-5px);
+    }
 
-        .card h5 {
-            font-weight: 600;
-            color: #333;
-        }
+    .card h5 {
+        font-weight: 600;
+        color: #333;
+    }
 
-        .card p {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
-        }
+    .card p {
+        font-size: 24px;
+        font-weight: bold;
+        color: #007bff;
+    }
 
     .chart-container {
         margin-top: 40px;
@@ -54,10 +54,11 @@
 
 <div class="container-fluid">
     <div class="dashboard-header text-center">
-        <h1>Welcome, Admin!</h1>
+        <h1>Welcome, @(ViewBag.AdminName ?? "Admin")!</h1>
         <p class="lead">Here's an overview of today's performance</p>
     </div>
 
+    <!-- Dashboard Overview Section -->
     <div class="row g-4">
         <div class="col-md-3">
             <div class="card text-center p-4">
@@ -109,23 +110,9 @@
         </div>
     </div>
 
-    <div class="row chart-container mt-5">
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h5 class="mb-4">Appointments This Week</h5>
-                <canvas id="appointmentsChart"></canvas>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h5 class="mb-4">Revenue Breakdown</h5>
-                <canvas id="revenueChart"></canvas>
-            </div>
-        </div>
-    </div>
-
+    <!-- Recent Appointments Section -->
     <div class="row table-wrapper">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card p-4">
                 <h5>Recent Appointments</h5>
                 <table class="table table-bordered table-striped mt-3">
@@ -140,17 +127,17 @@
                     <tbody>
                         @{
                             var appointments = ViewBag.RecentAppointments ?? new List<dynamic> {
-                        new { PatientName = "N/A", DoctorName = "N/A", Date = DateTime.Today, Status = "Pending" }
-                        };
+                                new { PatientName = "N/A", DoctorName = "N/A", AppointmentDate = DateTime.Today, Status = "Pending" }
+                            };
                         }
                         @foreach (var appt in appointments)
                         {
                             <tr>
                                 <td>@appt.PatientName</td>
                                 <td>@appt.DoctorName</td>
-                                <td>@appt.Date.ToShortDateString()</td>
+                                <td>@appt.AppointmentDate.ToShortDateString()</td>
                                 <td>
-                                    <span class="badge bg-@(appt.Status == "Completed" ? "success" : "warning")">
+                                    <span class="badge bg-@(appt.Status == "Completed" ? "success" : appt.Status == "Cancelled" ? "danger" : appt.Status == "Rescheduled" ? "warning" : "secondary")">
                                         @appt.Status
                                     </span>
                                 </td>
@@ -160,30 +147,27 @@
                 </table>
             </div>
         </div>
+    </div>
 
+    <!-- Charts Section -->
+    <div class="row chart-container mt-5">
         <div class="col-md-6">
             <div class="card p-4">
-                <h5>Top Performing Doctors</h5>
-                <ul class="list-group mt-3">
-                    @{
-                        var topDocs = ViewBag.TopDoctors ?? new List<dynamic> {
-                    new { Name = "N/A", AppointmentCount = 0 }
-                    };
-                    }
-                    @foreach (var doc in topDocs)
-                    {
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Dr. @doc.Name
-                            <span class="badge bg-primary rounded-pill">@doc.AppointmentCount</span>
-                        </li>
-                    }
-                </ul>
+                <h5 class="mb-4">Appointments This Week</h5>
+                <canvas id="appointmentsChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 class="mb-4">Appointments Overview</h5>
+                <canvas id="appointmentsOverviewChart"></canvas>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    // Appointments This Week Chart
     const ctx1 = document.getElementById('appointmentsChart').getContext('2d');
     const appointmentsChart = new Chart(ctx1, {
         type: 'line',
@@ -191,7 +175,7 @@
             labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [{
                 label: 'Appointments',
-                data: [10, 14, 8, 16, 12, 18, 9],
+                data: [10, 14, 8, 16, 12, 18, 9], // Replace with real data
                 fill: true,
                 borderColor: '#007bff',
                 backgroundColor: 'rgba(0, 123, 255, 0.1)',
@@ -200,22 +184,33 @@
         }
     });
 
-    const ctx2 = document.getElementById('revenueChart').getContext('2d');
-    const revenueChart = new Chart(ctx2, {
-        type: 'doughnut',
+    // Appointments Overview Chart
+    const ctx2 = document.getElementById('appointmentsOverviewChart').getContext('2d');
+    const appointmentsOverviewChart = new Chart(ctx2, {
+        type: 'bar',
         data: {
-            labels: ['Consultation', 'Tests', 'Pharmacy', 'Rooms'],
+            labels: ['Appointments Today', 'Total Appointments'],  // Labels for the chart
             datasets: [{
-                label: 'Revenue',
-                data: [30000, 40000, 25000, 25000],
+                label: 'Appointments Count',
+                data: [@(ViewBag.AppointmentsToday ?? 0), @(ViewBag.TotalAppointments ?? 0)], // Use ViewBag data or static values
                 backgroundColor: [
-                    '#007bff',
-                    '#28a745',
-                    '#ffc107',
-                    '#dc3545'
+                    '#007bff', // Color for Appointments Today
+                    '#28a745'  // Color for Total Appointments
+                ],
+                borderColor: [
+                    '#0056b3', // Border color for Appointments Today
+                    '#218838'  // Border color for Total Appointments
                 ],
                 borderWidth: 1
             }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
     });
 </script>

@@ -11,7 +11,7 @@ namespace MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManage
         Task DeleteAppointmentByIdQuery(int id);
         Task SendReminderEmailQuery(int id);
         Task<GetAppointmentDTO> GetAppointmentByIdSendMailQuery(int id);
-        Task<Appointment> GetAppointmentByIdQuery(int id, DateOnly date);
+        Task<Appointment> GetAppointmentByPatientIdQuery(int id, DateOnly date);
         Task UpdateAppointmentQuery(int id, AppointmentDTO appointment, int updatedBy, DateOnly date);
         Task<ICollection<GetAppointmentDTO>> GetAppointmentByDoctorIdQuery(int id);
     }

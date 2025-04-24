@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Receptionist")]
     public class RoomController : Controller
     {
         private readonly IRoomService _roomService;

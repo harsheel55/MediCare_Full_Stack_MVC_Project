@@ -32,6 +32,14 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 Result = patientTest.Result
             };
 
+            // Optionally mark the appointment as completed
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(a => a.PatientId == patientRecord.PatientId);
+
+            appointment.Status = "Completed";
+            appointment.UpdatedAt = DateTime.UtcNow;
+
+            _context.Appointments.Update(appointment);
             _context.PatientTests.Add(newTestRecord);
             await _context.SaveChangesAsync();
         }

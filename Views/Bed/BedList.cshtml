@@ -208,11 +208,14 @@
                                 <button type="button" class="btn btn-warning" onclick="enableEdit(@bed.BedId)">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <a asp-action="EmptyBed" asp-controller="Bed" asp-route-BedId="@bed.BedId"
-                                   class="btn btn-danger"
-                                   onclick="return confirm('Are you sure you want to delete this bed?');">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
+                                @if(isAdmin)
+                                {
+                                    <a asp-action="EmptyBed" asp-controller="Bed" asp-route-BedId="@bed.BedId"
+                                       class="btn btn-danger"
+                                       onclick="return confirm('Are you sure you want to delete this bed?');">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                }
                             </div>
 
                             <div class="action-btns" id="edit-actions-@bed.BedId" style="display:none;">

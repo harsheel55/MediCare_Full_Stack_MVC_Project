@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MediCare_MVC_Project.Controllers
 {
-    [Authorize(Roles = "Administrator, Doctor")]
+    [Authorize(Roles = "Administrator, Doctor, Receptionist")]
     public class AdmissionController : Controller
     {
         private readonly IAdmissionService _admissionService;

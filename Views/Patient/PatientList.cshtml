@@ -222,12 +222,16 @@
                                 <a href="@Url.Action("EditPatient", "Patient", new { id = patient.PatientId })" class="btn btn-warning" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form asp-action="DeletePatient" asp-controller="Patient" method="post" style="display:inline;">
-                                    <input type="hidden" name="id" value="@patient.PatientId" />
-                                    <button type="submit" class="btn btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this patient?');">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+
+                                @if(isAdmin)
+                                {
+                                    <form asp-action="DeletePatient" asp-controller="Patient" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@patient.PatientId" />
+                                        <button type="submit" class="btn btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this patient?');">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                }
                             </td>
                         }
                     </tr>

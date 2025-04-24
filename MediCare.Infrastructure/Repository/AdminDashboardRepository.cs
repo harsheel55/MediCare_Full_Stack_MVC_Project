@@ -18,9 +18,11 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         }
         public async Task<List<object>> GetRecentAppointmentsQuery()
         {
+            var today = DateOnly.FromDateTime(DateTime.Today);
             var recentAppointments = await _context.Appointments
                 .Include(s => s.Doctor).ThenInclude(s => s.User)
                 .Include(s => s.Patient)
+                .Where(a => a.AppointmentDate <= today) // Filter for today only
                 .OrderByDescending(a => a.AppointmentDate) // Get the most recent ones first
                 .Take(10)
                 .Select(a => new
@@ -84,9 +86,11 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             return await _context.Receptionists.CountAsync();
         }
 
-        public Task<decimal> GetTotalRevenueQuery()
+        public async Task<decimal> GetTotalRevenueQuery()
         {
-            throw new NotImplementedException();
+            var totalRevenue = await _context.Invoices.SumAsync(s => s.Amount);
+
+            return totalRevenue;
         }
 
         public async Task<List<int>> GetWeeklyAppointmentsQuery()

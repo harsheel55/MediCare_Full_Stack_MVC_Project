@@ -1,5 +1,6 @@
 ﻿using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 using MediCare_MVC_Project.MediCare.Application.Interfaces;
+using MediCare_MVC_Project.MediCare.Application.Interfaces.AppointmentManagement;
 using MediCare_MVC_Project.MediCare.Application.Interfaces.CheckUpListManagement;
 using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.MediCare.Infrastructure.Database;
@@ -12,8 +13,9 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
     {
         private readonly IEmailHelper _emailHelper;
         private readonly IDownloadHelper _downloadService;
+        private readonly IAppointmentRepository _appointmentRepository;
 
-        public CheckUpRepository(ApplicationDBContext context, IEmailHelper emailHelper, IDownloadHelper downloadHelper) : base(context)
+        public CheckUpRepository(ApplicationDBContext context, IEmailHelper emailHelper, IDownloadHelper downloadHelper, IAppointmentRepository appointmentRepository) : base(context)
         {
             _emailHelper = emailHelper;
             _downloadService = downloadHelper;
@@ -23,6 +25,21 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         {
             if (patientNoteView == null)
                 throw new Exception("Data not sufficient.");
+
+            // Verify appointment exists
+            var appointmentExists = await _context.Appointments
+                .AnyAsync(a => a.AppointmentId == patientNoteView.AppointmentId);
+
+            if (!appointmentExists)
+                throw new Exception("Appointment not found.");
+
+            // Optionally mark the appointment as completed
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(a => a.AppointmentId == patientNoteView.AppointmentId);
+
+            appointment.Status = "Completed";
+            appointment.UpdatedAt = DateTime.UtcNow;
+            appointment.UpdatedBy = id; // Assuming UpdatedBy is a string
 
             var newNotes = new PatientNote
             {

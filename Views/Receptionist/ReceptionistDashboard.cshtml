@@ -5,18 +5,17 @@
     var isDoctor = User.IsInRole("Doctor");
     var showActions = isAdmin || isReceptionist;
 
-    // Set layout conditionally
     if (isReceptionist)
     {
         Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
     }
     else if (isDoctor)
     {
-        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml";
     }
     else if (isAdmin)
     {
-        Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or null if you want to remove layout
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
 }
 
@@ -60,10 +59,6 @@
         margin-top: 40px;
     }
 
-    .table-wrapper {
-        margin-top: 40px;
-    }
-
     .table th {
         background-color: #007bff;
         color: white;
@@ -72,11 +67,11 @@
 
 <div class="container-fluid">
     <div class="dashboard-header text-center">
-        <h1>Welcome, Receptionist!</h1>
+        <h1>Welcome, @(ViewBag.ReceptionistName ?? "Receptionist!")</h1>
         <p class="lead">Here's an overview of your tasks for today</p>
     </div>
 
-    <div class="row g-4">
+    <div class="row g-4 mb-4">
         <div class="col-md-3">
             <div class="card text-center p-4">
                 <p>@(ViewBag.TotalAppointments ?? 0)</p>
@@ -103,22 +98,8 @@
         </div>
     </div>
 
-    <div class="row chart-container mt-5">
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h5 class="mb-4">Appointments This Week</h5>
-                <canvas id="appointmentsChart"></canvas>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h5 class="mb-4">Revenue Breakdown</h5>
-                <canvas id="revenueChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="row table-wrapper">
+    <!-- Recent Appointments -->
+    <div class="row mb-4">
         <div class="col-md-6">
             <div class="card p-4">
                 <h5>Recent Appointments</h5>
@@ -142,7 +123,7 @@
                             <tr>
                                 <td>@appt.PatientName</td>
                                 <td>@appt.DoctorName</td>
-                                <td>@appt.Date.ToShortDateString()</td>
+                                <td>@appt.AppointmentDate.ToShortDateString()</td>
                                 <td>
                                     <span class="badge bg-@(appt.Status == "Completed" ? "success" : "warning")">
                                         @appt.Status
@@ -155,6 +136,7 @@
             </div>
         </div>
 
+        <!-- Upcoming Appointments -->
         <div class="col-md-6">
             <div class="card p-4">
                 <h5>Upcoming Appointments</h5>
@@ -172,6 +154,22 @@
                         </li>
                     }
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row chart-container">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 class="mb-4">Appointments This Week</h5>
+                <canvas id="appointmentsChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 class="mb-4">Daily Patient Check-ins</h5>
+                <canvas id="checkinChart"></canvas>
             </div>
         </div>
     </div>
@@ -194,22 +192,23 @@
         }
     });
 
-    const ctx2 = document.getElementById('revenueChart').getContext('2d');
-    const revenueChart = new Chart(ctx2, {
-        type: 'doughnut',
+    const ctx2 = document.getElementById('checkinChart').getContext('2d');
+    const checkinChart = new Chart(ctx2, {
+        type: 'bar',
         data: {
-            labels: ['Consultation', 'Tests', 'Pharmacy', 'Rooms'],
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [{
-                label: 'Revenue',
-                data: [30000, 40000, 25000, 25000],
-                backgroundColor: [
-                    '#007bff',
-                    '#28a745',
-                    '#ffc107',
-                    '#dc3545'
-                ],
-                borderWidth: 1
+                label: 'Patient Check-ins',
+                data: [8, 12, 10, 15, 11, 9, 13],
+                backgroundColor: '#28a745'
             }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
     });
 </script>

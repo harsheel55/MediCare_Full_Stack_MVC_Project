@@ -6,6 +6,7 @@ using MediCare_MVC_Project.MediCare.Domain.Entity;
 using MediCare_MVC_Project.MediCare.Infrastructure.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
 {
@@ -155,7 +156,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
             await _emailHelper.SendAppointmentStatusEmailAsync(existingRecords.Patient.Email, doctorName, existingRecords);
         }
 
-        public async Task<Appointment> GetAppointmentByIdQuery(int id, DateOnly date)
+        public async Task<Appointment> GetAppointmentByPatientIdQuery(int id, DateOnly date)
         {
             var existingRecords = await _context.Appointments.Where(s => s.PatientId == id && s.AppointmentDate == date)
                                                              .Select(s => new Appointment
@@ -182,7 +183,7 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
         {
             var appointmentList = await _context.Appointments.Include(s => s.Patient)
                                                      .Include(s => s.PatientNote)
-                                                     .Where(s => s.DoctorId == id && s.PatientNote.AppointmentId != s.AppointmentId)
+                                                     .Where(s => s.DoctorId == id)
                                                      .Select(s => new GetAppointmentDTO
                                                      {
                                                          AppointmentId = s.AppointmentId,
@@ -202,5 +203,19 @@ namespace MediCare_MVC_Project.MediCare.Infrastructure.Repository
                 throw new Exception("No Appointment found.");
             return appointmentList;
         }
+
+        //public async Task GetAppointmentById(int AppointmentId)
+        //{
+        //    var existingRecord = await _context.Appointments
+        //.FirstOrDefaultAsync(s => s.AppointmentId == AppointmentId);
+
+        //    if (existingRecord == null)
+        //        throw new Exception("No record found.");
+
+        //    existingRecord.Status = "Completed";
+        //    existingRecord.UpdatedAt = DateTime.UtcNow; // Optional if you track update time
+
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }

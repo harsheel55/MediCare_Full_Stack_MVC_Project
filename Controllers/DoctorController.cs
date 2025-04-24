@@ -48,41 +48,6 @@ namespace MediCare_MVC_Project.Controllers
             return userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
         }
 
-        // ---------------------------------------------------------------------------------------------
-        //// -------------- Load Doctor Dashboard After Login Successfully --------------
-        //public IActionResult DoctorDashboard()
-        //{
-        //    ViewBag.HideLayoutElements = true;
-        //    return View();
-        //}
-
-        // -------------- Load Doctor Dashboard After Login Successfully --------------
-        //public async Task<IActionResult> DoctorDashboard()
-        //{
-        //    var loggedInDoctor = GetLoggedInUserId();
-        //    var doctorId = await _userService.GetDoctorsIdAsync(loggedInDoctor);
-
-        //    // Fetch the doctor's name and data for the dashboard
-        //    var doctorName = "Dr. John Doe"; 
-        //    var totalAppointments = await _doctorDashboardService.GetTotalAppointmentAsync(doctorId);
-        //    var completedAppointments = await _doctorDashboardService.GetCompletedAppointmentAsync(doctorId);
-        //    var pendingAppointments = await _doctorDashboardService.GetPendingAppointmentAsync(doctorId);
-        //    var totalRevenue = await _doctorDashboardService.GetTotalRevenueAsync(doctorId);
-        //    var upcomingAppointments = await _doctorDashboardService.GetUpcomingAppointmentAsync(doctorId);
-
-        //    // Pass the fetched data to the view using ViewBag
-        //    ViewBag.DoctorName = doctorName;
-        //    ViewBag.TotalAppointments = totalAppointments;
-        //    ViewBag.CompletedAppointments = completedAppointments;
-        //    ViewBag.PendingAppointments = pendingAppointments;
-        //    ViewBag.TotalRevenue = totalRevenue;
-        //    ViewBag.UpcomingAppointments = upcomingAppointments;
-        //    ViewBag.HideLayoutElements = true;  // Keep this flag for UI
-
-        //    return View();
-        //}
-
-
         //fetch all the loggedIn doctor related patientList
         public async Task<IActionResult> PatientList()
         {
