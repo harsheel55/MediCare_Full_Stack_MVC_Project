@@ -41,20 +41,30 @@
     .table-custom {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 15px;
     }
 
-    .table-custom th,
-    .table-custom td {
-        padding: 14px;
-        text-align: left;
-        border-bottom: 1px solid #dee2e6;
-        font-size: 14px;
-    }
+        .table-custom th, .table-custom td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+        }
 
-    .table-custom th {
-        background-color: #0d6efd;
-        color: #fff;
-    }
+        .table-custom th {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .table-custom tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: #eef1f5;
+            cursor: pointer;
+        }
 
     .action-btns {
         display: flex;

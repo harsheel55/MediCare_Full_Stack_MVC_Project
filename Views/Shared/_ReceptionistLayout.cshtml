@@ -33,7 +33,6 @@
                     <a href="#" class="submenu-toggle"><i class="fas fa-user"></i> <span>Patients</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
                     <ul class="submenu">
                         <li><a href="@Url.Action("PatientList", "Patient")">Patients</a></li>
-                        @* <li><a href="@Url.Action("PatientRegistration", "User")">Register New Patient</a></li> *@
                     </ul>
                 </li>
 
@@ -41,7 +40,6 @@
                     <a href="#" class="submenu-toggle"><i class="fas fa-calendar-check"></i> <span>Appointments</span> <i class="fas fa-chevron-down submenu-icon"></i></a>
                     <ul class="submenu">
                         <li><a href="@Url.Action("AppointmentList", "Appointment")">Appointments</a></li>
-                        @* <li><a href="@Url.Action("AppointmentSchedule", "Appointment")">Schedule Appointment</a></li> *@
                     </ul>
                 </li>
 
@@ -69,7 +67,7 @@
                     </ul>
                 </li>
 
-                <li><a href="@Url.Action("PaymentInvoiceList", "Payment")"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li>
+                @* <li><a href="@Url.Action("PaymentInvoiceList", "Payment")"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li> *@
 
                 <li><a href="/Settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
 

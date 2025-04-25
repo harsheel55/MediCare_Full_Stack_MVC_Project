@@ -7,18 +7,17 @@
     var isDoctor = User.IsInRole("Doctor");
     var showActions = isAdmin || isReceptionist;
 
-    // Set layout conditionally
     if (isReceptionist)
     {
         Layout = "~/Views/Shared/_ReceptionistLayout.cshtml";
     }
     else if (isDoctor)
     {
-        Layout = "~/Views/Shared/_DoctorLayout.cshtml"; // Or null if you want to remove layout
+        Layout = "~/Views/Shared/_DoctorLayout.cshtml";
     }
     else if (isAdmin)
     {
-        Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or null if you want to remove layout
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
 }
 
@@ -31,12 +30,6 @@
     .page-header h2 {
         font-weight: 600;
         font-size: 24px;
-    }
-
-    .page-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
     }
 
     .card-container {
@@ -52,82 +45,57 @@
         margin-top: 15px;
     }
 
-        .table-custom th,
-        .table-custom td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-            font-size: 14px;
-        }
-
-        .table-custom th {
-            background-color: #0d6efd;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .table-custom tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .table-custom tbody tr:hover {
-            background-color: #eef1f5;
-        }
-
-    .action-btns {
-        text-align: center;
-        display: flex;
+    .table-custom th, .table-custom td {
+        padding: 14px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 14px;
     }
 
-        .action-btns .btn {
-            padding: 0;
-            font-size: 15px;
-            border: none;
-            background: transparent;
-            margin-right: 10px;
-            color: #0d6efd;
-        }
+    .table-custom th {
+        background-color: #0d6efd;
+        color: #fff;
+        font-weight: 600;
+    }
 
-        .action-btns .btn-danger {
-            color: black;
-        }
+    .table-custom tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-        .action-btns .btn-warning {
-            color: black;
-        }
+    .table-custom tbody tr:hover {
+        background-color: #eef1f5;
+        cursor: pointer;
+    }
 
-        .action-btns .btn-success {
-            color: #198754;
-        }
+    .action-btns {
+        display: flex;
+        gap: 10px;
+            height: 73px;
+    align-items: center;
+    }
 
-        .action-btns .btn-mail {
-            color: #0d6efd;
-        }
-
-    .modal-content {
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    .action-btns .btn {
+        padding: 0;
+        font-size: 15px;
         border: none;
+        background: transparent;
+    }
+
+    .action-btns i{
+        color: black;
     }
 
     .modal-header {
         background-color: #0d6efd;
         color: white;
-        border-bottom: none;
-        border-radius: 12px 12px 0 0;
-    }
-
-    .modal-title {
-        font-weight: 600;
-    }
-
-    .modal-footer {
-        border-top: none;
     }
 
     .modal-body textarea {
         resize: none;
-        font-size: 14px;
+    }
+
+    .no-click {
+        cursor: default !important;
     }
 </style>
 
@@ -143,14 +111,13 @@
                 <th>Patient Name</th>
                 @if(isAdmin || isReceptionist)
                 {
-                   <th>Doctor Name</th>
+                    <th>Doctor Name</th>
                 }
                 <th>Email</th>
                 <th>Mobile No</th>
                 <th>Appointment Date</th>
                 <th>Time</th>
                 <th>Description</th>
-                <th>Note</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -162,7 +129,15 @@
             {
                 foreach (var item in Model)
                 {
-                    <tr data-note-id="@item.PatientNoteId">
+                    <tr data-note-id="@item.PatientNoteId"
+                        data-name="@item.PatientName"
+                        data-doctor="@item.DoctorName"
+                        data-email="@item.Email"
+                        data-mobile="@item.MobileNo"
+                        data-date="@item.AppointmentDate.ToString("dd-MM-yyyy")"
+                        data-time="@DateTime.Today.Add(item.StartTime).ToString("hh:mm tt") - @DateTime.Today.Add(item.EndTime).ToString("hh:mm tt")"
+                        data-desc="@item.AppointmentDescription"
+                        data-note="@item.NoteText">
                         <td>@index</td>
                         <td>@item.PatientName</td>
                         @if(isAdmin || isReceptionist)
@@ -177,8 +152,7 @@
                             @DateTime.Today.Add(item.EndTime).ToString("hh:mm tt")
                         </td>
                         <td>@item.AppointmentDescription</td>
-                        <td class="note-cell">@item.NoteText</td>
-                        <td class="action-btns">
+                        <td class="action-btns no-click">
                             @if (isAdmin || isDoctor)
                             {
                                 <button type="button"
@@ -190,13 +164,13 @@
                                 </button>
                             }
 
-
                             @if(isAdmin)
                             {
                                 <a asp-action="DeleteCheckUp" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete this checkup note?');">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             }
+
                             <a asp-action="DownloadNotes" asp-controller="Appointment" asp-route-id="@item.PatientNoteId" title="Download Notes" class="btn btn-success">
                                 <i class="fas fa-download"></i>
                             </a>
@@ -210,21 +184,43 @@
             }
             else
             {
-                <tr><td colspan="10" class="text-center">No checkups found.</td></tr>
+                <tr><td colspan="9" class="text-center">No checkups found.</td></tr>
             }
         </tbody>
     </table>
 </div>
 
-<!-- Modal (initially hidden) -->
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CheckUp Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Patient Name:</strong> <span id="detailPatientName"></span></p>
+                <p><strong>Doctor Name:</strong> <span id="detailDoctorName"></span></p>
+                <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                <p><strong>Mobile No:</strong> <span id="detailMobile"></span></p>
+                <p><strong>Appointment Date:</strong> <span id="detailDate"></span></p>
+                <p><strong>Time:</strong> <span id="detailTime"></span></p>
+                <p><strong>Description:</strong> <span id="detailDesc"></span></p>
+                <p><strong>Note:</strong> <span id="detailNote"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Note Modal -->
 <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="editNoteForm" method="post" action="/Appointment/UpdateNote" asp-asp-controller="Appointment">
+            <form id="editNoteForm" method="post" action="/Appointment/UpdateNote">
                 <input type="hidden" name="PatientNoteId" id="editNoteId" />
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Edit Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <textarea name="NoteText" id="editNoteText" class="form-control" rows="5"></textarea>
@@ -240,45 +236,49 @@
 
 <script>
     $(document).ready(function () {
-        // Edit button click handler
-        $(document).on('click', '.edit-note-btn', function () {
-            var noteId = $(this).data('id');
-            var noteText = $(this).data('note');
+        // Show details modal on row click (ignore clicks on buttons)
+        $('.table-custom tbody').on('click', 'tr', function (e) {
+            if ($(e.target).closest('.action-btns').length > 0) return;
 
-            $('#editNoteId').val(noteId);
-            $('#editNoteText').val(noteText);
+            $('#detailPatientName').text($(this).data('name'));
+            $('#detailDoctorName').text($(this).data('doctor'));
+            $('#detailEmail').text($(this).data('email'));
+            $('#detailMobile').text($(this).data('mobile'));
+            $('#detailDate').text($(this).data('date'));
+            $('#detailTime').text($(this).data('time'));
+            $('#detailDesc').text($(this).data('desc'));
+            $('#detailNote').text($(this).data('note'));
 
-            // Initialize and show modal (centered)
-            var editNoteModal = new bootstrap.Modal(document.getElementById('editNoteModal'), {
-                backdrop: 'static',
-                keyboard: false
-            });
-            editNoteModal.show();
+            var detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+            detailsModal.show();
         });
 
-        // Form submission handler
+        // Edit Note button click
+        $('.edit-note-btn').on('click', function (e) {
+            e.stopPropagation(); // prevent row click
+
+            $('#editNoteId').val($(this).data('id'));
+            $('#editNoteText').val($(this).data('note'));
+
+            var editModal = new bootstrap.Modal(document.getElementById('editNoteModal'));
+            editModal.show();
+        });
+
+        // AJAX form submit
         $('#editNoteForm').submit(function (e) {
             e.preventDefault();
-
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'POST',
                 data: $(this).serialize(),
-                success: function (response) {
-                    if (response.success) {
-                        // Update the note in the table
+                success: function (res) {
+                    if (res.success) {
                         var noteId = $('#editNoteId').val();
-                        var updatedNote = $('#editNoteText').val();
-                        $('tr[data-note-id="' + noteId + '"] .note-cell').text(updatedNote);
-
-                        // Hide the modal
-                        var editNoteModal = bootstrap.Modal.getInstance(document.getElementById('editNoteModal'));
-                        editNoteModal.hide();
-
-                        // Optional: Show success message
+                        $('tr[data-note-id="' + noteId + '"]').data('note', $('#editNoteText').val());
+                        bootstrap.Modal.getInstance(document.getElementById('editNoteModal')).hide();
                         alert('Note updated successfully');
                     } else {
-                        alert('Error: ' + response.message);
+                        alert('Error: ' + res.message);
                     }
                 },
                 error: function () {

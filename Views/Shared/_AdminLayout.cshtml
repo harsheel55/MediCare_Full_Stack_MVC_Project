@@ -68,7 +68,7 @@
                     </ul>
                 </li>
 
-                <li><a href="@Url.Action("PaymentInvoiceList", "Admin")"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li>
+                @* <li><a href="@Url.Action("PaymentInvoiceList", "Admin")"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li> *@
 
                 <li><a href="@Url.Action("SpecializationList", "Specialization")"><i class="fas fa-briefcase-medical"></i> <span>Specializations</span></a></li>
 
@@ -76,24 +76,6 @@
 
                 <li><a href="/Auth/Logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
-           @* <ul> *@
-           @*     <li><a href="@Url.Action("AdminDashboard", "Admin")"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>  *@
-           @*     <li><a href="@Url.Action("UserList", "User")"><i class="fas fa-user"></i> <span>Users</span></a></li> *@
-           @*     <li><a href="@Url.Action("DoctorList", "User")"><i class="fas fa-user-md"></i> <span>Doctors</span></a></li> *@
-           @*     <li><a href="@Url.Action("ReceptionistList", "User")"><i class="fas fa-user-plus"></i> <span>Receptionist</span></a></li> *@
-           @*     <li><a href="@Url.Action("PatientList", "Patient")"><i class="fas fa-procedures"></i> <span>Patients</span></a></li> *@
-           @*     <li><a href="@Url.Action("AppointmentList", "Appointment")"><i class="fas fa-calendar-check"></i> <span>Appointments</span></a></li> *@
-           @*     <li><a href="@Url.Action("PaymentInvoiceList", "Admin")"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li> *@
-           @*     <li><a href="@Url.Action("CheckUpList", "Appointment")"><i class="fas fa-stethoscope"></i> <span>Check Up</span></a></li> *@
-           @*     <li><a href="@Url.Action("AdmissionList", "Bed")"><i class="fas fa-procedures"></i> <span>Bed Allotment</span></a></li> *@
-           @*     <li><a href="@Url.Action("RoomList", "Room")"><i class="fas fa-procedures"></i> <span>Room Management</span></a></li> *@
-           @*     <li><a href="@Url.Action("BedList", "Bed")"><i class="fas fa-procedures"></i> <span>Bed Management</span></a></li> *@
-           @*     <li><a href="@Url.Action("LabTestList", "Admin")"><i class="fas fa-vials"></i> <span>Lab Test</span></a></li> *@
-           @*     <li><a href="@Url.Action("PatientTestList", "Admin")"><i class="fas fa-vials"></i> <span>Patient Test</span></a></li> *@
-           @*     <li><a href="@Url.Action("SpecializationList", "Specialization")"><i class="fas fa-briefcase-medical"></i> <span>Specializations</span></a></li> *@
-           @*     <li><a href="/Settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li> *@
-           @*     <li><a href="/Auth/Logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li> *@
-           @* </ul> *@
        </div> 
         <div class="main-content" id="mainContent">
             @RenderBody()
@@ -109,36 +91,6 @@
         </div>
     </div>
 
-
-    @* <div class="dashboard-container"> *@
-    @*     <div class="sidebar" id="sidebar"> *@
-    @*       <div class="logo">  *@
-    @*             <img src="~/images/logo.jpg" alt="MediCare Logo" style="height: 50px; margin-right: 10px;" /> *@
-    @*         </div> *@
-    @*         <ul> *@
-    @*             <li><a href="@Url.Action("AdminDashboard", "Admin")"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>  *@
-    @*             <li><a href="@Url.Action("UserList", "User")"><i class="fas fa-user"></i> <span>Users</span></a></li> *@
-    @*             <li><a href="@Url.Action("DoctorList", "User")"><i class="fas fa-user-md"></i> <span>Doctors</span></a></li> *@
-    @*             <li><a href="@Url.Action("ReceptionistList", "User")"><i class="fas fa-user-plus"></i> <span>Receptionist</span></a></li> *@
-    @*             <li><a href="@Url.Action("PatientList", "Patient")"><i class="fas fa-procedures"></i> <span>Patients</span></a></li> *@
-    @*             <li><a href="@Url.Action("AppointmentList", "Appointment")"><i class="fas fa-calendar-check"></i> <span>Appointments</span></a></li> *@
-    @*             <li><a href="@Url.Action("PaymentInvoiceList", "Admin")"><i class="fas fa-file-invoice"></i> <span>Billing</span></a></li> *@
-    @*             <li><a href="@Url.Action("CheckUpList", "Appointment")"><i class="fas fa-stethoscope"></i> <span>Check Up</span></a></li> *@
-    @*             <li><a href="@Url.Action("AdmissionList", "Bed")"><i class="fas fa-procedures"></i> <span>Bed Allotment</span></a></li> *@
-    @*             <li><a href="@Url.Action("RoomList", "Room")"><i class="fas fa-procedures"></i> <span>Room Management</span></a></li> *@
-    @*             <li><a href="@Url.Action("BedList", "Bed")"><i class="fas fa-procedures"></i> <span>Bed Management</span></a></li> *@
-    @*             <li><a href="@Url.Action("LabTestList", "Admin")"><i class="fas fa-vials"></i> <span>Lab Test</span></a></li> *@
-    @*             <li><a href="@Url.Action("PatientTestList", "Admin")"><i class="fas fa-vials"></i> <span>Patient Test</span></a></li> *@
-    @*             <li><a href="@Url.Action("SpecializationList", "Specialization")"><i class="fas fa-briefcase-medical"></i> <span>Specializations</span></a></li> *@
-    @*             <li><a href="/Settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li> *@
-    @*             <li><a href="/Auth/Logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li> *@
-    @*         </ul> *@
-    @*     </div> *@
-
-    @*     <div class="main-content" id="mainContent">
-    @*         @RenderBody() *@
-    @*     </div> *@
-    @* </div> *@
 
     @* <!-- Add this inside <body>, near the bottom --> *@
     @* <div id="loadingSpinner" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:rgba(255,255,255,0.7); text-align:center;"> *@
@@ -177,16 +129,6 @@
 
     </script>
     <script>
-        // const toggleBtn = document.getElementById("toggleSidebar");
-        // const sidebar = document.getElementById("sidebar");
-        // const mainContent = document.getElementById("mainContent");
-
-        // toggleBtn.addEventListener("click", () => {
-        //     sidebar.classList.toggle("collapsed");
-        //     mainContent.classList.toggle("expanded");
-        // });
-
-
         document.querySelectorAll('.submenu-toggle').forEach(toggle => {
             toggle.addEventListener('click', function(e) {
                 e.preventDefault();

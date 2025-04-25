@@ -1,4 +1,5 @@
-﻿using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
+﻿using MediCare_MVC_Project.MediCare.Application.DTOs.BillingDTOs;
+using MediCare_MVC_Project.MediCare.Application.DTOs.CheckUpDTOs;
 
 namespace MediCare_MVC_Project.MediCare.Application.Interfaces
 {
